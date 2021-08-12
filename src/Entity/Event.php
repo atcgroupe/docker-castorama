@@ -2,14 +2,21 @@
 
 namespace App\Entity;
 
-use App\Repository\OrderEventInfoRepository;
+use App\Repository\EventRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=OrderEventInfoRepository::class)
+ * @ORM\Entity(repositoryClass=EventRepository::class)
  */
-class OrderEventInfo
+class Event
 {
+    public const ORDER_SENT = 'onOrderSend';
+    public const ORDER_RECEIVED = 'onOrderReceived';
+    public const ORDER_PROCESS = 'onOrderProcess';
+    public const ORDER_PROCESSED = 'onOrderProcessed';
+    public const ORDER_SHIPPED = 'onOrderShipped';
+    public const ORDER_DELIVERED = 'onOrderDelivered';
+
     /**
      * @ORM\Id
      * @ORM\Column(type="string")
@@ -22,7 +29,7 @@ class OrderEventInfo
     private $label;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $help;
 
@@ -53,7 +60,7 @@ class OrderEventInfo
         return $this->help;
     }
 
-    public function setHelp(string $help): self
+    public function setHelp(?string $help): self
     {
         $this->help = $help;
 

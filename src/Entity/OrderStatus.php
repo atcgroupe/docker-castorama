@@ -23,9 +23,10 @@ class OrderStatus
     private $label;
 
     /**
-     * @ORM\Column(type="string", length=20)
+     * @ORM\OneToOne(targetEntity=Event::class, cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $orderEvent;
+    private $event;
 
     public function getId(): ?int
     {
@@ -44,14 +45,14 @@ class OrderStatus
         return $this;
     }
 
-    public function getOrderEvent(): ?string
+    public function getEvent(): ?Event
     {
-        return $this->orderEvent;
+        return $this->event;
     }
 
-    public function setOrderEvent(string $orderEvent): self
+    public function setEvent(Event $event): self
     {
-        $this->orderEvent = $orderEvent;
+        $this->event = $event;
 
         return $this;
     }

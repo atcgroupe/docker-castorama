@@ -36,19 +36,19 @@ class Member
     private $user;
 
     /**
-     * @ORM\OneToMany(targetEntity=MemberNotification::class, mappedBy="member", orphanRemoval=true)
-     */
-    private $notifications;
-
-    /**
      * @ORM\OneToMany(targetEntity=Order::class, mappedBy="member")
      */
     private $orders;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Event::class)
+     */
+    private $events;
+
     public function __construct()
     {
-        $this->notifications = new ArrayCollection();
         $this->orders = new ArrayCollection();
+        $this->events = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -93,36 +93,6 @@ class Member
     }
 
     /**
-     * @return Collection|MemberNotification[]
-     */
-    public function getNotifications(): Collection
-    {
-        return $this->notifications;
-    }
-
-    public function addNotification(MemberNotification $notification): self
-    {
-        if (!$this->notifications->contains($notification)) {
-            $this->notifications[] = $notification;
-            $notification->setMember($this);
-        }
-
-        return $this;
-    }
-
-    public function removeNotification(MemberNotification $notification): self
-    {
-        if ($this->notifications->removeElement($notification)) {
-            // set the owning side to null (unless already changed)
-            if ($notification->getMember() === $this) {
-                $notification->setMember(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|Order[]
      */
     public function getOrders(): Collection
@@ -148,6 +118,30 @@ class Member
                 $order->setMember(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Event[]
+     */
+    public function getEvents(): Collection
+    {
+        return $this->events;
+    }
+
+    public function addEvent(Event $event): self
+    {
+        if (!$this->events->contains($event)) {
+            $this->events[] = $event;
+        }
+
+        return $this;
+    }
+
+    public function removeEvent(Event $event): self
+    {
+        $this->events->removeElement($event);
 
         return $this;
     }
