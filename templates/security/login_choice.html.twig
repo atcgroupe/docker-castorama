@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>
+        Qui êtes vous ?
+    </h1>
+    <p>
+        <a href="{{ path('app_login', {'type': 'shop'}) }}">Je travaille dans un magasin</a>
+    </p>
+    <p>
+        <a href="{{ path('app_login', {'type': 'admin'}) }}">Je travaille au siège</a>
+    </p>
+    <p>
+        <a href="{{ path('app_login', {'type': 'atc'}) }}">Je travaille chez ATC Groupe</a>
+    </p>
+{% endblock %}
