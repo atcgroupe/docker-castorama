@@ -1,16 +1,36 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>
-        Qui êtes vous ?
-    </h1>
-    <p>
-        <a href="{{ path('app_login', {'type': 'shop'}) }}">Je travaille dans un magasin</a>
-    </p>
-    <p>
-        <a href="{{ path('app_login', {'type': 'admin'}) }}">Je travaille au siège</a>
-    </p>
-    <p>
-        <a href="{{ path('app_login', {'type': 'atc'}) }}">Je travaille chez ATC Groupe</a>
-    </p>
+    <div
+            style="max-width: 400px"
+            class="container d-flex vh-100 align-items-center justify-content-center">
+        <div>
+            <img
+                    src="{{ asset('build/images/app/branding.svg') }}"
+                    class="mb-5"
+                    alt="branding">
+
+            <h3 class="text-center">Bienvenue,</h3>
+
+            <h4 class="text-secondary text-center fw-light mb-4">Dites nous qui vous êtes ?</h4>
+
+            <a
+                    href="{{ path('app_login', {'type': 'shop'}) }}"
+                    class="btn btn-outline-secondary p-3 w-100 my-4 shadow-sm">
+                Je travaille dans un magasin Castorama
+            </a>
+
+            <a
+                    href="{{ path('app_login', {'type': 'admin'}) }}"
+                    class="btn btn-outline-secondary p-3 w-100 mb-4 shadow-sm">
+                Je travaille au siège de Castorama
+            </a>
+
+            <a
+                    href="{{ path('app_login', {'type': 'atc'}) }}"
+                    class="btn btn-outline-secondary p-3 w-100 shadow-sm">
+                Je travaille chez ATC Groupe
+            </a>
+        </div>
+    </div>
 {% endblock %}

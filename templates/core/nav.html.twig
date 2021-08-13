@@ -1,0 +1,30 @@
+<nav class="navbar sticky-lg-top navbar-expand-lg navbar-light bg-light mb-4 shadow-sm">
+    <div class="container app-core-container my-4">
+        <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarToggler"
+                aria-controls="navbarToggler"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand me-lg-5" href="{{ path('home') }}">
+            <img src="{{ asset('build/images/app/branding.svg') }}" alt="" width="300">
+        </a>
+        <div class="collapse navbar-collapse" id="navbarToggler">
+            <ul class="navbar-nav me-auto my-3 my-lg-0">
+                {#
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Commandes</a>
+                </li>
+                #}
+            </ul>
+            <div class="d-flex text-capitalize">
+                {{ app.user.displayName }} |&nbsp; <a href="{{ path('app_logout') }}">logout</a>
+            </div>
+        </div>
+    </div>
+</nav>

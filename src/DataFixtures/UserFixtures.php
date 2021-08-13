@@ -46,9 +46,9 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
 
         // Other users
         $otherUsersData = [
-            ['Siege', 'pass', User::ROLE_CUSTOMER_ADMIN],
-            ['atcgroupe', 'pass', User::ROLE_COMPANY_ADMIN],
-            ['api', 'pass', User::ROLE_API],
+            [User::SIEGE, 'pass', User::ROLE_CUSTOMER_ADMIN],
+            [User::ATC, 'pass', User::ROLE_COMPANY_ADMIN],
+            [User::API, 'pass', User::ROLE_API],
         ];
 
         foreach ($otherUsersData as $entry) {

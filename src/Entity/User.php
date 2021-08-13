@@ -19,6 +19,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public const ROLE_COMPANY_ADMIN = 'ROLE_COMPANY_ADMIN';
     public const ROLE_API = 'ROLE_API';
 
+    public const SIEGE = 'castosiege';
+    public const ATC = 'atcgroupe';
+    public const API = 'api';
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -96,6 +100,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getUserIdentifier(): string
     {
         return (string) $this->username;
+    }
+
+    public function getDisplayName(): string
+    {
+        if (null !== $this->getShop()) {
+            return 'Magasin de ' . $this->getShop()->getName();
+        }
+
+        return match ($this->getUserIdentifier()) {
+            self::SIEGE => 'Siège Castorama',
+            self::ATC => 'ATC Groupe'
+        };
     }
 
     /**

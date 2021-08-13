@@ -1,0 +1,16 @@
+{# application structure template #}
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="position-relative">
+        {% block nav %}
+            {{ include('core/nav.html.twig') }}
+        {% endblock %}
+
+        <div class="container app-core-container">
+            {% block content %}{% endblock %}
+        </div>
+
+        {% block footer %}{{ include('core/footer.html.twig') }}{% endblock %}
+    </div>
+{% endblock %}
