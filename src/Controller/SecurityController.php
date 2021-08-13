@@ -21,13 +21,13 @@ class SecurityController extends AbstractController
     {
         $templateData = [
             'type' => $type,
-            'last_username' => $authenticationUtils->getLastUsername(),
             'error' => $authenticationUtils->getLastAuthenticationError(),
         ];
 
         if ($type === 'shop') {
             $manager = $this->getDoctrine()->getManager();
             $templateData['shopUsers'] = $manager->getRepository(User::class)->findShopsUsers();
+            $templateData['last_username'] = $authenticationUtils->getLastUsername();
         }
 
         return $this->render('security/login.html.twig', $templateData);
