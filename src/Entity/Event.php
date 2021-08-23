@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\EventRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=EventRepository::class)
@@ -20,20 +21,29 @@ class Event
     /**
      * @ORM\Id
      * @ORM\Column(type="string")
+     * @Groups({"member_session"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=60)
+     * @Groups({"member_session"})
      */
     private $label;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"member_session"})
      */
     private $help;
 
-    public function getId(): ?int
+    /**
+     * @ORM\Column(type="integer")
+     * @Groups({"member_session"})
+     */
+    private $displayOrder;
+
+    public function getId(): ?string
     {
         return $this->id;
     }
@@ -63,6 +73,18 @@ class Event
     public function setHelp(?string $help): self
     {
         $this->help = $help;
+
+        return $this;
+    }
+
+    public function getDisplayOrder(): ?int
+    {
+        return $this->displayOrder;
+    }
+
+    public function setDisplayOrder(int $displayOrder): self
+    {
+        $this->displayOrder = $displayOrder;
 
         return $this;
     }
