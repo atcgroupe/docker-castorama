@@ -16,14 +16,57 @@
         </a>
         <div class="collapse navbar-collapse" id="navbarToggler">
             <ul class="navbar-nav me-auto my-3 my-lg-0">
-                {#
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Commandes</a>
+                    <a class="nav-link" aria-current="page" href="#">Commandes</a>
                 </li>
-                #}
+
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="#">Aide</a>
+                </li>
             </ul>
-            <div class="d-flex text-capitalize">
-                {{ app.user.displayName }} |&nbsp; <a href="{{ path('app_logout') }}">logout</a>
+            <div class="d-flex align-items-center">
+                <div class="nav-item dropdown">
+                    <a
+                            class="nav-link dropdown-toggle text-capitalize"
+                            href="#"
+                            id="navbarDropdown"
+                            role="button"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                        {{ app.user.displayName }} {% if member.has %}| {{ member.get.name }}{% endif %}
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-lg-end shadow-sm" aria-labelledby="navbarDropdown">
+                        {% if member.has %}
+                            <li><h6 class="dropdown-header lead">{{ member.get.name }}</h6></li>
+
+                            <li><hr class="dropdown-divider"></li>
+
+                            <li>
+                                <a class="dropdown-item" href="{{ path('member_update', {'id': member.get.id}) }}">
+                                    Modifier mes données
+                                </a>
+                            </li>
+
+                            <li>
+                                <a class="dropdown-item" href="{{ path('member_events', {'id': member.get.id}) }}">
+                                    Gérer mes alertes email
+                                </a>
+                            </li>
+
+                            <li>
+                                <a class="dropdown-item text-danger" href="{{ path('member_delete', {'id': member.get.id}) }}">
+                                    Supprimer mon compte
+                                </a>
+                            </li>
+
+                            <li><hr class="dropdown-divider"></li>
+
+                            <li><a class="dropdown-item" href="{{ path('member_choose') }}">Sélectionner un autre membre</a></li>
+                        {% endif %}
+
+                        <li><a class="dropdown-item" href="{{ path('app_logout') }}">Me déconnecter</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
