@@ -3,7 +3,6 @@
 /* Card link */
 .app-card-link {
   &:hover {
-    background-color: $gray-100;
     cursor: pointer;
     box-shadow: 0 .125rem .25rem rgba($black, .075);
   }
