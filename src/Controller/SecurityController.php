@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Service\Member\MemberSessionHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,8 +18,13 @@ class SecurityController extends AbstractController
     }
 
     #[Route('/login/{type}', name: 'app_login', requirements: ['type' => 'shop|admin|atc'])]
-    public function login(string $type, AuthenticationUtils $authenticationUtils): Response
-    {
+    public function login(
+        string $type,
+        AuthenticationUtils $authenticationUtils,
+        MemberSessionHandler $memberSessionHandler,
+    ): Response {
+        $memberSessionHandler->destroy();
+
         $templateData = [
             'type' => $type,
             'error' => $authenticationUtils->getLastAuthenticationError(),
@@ -36,6 +42,5 @@ class SecurityController extends AbstractController
     #[Route('/logout', name: 'app_logout')]
     public function logout()
     {
-        throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 }

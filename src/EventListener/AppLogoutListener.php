@@ -4,34 +4,38 @@ namespace App\EventListener;
 
 use App\Entity\User;
 use App\Security\AppAuthenticator;
+use App\Service\Member\MemberSessionHandler;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Event\LogoutEvent;
-use Symfony\Component\Security\Http\HttpUtils;
 
 class AppLogoutListener
 {
     public function __construct(
-        private HttpUtils $httpUtils,
+        private UrlGeneratorInterface $urlGenerator,
+        private MemberSessionHandler $memberSessionHandler,
     ) {
     }
 
     public function onLogout(LogoutEvent $event)
     {
-        $roles = $event->getToken()->getUser()->getRoles();
+        $this->memberSessionHandler->destroy();
 
-        $path = '/login/';
+        $roles = $event->getToken()->getUser()->getRoles();
+        $path = $this->urlGenerator->generate('app_login_choice');
 
         if (in_array(User::ROLE_CUSTOMER_SHOP, $roles)) {
-            $path .= AppAuthenticator::LOGIN_TYPE_CUSTOMER_SHOP;
+            $path = $this->urlGenerator->generate('app_login', ['type' => AppAuthenticator::LOGIN_TYPE_CUSTOMER_SHOP]);
         }
 
         if (in_array(User::ROLE_CUSTOMER_ADMIN, $roles)) {
-            $path .= AppAuthenticator::LOGIN_TYPE_CUSTOMER_ADMIN;
+            $path = $this->urlGenerator->generate('app_login', ['type' => AppAuthenticator::LOGIN_TYPE_CUSTOMER_ADMIN]);
         }
 
         if (in_array(User::ROLE_COMPANY_ADMIN, $roles)) {
-            $path .= AppAuthenticator::LOGIN_TYPE_COMPANY_ADMIN;
+            $path = $this->urlGenerator->generate('app_login', ['type' => AppAuthenticator::LOGIN_TYPE_COMPANY_ADMIN]);
         }
 
-        $event->setResponse($this->httpUtils->createRedirectResponse($event->getRequest(), $path));
+        $event->setResponse(new RedirectResponse($path));
     }
 }

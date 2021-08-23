@@ -1,0 +1,18 @@
+{% extends 'core/core.html.twig' %}
+
+{% block content %}
+    <div class="row justify-content-md-center">
+        <div class="col col-lg-6">
+            <h1 class="h2 fw-light text-center my-5">Ajouter un nouveau membre</h1>
+            {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+            {{ form_widget(form) }}
+            <div class="mt-5">
+                <button type="submit" class="btn btn-outline-primary w-100">Enregistrer</button>
+            </div>
+            <div class="my-3 text-center">
+                <a href="{{ path('member_choose') }}" class="text-muted">Annuler la création d'un nouveau membre</a>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

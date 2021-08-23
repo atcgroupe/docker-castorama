@@ -6,26 +6,45 @@ use App\Repository\MemberRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\Ignore;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=MemberRepository::class)
+ * @UniqueEntity(
+ *     fields={"name", "user"},
+ *     errorPath="name",
+ *     message="Ce nom est déjà utilisé par un autre membre de votre équipe."
+ * )
+ * @UniqueEntity("email", message="Cette adresse mail est déjà utilisée par un autre membre.")
  */
 class Member
 {
+    public const SESSION_ID = 'member';
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"member_session"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\NotBlank(message="Le nom du membre est obligatoire")
+     * @Groups({"member_session"})
      */
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="string", length=100, unique=true)
+     * @Assert\NotBlank(message="L'email est obligatoire")
+     * @Assert\Email(message="Cette adresse mail n'est pas valide.")
+     * @Groups({"member_session"})
      */
     private $email;
 
@@ -42,6 +61,7 @@ class Member
 
     /**
      * @ORM\ManyToMany(targetEntity=Event::class)
+     * @Groups({"member_session"})
      */
     private $events;
 
@@ -54,6 +74,11 @@ class Member
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setId(int $id): void
+    {
+        $this->id = $id;
     }
 
     public function getName(): ?string
