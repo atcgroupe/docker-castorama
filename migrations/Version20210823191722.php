@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20210812084240 extends AbstractMigration
+final class Version20210823191722 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -21,8 +21,8 @@ final class Version20210812084240 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE TABLE aisle_order_sign (id INT AUTO_INCREMENT NOT NULL, item_one_id INT NOT NULL, item_two_id INT DEFAULT NULL, item_three_id INT DEFAULT NULL, order_id INT NOT NULL, aisle_number SMALLINT NOT NULL, quantity SMALLINT NOT NULL, INDEX IDX_272B01917D63BBDC (item_one_id), INDEX IDX_272B0191163F5C13 (item_two_id), INDEX IDX_272B01911BACC5AE (item_three_id), INDEX IDX_272B01918D9F6D38 (order_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE event (id VARCHAR(255) NOT NULL, label VARCHAR(60) NOT NULL, help VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE member (id INT AUTO_INCREMENT NOT NULL, user_id INT NOT NULL, name VARCHAR(100) NOT NULL, email VARCHAR(100) NOT NULL, INDEX IDX_70E4FA78A76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE event (id VARCHAR(255) NOT NULL, label VARCHAR(60) NOT NULL, help VARCHAR(255) DEFAULT NULL, display_order INT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE member (id INT AUTO_INCREMENT NOT NULL, user_id INT NOT NULL, name VARCHAR(100) NOT NULL, email VARCHAR(100) NOT NULL, UNIQUE INDEX UNIQ_70E4FA78E7927C74 (email), INDEX IDX_70E4FA78A76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE member_event (member_id INT NOT NULL, event_id VARCHAR(255) NOT NULL, INDEX IDX_598F9F547597D3FE (member_id), INDEX IDX_598F9F5471F7E88B (event_id), PRIMARY KEY(member_id, event_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE `order` (id INT AUTO_INCREMENT NOT NULL, user_id INT NOT NULL, member_id INT DEFAULT NULL, status_id INT NOT NULL, title VARCHAR(100) NOT NULL, creation_time DATETIME NOT NULL, last_update_time DATETIME NOT NULL, delivery_date DATE DEFAULT NULL, customer_reference VARCHAR(20) DEFAULT NULL, INDEX IDX_F5299398A76ED395 (user_id), INDEX IDX_F52993987597D3FE (member_id), INDEX IDX_F52993986BF700BD (status_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE order_status (id INT AUTO_INCREMENT NOT NULL, event_id VARCHAR(255) NOT NULL, label VARCHAR(30) NOT NULL, UNIQUE INDEX UNIQ_B88F75C971F7E88B (event_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');

@@ -42,12 +42,12 @@ class MemberController extends AbstractController
     public function create(Request $request): Response
     {
         $member = new Member();
+        $member->setUser($this->getUser());
+
         $form = $this->createForm(MemberType::class, $member);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $member->setUser($this->getUser());
-
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($member);
             $manager->flush();

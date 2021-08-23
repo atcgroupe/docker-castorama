@@ -6,6 +6,7 @@ use App\Repository\MemberRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Serializer\Annotation\MaxDepth;
@@ -13,6 +14,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=MemberRepository::class)
+ * @UniqueEntity(
+ *     fields={"name", "user"},
+ *     errorPath="name",
+ *     message="Ce nom est déjà utilisé par un autre membre de votre équipe."
+ * )
+ * @UniqueEntity("email", message="Cette adresse mail est déjà utilisée par un autre membre.")
  */
 class Member
 {
@@ -34,7 +41,7 @@ class Member
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="string", length=100, unique=true)
      * @Assert\NotBlank(message="L'email est obligatoire")
      * @Assert\Email(message="Cette adresse mail n'est pas valide.")
      * @Groups({"member_session"})
