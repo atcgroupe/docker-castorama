@@ -1,0 +1,29 @@
+{% extends 'core/core.html.twig' %}
+
+{% block content %}
+    <div class="row justify-content-md-center">
+        <div class="col col-lg-6">
+            <h1 class="h2 fw-light text-center my-5">Modifier mes données</h1>
+            {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+            <div class="mb-3">
+                <label for="member_name" class="form-label required">Nom</label>
+                {{ form_widget(form.name) }}
+                {{ form_errors(form.name) }}
+            </div>
+
+            <div class="mb-3">
+                {{ form_label(form.email) }}
+                {{ form_widget(form.email) }}
+                {{ form_errors(form.email) }}
+            </div>
+
+            <div class="mt-5">
+                <button type="submit" class="btn btn-lg btn-outline-primary w-100">Enregistrer les modifications</button>
+            </div>
+
+            <a href="{{ path('home') }}" class="btn btn-outline-secondary w-100 my-3">Annuler</a>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'core/core.html.twig' %}
+
+{% block content %}
+    <div class="row justify-content-md-center">
+        <div class="col col-lg-6">
+            {% if members is not empty %}
+                <p class="h2 fw-light text-center my-4">Qui êtes vous ?</p>
+            {% else %}
+                <p class="display-2 text-center">Oups!</p>
+                <p class="text-muted display-6 fw-light text-center mb-5">{{ app.user.displayName }} n'a encore aucun membre...</p>
+            {% endif %}
+
+            {% for member in members %}
+                {% include 'component/_app_card_link.html.twig' with {
+                    'href': path('member_select', {'id': member.id}),
+                    'text': member.name
+                } %}
+            {% endfor %}
+
+            {% include 'component/_app_card_link.html.twig' with {'href': path('member_create'), 'text': 'Ajouter un nouveau membre'} %}
+
+        </div>
+    </div>
+
+{% endblock %}
