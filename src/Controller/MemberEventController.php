@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Event;
 use App\Entity\Member;
 use App\Service\Controller\AbstractAppController;
+use App\Service\Alert\Alert;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -26,7 +27,7 @@ class MemberEventController extends AbstractAppController
 
             $manager->flush();
 
-            $this->addFlash('info', 'Vos alertes ont été modifiées avec succès');
+            $this->dispatchAlert(Alert::INFO, 'Vos alertes ont été modifiées avec succès');
 
             return $this->redirectToRoute('home');
         }
