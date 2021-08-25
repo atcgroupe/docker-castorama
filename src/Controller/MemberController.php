@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Member;
 use App\Form\MemberType;
 use App\Repository\MemberRepository;
+use App\Service\Controller\AbstractAppController;
 use App\Service\Member\MemberSessionHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -13,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/members', name: 'member')]
-class MemberController extends AbstractController
+class MemberController extends AbstractAppController
 {
     public const MEMBER_SELECT_ROUTE_PREFIX = '/members/select/';
 
