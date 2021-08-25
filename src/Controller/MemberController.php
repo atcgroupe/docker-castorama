@@ -5,15 +5,16 @@ namespace App\Controller;
 use App\Entity\Member;
 use App\Form\MemberType;
 use App\Repository\MemberRepository;
+use App\Service\Controller\AbstractAppController;
+use App\Service\Alert\Alert;
 use App\Service\Member\MemberSessionHandler;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/members', name: 'member')]
-class MemberController extends AbstractController
+class MemberController extends AbstractAppController
 {
     public const MEMBER_SELECT_ROUTE_PREFIX = '/members/select/';
 
@@ -35,6 +36,13 @@ class MemberController extends AbstractController
     public function select(int $id, MemberRepository $memberRepository,): RedirectResponse {
         $this->memberSessionHandler->set($memberRepository->find($id));
 
+        $this->dispatchAlert(
+            Alert::BASIC,
+            sprintf('Bonjour %s', $this->memberSessionHandler->get()->getName()),
+            true,
+            2000
+        );
+
         return $this->redirectToRoute('home');
     }
 
@@ -52,7 +60,10 @@ class MemberController extends AbstractController
             $manager->persist($member);
             $manager->flush();
 
-            $this->addFlash('info', 'Le nouveau membre a été ajouté avec succès.');
+            $this->dispatchHtmlAlert(
+                Alert::INFO,
+                sprintf('Le membre <b>%s</b> a été ajouté avec succès.', $member->getName())
+            );
 
             return $this->redirectToRoute('member_choose');
         }
@@ -72,7 +83,7 @@ class MemberController extends AbstractController
 
             $this->memberSessionHandler->set($member);
 
-            $this->addFlash('info', 'Vos données ont été mises à jour avec succès.');
+            $this->dispatchAlert(Alert::INFO, 'Vos données ont été mises à jour avec succès.');
 
             return $this->redirectToRoute('home');
         }
@@ -92,7 +103,10 @@ class MemberController extends AbstractController
 
             $this->memberSessionHandler->destroy();
 
-            $this->addFlash('info', sprintf('le membre %s a été supprimé avec succès.', $member->getName()));
+            $this->dispatchHtmlAlert(
+                Alert::INFO,
+                sprintf('le membre <b>%s</b> a été supprimé avec succès.', $member->getName())
+            );
 
             return $this->redirectToRoute('home');
         }
