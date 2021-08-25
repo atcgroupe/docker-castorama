@@ -1,0 +1,16 @@
+<div aria-live="polite" aria-atomic="true" class="position-relative">
+    <div class="toast-container position-absolute top-0 start-50 translate-middle-x">
+        {% for alert in app.flashes(constant('App\\Service\\Alert\\Alert::FLASH_TYPE')) %}
+            {%
+                include 'component/_app_alert.html.twig'
+                with {
+                    'theme': alert.theme,
+                    'delay': alert.delay,
+                    'autoHide': alert.autoHide,
+                    'message': alert.message,
+                    'isHtmlMessage': alert.isHtmlMessage
+                }
+            %}
+        {% endfor %}
+    </div>
+</div>
