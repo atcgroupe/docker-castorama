@@ -8,6 +8,8 @@
         {% endblock %}
 
         <div class="container app-core-container">
+            {{ include('core/alerts.html.twig') }}
+
             {% block content %}{% endblock %}
         </div>
 
