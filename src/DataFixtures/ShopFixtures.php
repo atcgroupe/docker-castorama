@@ -37,7 +37,6 @@ class ShopFixtures extends Fixture
             $shop = new Shop();
 
             $shop->setName($entry[self::SHOP_NAME]);
-            $shop->setShipmentName('Magasin CASTORAMA ' . $entry[self::SHOP_NAME]);
             $shop->setCity($entry[self::CITY]);
             $shop->setPostCode($this->getFormattedPostCode($entry[self::POSTAL_CODE]));
             $shop->setAddress($entry[self::ADDRESS]);
