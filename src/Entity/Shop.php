@@ -25,11 +25,6 @@ class Shop
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $shipmentName;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
     private $address;
 
     /**
