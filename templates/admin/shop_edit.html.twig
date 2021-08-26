@@ -1,0 +1,44 @@
+{% extends 'core/core.html.twig' %}
+
+{% if action == 'create' %}
+    {% set title = 'Créer un nouveu magasin' %}
+    {% set passwordLabel = 'Mot de passe' %}
+    {% set passwordHelp = 'Doit normalement correspondre a un numéro SAP. (Fourni par CASTORAMA)' %}
+    {% set passwordHelpClass = '' %}
+    {% set submitText = 'Valider' %}
+{% elseif action == 'update' %}
+    {% set title = 'Modifier les infos de Castorama ' ~ shopName %}
+    {% set passwordLabel = 'Nouveau mot de passe' %}
+    {% set passwordHelp = '!!! Ne remplir le mot de passe que si vous souhaitez le changer' %}
+    {% set passwordHelpClass = 'text-danger' %}
+    {% set submitText = 'Enregistrer les modifications' %}
+{% endif %}
+
+{% block content %}
+    <div class="row justify-content-md-center">
+        <div class="col col-lg-6">
+            <h1 class="h2 fw-light text-center my-5">{{ title }}</h1>
+
+            {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+                {{ form_row(form.username) }}
+
+                {{ form_row(form.plainPassword,
+                    {
+                        'label': passwordLabel,
+                        'help': passwordHelp,
+                        'help_attr': {'class': passwordHelpClass}
+                    }
+                ) }}
+
+                {{ form_widget(form.shop, {'attr': {'class': 'mt-4'}}) }}
+
+                <div class="mt-5">
+                    <button type="submit" class="btn btn-lg btn-outline-primary w-100">{{ submitText }}</button>
+                </div>
+
+                <a href="{{ path('admin_shop_list') }}" class="btn btn-outline-secondary w-100 my-3">Annuler</a>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
