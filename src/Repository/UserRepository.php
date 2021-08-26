@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -45,8 +47,43 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return $this->createQueryBuilder('u')
             ->innerJoin('u.shop', 's')
             ->addSelect('s')
+            ->orderBy('u.username')
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    /**
+     * @return User[]
+     */
+    public function findActiveShopsUsers(): array
+    {
+        return $this->createQueryBuilder('u')
+            ->innerJoin('u.shop', 's')
+            ->addSelect('s')
+            ->andWhere('u.isActive = 1')
+            ->orderBy('u.username')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return User
+     * @throws NoResultException
+     * @throws NonUniqueResultException
+     */
+    public function findWithShop(int $id): User
+    {
+        return $this->createQueryBuilder('u')
+            ->innerJoin('u.shop', 's')
+            ->addSelect('s')
+            ->andWhere('u.id = :id')
+                ->setParameter('id', $id)
+            ->getQuery()
+            ->getSingleResult()
+            ;
     }
 }
