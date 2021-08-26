@@ -32,7 +32,7 @@ class SecurityController extends AbstractController
 
         if ($type === 'shop') {
             $manager = $this->getDoctrine()->getManager();
-            $templateData['shopUsers'] = $manager->getRepository(User::class)->findShopsUsers();
+            $templateData['shopUsers'] = $manager->getRepository(User::class)->findActiveShopsUsers();
             $templateData['last_username'] = $authenticationUtils->getLastUsername();
         }
 

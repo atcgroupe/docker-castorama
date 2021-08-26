@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20210823191722 extends AbstractMigration
+final class Version20210826201434 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -27,7 +27,7 @@ final class Version20210823191722 extends AbstractMigration
         $this->addSql('CREATE TABLE `order` (id INT AUTO_INCREMENT NOT NULL, user_id INT NOT NULL, member_id INT DEFAULT NULL, status_id INT NOT NULL, title VARCHAR(100) NOT NULL, creation_time DATETIME NOT NULL, last_update_time DATETIME NOT NULL, delivery_date DATE DEFAULT NULL, customer_reference VARCHAR(20) DEFAULT NULL, INDEX IDX_F5299398A76ED395 (user_id), INDEX IDX_F52993987597D3FE (member_id), INDEX IDX_F52993986BF700BD (status_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE order_status (id INT AUTO_INCREMENT NOT NULL, event_id VARCHAR(255) NOT NULL, label VARCHAR(30) NOT NULL, UNIQUE INDEX UNIQ_B88F75C971F7E88B (event_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE sector_order_sign (id INT AUTO_INCREMENT NOT NULL, item_one_id INT NOT NULL, item_two_id INT NOT NULL, order_id INT NOT NULL, quantity SMALLINT NOT NULL, INDEX IDX_26E8DD627D63BBDC (item_one_id), INDEX IDX_26E8DD62163F5C13 (item_two_id), INDEX IDX_26E8DD628D9F6D38 (order_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE shop (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(60) NOT NULL, shipment_name VARCHAR(255) NOT NULL, address VARCHAR(255) NOT NULL, post_code VARCHAR(5) NOT NULL, region VARCHAR(60) DEFAULT NULL, city VARCHAR(60) NOT NULL, delivery_info LONGTEXT DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE shop (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(60) NOT NULL, address VARCHAR(255) NOT NULL, post_code VARCHAR(5) NOT NULL, region VARCHAR(60) DEFAULT NULL, city VARCHAR(60) NOT NULL, delivery_info LONGTEXT DEFAULT NULL, UNIQUE INDEX UNIQ_AC6A4CA25E237E06 (name), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE sign (id INT AUTO_INCREMENT NOT NULL, class VARCHAR(150) NOT NULL, image VARCHAR(60) NOT NULL, title VARCHAR(60) NOT NULL, description VARCHAR(255) NOT NULL, weight NUMERIC(4, 2) NOT NULL, switch_flow_builder VARCHAR(30) NOT NULL, switch_flow_template_file VARCHAR(30) NOT NULL, is_active TINYINT(1) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE sign_item (id INT AUTO_INCREMENT NOT NULL, category_id INT DEFAULT NULL, label VARCHAR(60) NOT NULL, image VARCHAR(60) NOT NULL, is_active TINYINT(1) NOT NULL, INDEX IDX_1870EE7712469DE2 (category_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE sign_item_category (id INT AUTO_INCREMENT NOT NULL, label VARCHAR(60) NOT NULL, is_active TINYINT(1) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');

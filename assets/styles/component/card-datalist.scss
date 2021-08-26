@@ -1,0 +1,13 @@
+/* App card datalist component */
+
+.app-card-datalist {
+  padding: 0;
+
+  li {
+    &:hover {
+      border-color: $primary;
+      color: $primary;
+      box-shadow: 0 .125rem .25rem rgba($black, .075);
+    }
+  }
+}

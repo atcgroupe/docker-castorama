@@ -4,9 +4,12 @@ namespace App\Entity;
 
 use App\Repository\ShopRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ShopRepository::class)
+ * @UniqueEntity("name", message="Ce nom de magasin est déjà utilisé")
  */
 class Shop
 {
@@ -18,32 +21,33 @@ class Shop
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=60)
+     * @ORM\Column(type="string", length=60, unique=true)
+     * @Assert\NotBlank
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
-     */
-    private $shipmentName;
-
-    /**
-     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
     private $address;
 
     /**
      * @ORM\Column(type="string", length=5)
+     * @Assert\NotBlank
+     * @Assert\Regex("/^[0-9]{5}$/", message="Le code postal n'est pas valide")
      */
     private $postCode;
 
     /**
      * @ORM\Column(type="string", length=60, nullable=true)
+     * @Assert\NotBlank
      */
     private $region;
 
     /**
      * @ORM\Column(type="string", length=60)
+     * @Assert\NotBlank
      */
     private $city;
 
@@ -62,7 +66,7 @@ class Shop
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(?string $name): self
     {
         $this->name = $name;
 
@@ -71,14 +75,7 @@ class Shop
 
     public function getShipmentName(): ?string
     {
-        return $this->shipmentName;
-    }
-
-    public function setShipmentName(string $shipmentName): self
-    {
-        $this->shipmentName = $shipmentName;
-
-        return $this;
+        return 'Magasin CASTORAMA ' . $this->name;
     }
 
     public function getAddress(): ?string
@@ -86,7 +83,7 @@ class Shop
         return $this->address;
     }
 
-    public function setAddress(string $address): self
+    public function setAddress(?string $address): self
     {
         $this->address = $address;
 
@@ -98,7 +95,7 @@ class Shop
         return $this->postCode;
     }
 
-    public function setPostCode(string $postCode): self
+    public function setPostCode(?string $postCode): self
     {
         $this->postCode = $postCode;
 
@@ -122,7 +119,7 @@ class Shop
         return $this->city;
     }
 
-    public function setCity(string $city): self
+    public function setCity(?string $city): self
     {
         $this->city = $city;
 
