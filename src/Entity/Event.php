@@ -11,6 +11,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 class Event
 {
+    public const ORDER_CREATED = 'onOrderCreated';
     public const ORDER_SENT = 'onOrderSend';
     public const ORDER_RECEIVED = 'onOrderReceived';
     public const ORDER_PROCESS = 'onOrderProcess';
