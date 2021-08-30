@@ -60,6 +60,12 @@ class Order
      */
     private $status;
 
+    public function __construct()
+    {
+        $this->creationTime = new \DateTime('now');
+        $this->lastUpdateTime = new \DateTime('now');
+    }
+
     public function getId(): ?int
     {
         return $this->id;
