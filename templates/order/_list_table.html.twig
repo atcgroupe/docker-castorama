@@ -1,0 +1,65 @@
+<div id="data-list-table" class="table-responsive-sm mt-5">
+    <table class="table table-hover table-bordered align-middle rounded">
+        <thead>
+            <tr class="bg-light text-primary">
+                <th scope="col" class="text-center sort" data-sort="number">N°</th>
+
+                <th scope="col" class="sort" data-sort="customerReference" style="width: 140px">N° DataMerch</th>
+
+                <th scope="col" class="sort" data-sort="title" style="min-width: 200px">Intitulé</th>
+
+                {% if not is_granted('ROLE_CUSTOMER_SHOP') and shopUserFilter == 'all' %}
+                    <th scope="col" class="sort" data-sort="shop">Magasin</th>
+                {% endif %}
+
+                <th scope="col" class="sort" data-sort="member">Membre</th>
+
+                <th scope="col" class="sort" data-sort="delivery">Livraison</th>
+
+                <th scope="col" class="sort" data-sort="status">Statut</th>
+
+                <th scope="col" class="text-center" style="width: 180px">Options</th>
+            </tr>
+        </thead>
+
+        <tbody class="list">
+            {% for order in orders %}
+                <tr>
+                    <td class="number text-center">{{ order.id }}</td>
+
+                    <td class="customerReference">
+                        {% if order.customerReference %}
+                            {{ order.customerReference }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+
+                    <td class="title">{{ order.title }}</td>
+
+                    {% if not is_granted('ROLE_CUSTOMER_SHOP') and shopUserFilter == 'all' %}
+                        <td class="shop">{{ order.user.userIdentifier }}</td>
+                    {% endif %}
+
+                    <td class="member">{{ order.member.name }}</td>
+
+                    <td class="delivery">
+                        {% if order.deliveryDate %}
+                            {{ order.deliveryDate|date('d/m/Y') }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+
+                    <td class="status">{{ order.status.label }}</td>
+
+                    <td class="text-end">
+                        <a href="#" class="btn btn-sm btn-outline-primary me-2">Editer</a>
+
+                        <a href="#" class="btn btn-sm btn-outline-danger">Supprimer</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

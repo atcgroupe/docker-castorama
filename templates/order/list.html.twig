@@ -1,0 +1,81 @@
+{% extends 'core/core.html.twig' %}
+
+{% block content %}
+    <h1 class="fw-light my-5 text-center">Liste des commandes</h1>
+
+    <div class="text-center text-md-end my-5">
+        {% if isShop %}
+                <a href="{{ path('orders_create') }}" class="btn btn-lg btn-outline-primary">
+                    Ajouter une nouvelle commande
+                </a>
+        {% else %}
+            <select id="app-shop-user" class="form-select" aria-label="Default select example">
+                <option
+                        value="all"
+                        data-route="{{ path('orders_list_active') }}"
+                        {% if shopUserFilter == 'all' %}selected{% endif %}>
+                    Tous les magasins
+                </option>
+                {% for shopUser in shopUsers %}
+                    <option
+                            value="{{ shopUser.id }}"
+                            data-route="{{ path('orders_list_active', {'shopUserFilter': shopUser.id}) }}"
+                            {% if shopUserFilter == shopUser.id %}selected{% endif %}>
+                        {{ shopUser.displayName }}
+                    </option>
+                {% endfor %}
+            </select>
+        {% endif %}
+    </div>
+
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a
+                    class="nav-link {% if isActive %}active{% endif %}"
+                    aria-current="page"
+                    href="{{ path('orders_list_active', {'shopUserFilter': shopUserFilter}) }}">
+                Commandes en cours
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a
+                    class="nav-link {% if not isActive %}active{% endif %}"
+                    href="{{ path('orders_list_archives', {'shopUserFilter': shopUserFilter, 'page': 1}) }}">
+                Archives
+            </a>
+        </li>
+    </ul>
+
+    {% if orders is empty and search is null %}
+        <div class="fw-light text-center text-primary mt-5">
+            <div class="alert alert-info lead" role="alert">
+                Il n'y a aucune commande pour l'instant.
+            </div>
+        </div>
+
+    {% else %}
+        <div id="data-list">
+            {{ include('order/_list_search.html.twig') }}
+
+            {% if orders is not empty %}
+                {{ include('order/_list_table.html.twig') }}
+            {% else %}
+                <div class="fw-light text-center text-primary mt-5">
+                    <div class="alert alert-info lead" role="alert">
+                        <strong>Aucun résultat trouvé pour la recherche "{{ search }}".</strong><br>
+                        Vous pouvez chercher par n° de commande, intitulé ou un n° DataMerch.
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
+        {{ include('order/_list_table_pagination.html.twig') }}
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {{ encore_entry_script_tags('orderList') }}
+{% endblock %}
