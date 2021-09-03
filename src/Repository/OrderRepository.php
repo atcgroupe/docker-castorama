@@ -7,6 +7,7 @@ use App\Entity\OrderStatus;
 use App\Entity\Shop;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -25,20 +26,40 @@ class OrderRepository extends ServiceEntityRepository
         parent::__construct($registry, Order::class);
     }
 
-    public function findWithRelations(bool $isActive, ?User $user = null, ?int $page = null, ?string $search = null)
+    /**
+     * @param int $id
+     *
+     * @return Order|null
+     */
+    public function findOneWithRelations(int $id): Order | null
     {
-        $builder = $this->createQueryBuilder('o')
-            ->innerJoin('o.user', 'user')
-                ->addSelect('user')
-            ->innerJoin('user.shop', 'shop')
-                ->addSelect('shop')
-            ->innerJoin('o.status', 'status')
-                ->addSelect('status')
-            ->innerJoin('o.member', 'm')
-                ->addSelect('m')
+        return $this->getBaseQueryBuilder()
+            ->andWhere('o.id = :id')
+                ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult()
         ;
+    }
 
-        $this->setActiveFilter($builder, $isActive);
+    /**
+     * @param bool        $isActive
+     * @param bool        $isShopUser
+     * @param User|null   $user
+     * @param int|null    $page
+     * @param string|null $search
+     *
+     * @return Order[]|[]
+     */
+    public function findWithRelations(
+        bool $isActive,
+        bool $isShopUser,
+        ?User $user = null,
+        ?int $page = null,
+        ?string $search = null
+    ): array {
+        $builder = $this->getBaseQueryBuilder();
+
+        $this->setStatusFilter($builder, $isActive, $isShopUser);
 
         if (null!== $search) {
             $this->addSearchFilter($builder, $search);
@@ -59,21 +80,62 @@ class OrderRepository extends ServiceEntityRepository
         ;
     }
 
-    private function setActiveFilter(QueryBuilder $builder, bool $isActive): void
+    /**
+     * @return QueryBuilder
+     */
+    private function getBaseQueryBuilder(): QueryBuilder
     {
-        ($isActive) ? $builder->andWhere('status.label != :label') : $builder->andWhere('status.label = :label');
-
-        $builder->setParameter('label', OrderStatus::DELIVERED);
-    }
-
-    private function addUserFilter(QueryBuilder $builder, User $user)
-    {
-        $builder
-            ->andWhere('user.id = :id')
-            ->setParameter('id', $user->getId())
+        return $this->createQueryBuilder('o')
+            ->innerJoin('o.user', 'user')
+                ->addSelect('user')
+            ->innerJoin('user.shop', 'shop')
+                ->addSelect('shop')
+            ->innerJoin('o.status', 'status')
+                ->addSelect('status')
+            ->innerJoin('o.member', 'm')
+                ->addSelect('m')
         ;
     }
 
+    /**
+     * @param QueryBuilder $builder
+     * @param bool         $isActive
+     * @param bool         $isShopUser
+     */
+    private function setStatusFilter(QueryBuilder $builder, bool $isActive, bool $isShopUser): void
+    {
+        // active orders has all status except Delivered
+        ($isActive) ?
+            $builder->andWhere('status.label != :deliveredLabel') :
+            $builder->andWhere('status.label = :deliveredLabel')
+        ;
+
+        $builder->setParameter('deliveredLabel', OrderStatus::DELIVERED);
+
+        // Admin users (Customer & Company) don't have to see created orders in active orders list.
+        if (!$isShopUser && $isActive) {
+            $builder->andWhere('status.label != :createdLabel');
+
+            $builder->setParameter('createdLabel', OrderStatus::CREATED);
+        }
+    }
+
+    /**
+     * @param QueryBuilder $builder
+     * @param User|null    $user
+     */
+    private function addUserFilter(QueryBuilder $builder, ?User $user): void
+    {
+        $builder
+            ->andWhere('user.id = :id')
+                ->setParameter('id', $user->getId())
+        ;
+    }
+
+    /**
+     * @param QueryBuilder $builder
+     * @param int          $page
+     */
     private function setPagination(QueryBuilder $builder, int $page)
     {
         $firstResult = ( $page - 1 ) * self::ITEMS_PER_PAGES;
@@ -89,6 +151,7 @@ class OrderRepository extends ServiceEntityRepository
             ->andWhere('o.id LIKE :search')
             ->orWhere('o.customerReference LIKE :search')
             ->orWhere('o.title LIKE :search')
-                ->setParameter('search', '%' . $search . '%');
+                ->setParameter('search', '%' . $search . '%')
+        ;
     }
 }
