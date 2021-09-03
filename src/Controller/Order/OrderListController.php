@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Order;
 
 use App\Entity\OrderStatus;
 use App\Entity\User;
@@ -28,7 +28,7 @@ class OrderListController extends AbstractAppController
         $isActive = true;
         $isShop = $this->isShopUser();
         $shopUser = $this->getShopUser($shopUserFilter);
-        $orders = $this->orderRepository->findWithRelations($isActive, $shopUser);
+        $orders = $this->orderRepository->findWithRelations($isActive, $isShop, $shopUser);
 
         $templateData = [
             'orders' => $orders,
@@ -62,14 +62,14 @@ class OrderListController extends AbstractAppController
             $search = ($data !== '') ? $data : null;
         }
 
-        $orders = $this->orderRepository->findWithRelations($isActive, $shopUser, $page, $search);
+        $orders = $this->orderRepository->findWithRelations($isActive, $isShop, $shopUser, $page, $search);
 
         $countCriteria = ['status' => $orderStatusRepository->findOneBy(['label' => OrderStatus::DELIVERED])];
         if ($isShop) {
             $countCriteria['user'] = $shopUser;
         }
         $totalOrders = (null === $search) ? $this->orderRepository->count($countCriteria) : count($orders);
-        $count = intval($totalOrders / OrderRepository::ITEMS_PER_PAGES) + 1;
+        $count = ceil($totalOrders / OrderRepository::ITEMS_PER_PAGES);
 
         $templateData = [
             'orders' => $orders,
