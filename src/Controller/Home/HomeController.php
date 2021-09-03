@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Home;
 
 use App\Service\Controller\AbstractAppController;
 use Symfony\Component\HttpFoundation\Response;
