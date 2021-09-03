@@ -21,3 +21,8 @@ textarea {
 .sort:hover {
   cursor: pointer;
 }
+
+.table .data-list-item:hover {
+  cursor: pointer;
+  color: $primary;
+}
