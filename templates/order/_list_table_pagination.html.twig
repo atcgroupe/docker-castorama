@@ -3,23 +3,61 @@
         <nav aria-label="Page navigation example">
             <ul class="pagination">
                 <li class="page-item {% if page == 1 %}disabled{% endif %}">
-                    <a class="page-link" href="{{ path('orders_list_archives', {'page': 1}) }}">1</a>
+                    <a
+                            class="page-link"
+                            href="{{
+                                path('orders_list_archives',
+                                {
+                                    'shopUserFilter': shopUserFilter,
+                                    'page': 1
+                                })
+                            }}">
+                        1
+                    </a>
                 </li>
 
                 <li class="page-item {% if page == 1 %}disabled{% endif %}">
-                    <a class="page-link" href="{{ path('orders_list_archives', {'page': page - 1}) }}" aria-label="Previous">
+                    <a
+                            class="page-link"
+                            href="{{
+                                path('orders_list_archives',
+                                {
+                                    'shopUserFilter': shopUserFilter,
+                                    'page': page - 1
+                                })
+                            }}"
+                            aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
 
                 <li class="page-item {% if page == count %}disabled{% endif %}">
-                    <a class="page-link" href="{{ path('orders_list_archives', {'page': page + 1}) }}" aria-label="Next">
+                    <a
+                            class="page-link"
+                            href="{{
+                                path('orders_list_archives',
+                                {
+                                    'shopUserFilter': shopUserFilter,
+                                    'page': page + 1
+                                })
+                            }}"
+                            aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>
 
                 <li class="page-item {% if page == count %}disabled{% endif %}">
-                    <a class="page-link" href="{{ path('orders_list_archives', {'page': count}) }}">{{ count }}</a>
+                    <a
+                            class="page-link"
+                            href="{{
+                                path('orders_list_archives',
+                                {
+                                    'shopUserFilter': shopUserFilter,
+                                    'page': count
+                                })
+                            }}">
+                        {{ count }}
+                    </a>
                 </li>
             </ul>
         </nav>
