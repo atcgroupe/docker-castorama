@@ -1,0 +1,28 @@
+{% extends 'core/core.html.twig' %}
+
+{% block content %}
+    <div class="row justify-content-md-center">
+        <div class="col col-lg-6">
+            <h1 class="h2 fw-light text-center text-primary my-5">
+                Modifier les informations de la commande
+                <strong>n°{{ order.id }}</strong>
+            </h1>
+
+            {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+                {{ form_widget(form) }}
+
+                <div class="mt-5">
+                    <button type="submit" class="btn btn-lg btn-outline-primary w-100 shadow-sm">
+                        Enregistrer
+                    </button>
+                </div>
+
+            <a href="{{ path('orders_view', {'id': order.id}) }}" class="btn btn-outline-secondary w-100 my-3">
+                Annuler
+            </a>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
