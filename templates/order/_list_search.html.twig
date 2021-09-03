@@ -1,0 +1,29 @@
+{% if not isActive %}
+    <form
+            method="post"
+            action="{{ path('orders_list_archives', {'shopUserFilter': shopUserFilter, 'page': 1}) }}"
+            class="row justify-content-lg-center mt-5">
+        <div class="col-12 col-lg-6">
+            <input
+                    type="search"
+                    name="search"
+                    class="form-control form-control-lg"
+                    placeholder="Recherche..."
+                    value="{{ search }}"/>
+
+            <p class="small text-muted mt-2 text-center">
+                Tappez un N° de commande, un intitulé ou un n° DataMerch puis validez
+            </p>
+        </div>
+    </form>
+
+{% else %}
+    <div class="row justify-content-lg-center mt-5">
+        <div class="col-12 col-lg-6">
+            <input
+                    type="search"
+                    class="search form-control form-control-lg"
+                    placeholder="Tappez directement votre recherche..."/>
+        </div>
+    </div>
+{% endif %}

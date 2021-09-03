@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Event;
+use App\Entity\Order;
 use App\Entity\OrderStatus;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -13,18 +14,21 @@ class OrderStatusFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager)
     {
         $data = [
-            ['Envoyée', Event::ORDER_SENT],
-            ['Reçue', Event::ORDER_RECEIVED],
-            ['En cours de traitement', Event::ORDER_PROCESS],
-            ['Traitée', Event::ORDER_PROCESSED],
-            ['Expédiée', Event::ORDER_SHIPPED],
-            ['Livrée', Event::ORDER_DELIVERED],
+            [OrderStatus::CREATED, null],
+            [OrderStatus::SENT, Event::ORDER_SENT],
+            [OrderStatus::RECEIVED, Event::ORDER_RECEIVED],
+            [OrderStatus::PROCESSING, Event::ORDER_PROCESS],
+            [OrderStatus::PROCESSED, Event::ORDER_PROCESSED],
+            [OrderStatus::DELIVERY, Event::ORDER_SHIPPED],
+            [OrderStatus::DELIVERED, Event::ORDER_DELIVERED],
         ];
 
         foreach ($data as $entry) {
             $status = new OrderStatus();
             $status->setLabel($entry[0]);
-            $status->setEvent($this->getReference($entry[1]));
+            if ($entry[1] !== null) {
+                $status->setEvent($this->getReference($entry[1]));
+            }
 
             $manager->persist($status);
         }

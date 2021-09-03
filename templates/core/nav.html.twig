@@ -1,4 +1,4 @@
-<nav class="navbar sticky-lg-top navbar-expand-lg navbar-light bg-light mb-4 shadow-sm">
+<nav class="navbar sticky-lg-top navbar-expand-lg navbar-light bg-light mb-4 shadow">
     <div class="container app-core-container my-4">
         <button
                 class="navbar-toggler"
@@ -17,7 +17,9 @@
         <div class="collapse navbar-collapse" id="navbarToggler">
             <ul class="navbar-nav me-auto my-3 my-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="#">Commandes</a>
+                    <a class="nav-link" aria-current="page" href="{{ path('orders_list_active') }}">
+                        Commandes
+                    </a>
                 </li>
 
                 {% if is_granted('ROLE_COMPANY_ADMIN') %}

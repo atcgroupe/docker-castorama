@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\OrderRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=OrderRepository::class)
@@ -11,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Order
 {
+    private const DELIVERY_DELAY = 21;
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -20,6 +22,7 @@ class Order
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\NotBlank
      */
     private $title;
 
@@ -35,11 +38,13 @@ class Order
 
     /**
      * @ORM\Column(type="date", nullable=true)
+     * @Assert\Date(groups={"update_admin"})
      */
     private $deliveryDate;
 
     /**
      * @ORM\Column(type="string", length=20, nullable=true)
+     * @Assert\NotBlank(groups={"order_send"}, message="Le numéro DataMerch est obligatoire pour valider la commande")
      */
     private $customerReference;
 
@@ -60,6 +65,12 @@ class Order
      */
     private $status;
 
+    public function __construct()
+    {
+        $this->creationTime = new \DateTime('now');
+        $this->lastUpdateTime = new \DateTime('now');
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -70,7 +81,7 @@ class Order
         return $this->title;
     }
 
-    public function setTitle(string $title): self
+    public function setTitle(?string $title): self
     {
         $this->title = $title;
 
@@ -111,6 +122,26 @@ class Order
         $this->deliveryDate = $deliveryDate;
 
         return $this;
+    }
+
+    /**
+     * @return \DateTimeInterface
+     */
+    public function getCalculatedDeliveryDate(): \DateTimeInterface
+    {
+        $now = new \DateTime('now');
+        $date = $now->modify(sprintf('+%s day', self::DELIVERY_DELAY));
+
+        switch($date->format('N')) {
+            case '6':
+                $date->modify('+2 day');
+                break;
+            case '7':
+                $date->modify('+1 day');
+                break;
+        }
+
+        return $date;
     }
 
     public function getCustomerReference(): ?string

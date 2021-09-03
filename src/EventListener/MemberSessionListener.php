@@ -2,7 +2,7 @@
 
 namespace App\EventListener;
 
-use App\Controller\MemberController;
+use App\Controller\Member\MemberController;
 use App\Service\Member\MemberSessionHandler;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\RequestEvent;

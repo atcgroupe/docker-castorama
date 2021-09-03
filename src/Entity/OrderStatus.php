@@ -10,6 +10,14 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class OrderStatus
 {
+    public const CREATED = 'Création';
+    public const SENT = 'Envoyée';
+    public const RECEIVED = 'Reçue';
+    public const PROCESSING = 'En cours de traitement';
+    public const PROCESSED = 'Traitée';
+    public const DELIVERY = 'Expédiée';
+    public const DELIVERED = 'Livrée';
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -24,7 +32,6 @@ class OrderStatus
 
     /**
      * @ORM\OneToOne(targetEntity=Event::class, cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
      */
     private $event;
 

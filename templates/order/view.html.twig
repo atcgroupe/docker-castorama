@@ -1,0 +1,108 @@
+{% extends 'core/core.html.twig' %}
+
+{% block content %}
+    <div class="d-flex justify-content-between align-items-center my-3">
+        <div>
+            <a href="{{ app.session.get('referer') }}">Retour à la liste</a>
+        </div>
+
+        <div>
+            {% if is_granted('SEND', order) %}
+                <a href="{{ path('orders_send', {'id': order.id}) }}" class="btn btn-primary">
+                    Valider la commande
+                </a>
+            {% endif %}
+
+            {% if is_granted('DELETE', order) %}
+                <a href="{{ path('orders_delete', {'id': order.id}) }}" class="btn btn-danger">
+                    Supprimer la commande
+                </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <hr class="mb-5 mt-2"/>
+
+    <div class="row gx-5">
+        <div class="col-12 col-lg-6">
+            <h1 class="h2 text-primary fw-light mb-1">Commande n° {{ order.id }}</h1>
+
+            <h2 class="h5 fw-light text-primary mb-4">{{ order.title }}</h2>
+
+            <p class="lead">
+                Numéro DataMerch:
+                {% if order.customerReference %}
+                    <strong class="text-primary">{{ order.customerReference }}</strong>
+                {% else %}
+                    <i class="text-muted">Non défini</i>
+                {% endif %}
+
+                {% if not is_granted('ROLE_CUSTOMER_SHOP') %}
+                    <br>
+                    Magasin: <strong class="text-primary">{{ order.user.userIdentifier }}</strong>
+                {% endif %}
+            </p>
+
+            {% if is_granted('UPDATE_INFO', order) %}
+                <a
+                        href="{{ path('orders_update', {'element': 'info', 'id': order.id}) }}"
+                        class="btn btn-outline-primary mt-3">
+                    Modifier les infos
+                </a>
+            {% endif %}
+        </div>
+
+        <div class="col-12 col-lg-6">
+            <p class="lead">
+                Statut de la commande: <strong class="text-primary">{{ order.status.label }}</strong><br>
+
+                Date de livraison prévue:
+                {% if order.deliveryDate %}
+                    <strong class="text-primary">{{ order.deliveryDate|date('d/m/Y') }}</strong>
+                {% else %}
+                    <i class="text-muted">Non définie</i>
+                {% endif %}
+            </p>
+
+            Créée par: <strong class="text-primary">{{ order.member.name }}</strong><br>
+
+            Date de création:
+            <strong class="text-primary">{{ order.creationTime|date('d/m/Y à H:m') }}</strong><br>
+
+            Date de dernière modification:
+            <strong class="text-primary">{{ order.lastUpdateTime|date('d/m/Y à H:m') }}</strong>
+
+            {% if is_granted('ROLE_COMPANY_ADMIN') %}
+                <p class="mt-4">
+                    <a
+                            href="{{ path('orders_update', {'element': 'status', 'id': order.id}) }}"
+                            class="btn btn-outline-primary me-2">
+                        Modifier le statut
+                    </a>
+
+                    {% if is_granted('UPDATE_DELIVERY_DATE', order) %}
+                        <a
+                                href="{{ path('orders_update', {'element': 'delivery', 'id': order.id}) }}"
+                                class="btn btn-outline-primary">
+                            Modifier la date de livraison
+                        </a>
+                    {% endif %}
+                </p>
+            {% endif %}
+        </div>
+
+        <hr class="my-5"/>
+
+        <h1 class="h2 fw-light text-primary text-center">Liste des panneaux</h1>
+
+        <p class="text-center text-lg-end mt-4">
+            <a href="#" class="btn btn-outline-primary">Ajouter un panneau</a>
+
+            <a href="#" class="btn btn-outline-secondary">Imprimer la liste</a>
+        </p>
+
+        <div class="alert alert-info lead text-center my-5" role="alert">
+            Cette commande ne contient aucun panneau pour l'instant.
+        </div>
+    </div>
+{% endblock %}

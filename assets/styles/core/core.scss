@@ -2,7 +2,6 @@
     App global styles
 */
 
-
 /* Main app container */
 .app-core-container {
   max-width: 1120px;
@@ -16,4 +15,14 @@ a:link, a:visited {
 /* textarea */
 textarea {
   resize: none;
+}
+
+/* datatable */
+.sort:hover {
+  cursor: pointer;
+}
+
+.table .data-list-item:hover {
+  cursor: pointer;
+  color: $primary;
 }

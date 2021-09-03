@@ -1,0 +1,64 @@
+{% extends 'core/core.html.twig' %}
+
+{% block content %}
+    <div class="row justify-content-md-center">
+        <div class="col col-lg-6">
+            <h1 class="h2 fw-light text-center mt-5">
+                Confirmation d'envoi<br>
+                commande n°{{ order.id }}
+            </h1>
+
+            <h2 class="h5 fw-light text-primary text-center mt-3 mb-5">{{ order.title }}</h2>
+
+            {% if resume is null %}
+                <div class="alert alert-warning" role="alert">
+                    La commande ne peut pas être validée car elle ne contient aucun panneau.
+                </div>
+
+                <div class="mt-3 text-center">
+                    <a
+                            href="{{ path('orders_view', {'id': order.id}) }}"
+                            class="btn btn-lg btn-outline-secondary mt-3 w-75">
+                        Retour
+                    </a>
+                </div>
+
+            {% else %}
+                <hr />
+
+                <h3 class="h4 fw-light text-primary my-4">Résumé de la commande</h3>
+
+                <p class="lead my-3">
+                    {% for title, count in resume %}
+                        {{ title }} : <strong class="text-primary">{{ count }} Exemplaires</strong><br />
+                    {% endfor %}
+                </p>
+
+                <p class="lead">
+                    Date de livraison estimée:
+                    <strong class="text-primary">{{ order.calculatedDeliveryDate|date('d/m/Y') }}</strong>
+                </p>
+
+                <hr class="mt-4 mb-5" />
+
+                {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+                    {{ form_row(form.customerReference, {'attr': {'autofocus': true}}) }}
+
+                    <div class="mt-5">
+                        <button type="submit" class="btn btn-lg btn-outline-primary w-100">
+                            Confirmer l'envoi de la commande
+                        </button>
+
+                        <a
+                                href="{{ path('orders_view', {'id': order.id}) }}"
+                                class="btn btn-outline-secondary w-100 mt-3">
+                            Annuler
+                        </a>
+                    </div>
+
+                {{ form_end(form) }}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

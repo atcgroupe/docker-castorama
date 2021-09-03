@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Home;
 
 use App\Service\Controller\AbstractAppController;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,6 +11,6 @@ class HomeController extends AbstractAppController
     #[Route('/', name: 'home')]
     public function home(): Response
     {
-        return $this->render('home/home.html.twig');
+        return $this->redirectToRoute('orders_list_active');
     }
 }
