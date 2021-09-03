@@ -16,6 +16,17 @@ if (dataListTable !== null) {
 /* Shop user filter */
 const select = document.getElementById('app-shop-user');
 
-select.addEventListener('change', () => {
-    window.location.href = select.options[select.selectedIndex].dataset.route;
+if (select !== null) {
+    select.addEventListener('change', () => {
+        window.location.href = select.options[select.selectedIndex].dataset.route;
+    });
+}
+
+/* Table edit link */
+const tableItems = document.getElementsByClassName('data-list-item');
+
+Array.from(tableItems).forEach((element) => {
+    element.addEventListener('click', () => {
+        window.location.href = element.dataset.route;
+    })
 });
