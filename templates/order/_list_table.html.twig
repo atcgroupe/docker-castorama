@@ -17,14 +17,12 @@
                 <th scope="col" class="sort" data-sort="delivery">Livraison</th>
 
                 <th scope="col" class="sort" data-sort="status">Statut</th>
-
-                <th scope="col" class="text-center" style="width: 180px">Options</th>
             </tr>
         </thead>
 
         <tbody class="list">
             {% for order in orders %}
-                <tr>
+                <tr class="data-list-item" data-route="{{ path('orders_view', {'id': order.id}) }}">
                     <td class="number text-center">{{ order.id }}</td>
 
                     <td class="customerReference">
@@ -52,12 +50,6 @@
                     </td>
 
                     <td class="status">{{ order.status.label }}</td>
-
-                    <td class="text-end">
-                        <a href="#" class="btn btn-sm btn-outline-primary me-2">Editer</a>
-
-                        <a href="#" class="btn btn-sm btn-outline-danger">Supprimer</a>
-                    </td>
                 </tr>
             {% endfor %}
         </tbody>
