@@ -10,6 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class SectorOrderSign extends AbstractOrderSign
 {
+    private const TYPE = 'sector';
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -56,5 +58,13 @@ class SectorOrderSign extends AbstractOrderSign
         $this->itemTwo = $itemTwo;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getType(): string
+    {
+        return self::TYPE;
     }
 }

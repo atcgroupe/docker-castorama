@@ -4,13 +4,22 @@ namespace App\Entity;
 
 use App\Repository\AisleOrderSignRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=AisleOrderSignRepository::class)
+ * @ORM\HasLifecycleCallbacks()
+ * @UniqueEntity(
+ *     fields={"order", "aisleNumber"},
+ *     errorPath="aisleNumber",
+ *     message="Un panneau allée avec ce numéro existe déjà dans cette commande"
+ * )
  */
 class AisleOrderSign extends AbstractOrderSign
 {
+    private const TYPE = 'aisle';
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -73,7 +82,6 @@ class AisleOrderSign extends AbstractOrderSign
     public function setItem1(?SignItem $item1): self
     {
         $this->item1 = $item1;
-        $this->setCategory1(($this->getItem1() !== null) ? $this->getItem1()->getCategory() : null);
 
         return $this;
     }
@@ -86,7 +94,6 @@ class AisleOrderSign extends AbstractOrderSign
     public function setItem2(?SignItem $item2): self
     {
         $this->item2 = $item2;
-        $this->setCategory2(($this->getItem2() !== null) ? $this->getItem2()->getCategory() : null);
 
         return $this;
     }
@@ -99,9 +106,26 @@ class AisleOrderSign extends AbstractOrderSign
     public function setItem3(?SignItem $item3): self
     {
         $this->item3 = $item3;
-        $this->setCategory3(($this->getItem3() !== null) ? $this->getItem3()->getCategory() : null);
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getType(): string
+    {
+        return self::TYPE;
+    }
+
+    /**
+     * @ORM\PostLoad()
+     */
+    public function initializeCategories()
+    {
+        $this->setCategory1(($this->getItem1() !== null) ? $this->getItem1()->getCategory() : null);
+        $this->setCategory2(($this->getItem2() !== null) ? $this->getItem2()->getCategory() : null);
+        $this->setCategory3(($this->getItem3() !== null) ? $this->getItem3()->getCategory() : null);
     }
 
     /**
@@ -150,5 +174,59 @@ class AisleOrderSign extends AbstractOrderSign
     public function setCategory3(?SignItemCategory $category3): void
     {
         $this->category3 = $category3;
+    }
+
+    /**
+     * @return string
+     */
+    public function getItem1Image(): string
+    {
+        $image = (null === $this->getItem1()) ? 'empty' : $this->getItem1()->getImage();
+
+        return sprintf('/build/images/sign/sign/aisle/picto/%s.svg', $image);
+    }
+
+    /**
+     * @return string
+     */
+    public function getItem2Image(): string
+    {
+        $image = (null === $this->getItem2()) ? 'empty' : $this->getItem2()->getImage();
+
+        return sprintf('/build/images/sign/sign/aisle/picto/%s.svg', $image);
+    }
+
+    /**
+     * @return string
+     */
+    public function getItem3Image(): string
+    {
+        $image = (null === $this->getItem3()) ? 'empty' : $this->getItem3()->getImage();
+
+        return sprintf('/build/images/sign/sign/aisle/picto/%s.svg', $image);
+    }
+
+    /**
+     * @return string
+     */
+    public function getItem1Label(): string
+    {
+        return (null === $this->getItem1()) ? '' : $this->getItem1()->getLabel();
+    }
+
+    /**
+     * @return string
+     */
+    public function getItem2Label(): string
+    {
+        return (null === $this->getItem2()) ? '' : $this->getItem2()->getLabel();
+    }
+
+    /**
+     * @return string
+     */
+    public function getItem3Label(): string
+    {
+        return (null === $this->getItem3()) ? '' : $this->getItem3()->getLabel();
     }
 }
