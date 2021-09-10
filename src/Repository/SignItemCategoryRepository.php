@@ -19,32 +19,20 @@ class SignItemCategoryRepository extends ServiceEntityRepository
         parent::__construct($registry, SignItemCategory::class);
     }
 
-    // /**
-    //  * @return SignItemCategory[] Returns an array of SignItemCategory objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @param string $class
+     *
+     * @return SignItemCategory[]
+     */
+    public function findBySignClass(string $class): array
     {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('s.id', 'ASC')
-            ->setMaxResults(10)
+        return $this->createQueryBuilder('signItemCategory')
+            ->leftJoin('signItemCategory.sign', 'sign')
+            ->andWhere('sign.class = :class')
+                ->setParameter('class', $class)
+            ->orderBy('signItemCategory.id', 'ASC')
             ->getQuery()
             ->getResult()
         ;
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?SignItemCategory
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }
