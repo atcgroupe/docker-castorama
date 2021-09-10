@@ -24,7 +24,7 @@ class SignFixtures extends Fixture
         $data = [
             [
                 self::CLASS_NAME => AisleOrderSign::class,
-                self::TYPE => 'aisle',
+                self::TYPE => AisleOrderSign::getType(),
                 self::IMAGE => 'aisle_order_sign.jpg',
                 self::TITLE => 'Panneau allée',
                 self::DESCRIPTION => 'Format: 800x500mm<br>Impression: Recto/Verso<br>Matière: PVC 5MM',
@@ -34,7 +34,7 @@ class SignFixtures extends Fixture
             ],
             [
                 self::CLASS_NAME => SectorOrderSign::class,
-                self::TYPE => 'sector',
+                self::TYPE => SectorOrderSign::getType(),
                 self::IMAGE => 'sector_order_sign.jpg',
                 self::TITLE => 'Panneau secteur',
                 self::DESCRIPTION => 'Format: 1600x500mm<br>Impression: Recto/Verso<br>Matière: PVC 10MM',
