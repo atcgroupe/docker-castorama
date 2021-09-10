@@ -65,7 +65,7 @@ class OrderController extends AbstractAppController
             $this->requestStack->getSession()->set('referer', $referer);
         }
 
-        return $this->render('order/view.html.twig', ['order' => $order, 'signs' => $signs]);
+        return $this->render('order/view.html.twig', ['order' => $order, 'orderSigns' => $signs]);
     }
 
     #[Route(
