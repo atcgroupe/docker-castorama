@@ -2,16 +2,17 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\AisleOrderSign;
 use App\Entity\SignItemCategory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class SignItemCategoryFixtures extends Fixture
+class SignItemCategoryFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
         $data = [
-            'Sélectionnez une catégorie',
             'BOIS & MENUISERIE',
             'CHAUFFAGE',
             'CUISINE',
@@ -35,11 +36,19 @@ class SignItemCategoryFixtures extends Fixture
 
             $category->setLabel($entry);
             $category->setIsActive(true);
+            $category->setSign($this->getReference(AisleOrderSign::class));
 
             $manager->persist($category);
             $this->setReference($entry, $category);
         }
 
         $manager->flush();
+    }
+
+    public function getDependencies(): array
+    {
+        return [
+            SignFixtures::class,
+        ];
     }
 }
