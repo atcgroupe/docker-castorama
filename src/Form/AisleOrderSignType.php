@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -32,6 +33,25 @@ class AisleOrderSignType extends AbstractType
         $builder
             ->add('aisleNumber', TextType::class, ['label' => 'Numéro d\'allée'])
             ->add('quantity', NumberType::class, ['label' => 'Quantité', 'attr' => ['autofocus' => true]])
+            ->add(
+                'save',
+                SubmitType::class,
+                [
+                    'label' => 'Enregistrer',
+                    'attr' => [
+                        'class' => 'btn btn-lg btn-outline-primary w-100 my-2'
+                    ]
+                ]
+            )->add(
+                'saveAndNew',
+                SubmitType::class,
+                [
+                    'label' => 'Enregistrer & nouveau',
+                    'attr' => [
+                        'class' => 'btn btn-lg btn-outline-primary w-100 mb-4'
+                    ]
+                ]
+            )
         ;
 
         $this->formCategoryModifier($builder, 1);
@@ -116,7 +136,7 @@ class AisleOrderSignType extends AbstractType
             },
             'attr' => [
                 'class' => self::ITEM_SELECT,
-                'data-route' => $this->urlGenerator->generate('order_sign_aisle_item_image'),
+                'data-route' => $this->urlGenerator->generate('order_sign_aisle_item_info'),
                 'data-item' => $itemNumber,
             ],
         ];
