@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<sign>
+    <orderId>{{ orderId }}</orderId>
+    <signId>{{ sign.id }}</signId>
+    <signBuilder>AisleSignBuilder</signBuilder>
+    <quantity>{{ sign.quantity }}</quantity>
+    <data>{"aisleNumber":"{{ sign.aisle }}","textLineOne":"{{ sign.itemOne.label }}","textLineTwo":"{{ sign.itemTwo.label }}","textLineThree":"{{ sign.itemThree.label }}","picto1":"{{ sign.itemOne.pictoImage }}","picto2":"{{ sign.itemTwo.pictoImage }}","picto3":"{{ sign.itemThree.pictoImage }}"}</data>
+</sign>
