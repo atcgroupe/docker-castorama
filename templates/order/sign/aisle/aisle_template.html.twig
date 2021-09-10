@@ -1,4 +1,4 @@
-<div id="{{ id }}" class="aisle {{ face }} {{ scale }}">
+<div id="{{ id }}" class="aisle {{ face }} {{ scale }} {% if class is defined %}{{ class }}{% endif %}">
     <div class="number {{ face }}"><span class="aisle-number-value">{{ number }}</span></div>
     <div class="picto picto1 {{ face }}">
         <img
