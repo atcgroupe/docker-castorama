@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\MappedSuperclass()
@@ -11,6 +12,8 @@ abstract class AbstractOrderSign implements OrderSignInterface
 {
     /**
      * @ORM\Column(type="smallint")
+     * @Assert\NotBlank
+     * @Assert\Positive
      */
     protected $quantity;
 
