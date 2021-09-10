@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row mb-5 pt-5">
             <div class="col">
-                <h3 class="text-primary mb-3">Nouveau panneau allée</h3>
+                <h3 class="text-primary mb-3">Panneau allée</h3>
 
                 {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 
@@ -42,9 +42,9 @@
                     </div>
 
                     <div class="mb-4">
-                        <button class="btn btn-outline-primary w-100 my-3" type="submit">Enregistrer</button>
+                        {{ form_widget(form.save) }}
 
-                        <button class="btn btn-outline-primary w-100 mb-3" type="submit">Enregistrer & nouveau</button>
+                        {{ form_widget(form.saveAndNew) }}
 
                         <a href="{{ path('orders_view', {'id': orderId}) }}" class="btn btn-outline-secondary w-100">
                             Retour à la commande
