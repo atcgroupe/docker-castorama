@@ -22,7 +22,7 @@ class OrderSignHelper
     {
         $signs = [];
         foreach ($this->getSignsTypes() as $type) {
-            $elements = $this->manager->getRepository($type->getClass())->findBy(['order' => $order]);
+            $elements = $this->manager->getRepository($type->getClass())->findByOrderWithRelations($order);
             if (!empty($elements)) {
                 $signs[$type->getTitle()] = $elements;
             }
