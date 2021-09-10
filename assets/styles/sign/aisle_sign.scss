@@ -1,0 +1,132 @@
+// Aisle sign
+@font-face {
+  font-family: "Casto";
+  src: url("../../font/Casto-Bold.otf");
+  font-weight: 800;
+}
+
+@font-face {
+  font-family: "Casto";
+  src: url("../../font/Casto-Regular.otf");
+  font-weight: 400;
+}
+
+:root {
+  --sign-scale: 1.8;
+}
+
+.aisle {
+  &.medium {
+    --sign-scale: 1.8;
+  }
+
+  &.small {
+    --sign-scale: 0.7;
+  }
+
+  width: calc(var(--sign-scale) * 80mm);
+  height: calc(var(--sign-scale) * 50mm);
+  position: relative;
+  background-repeat: no-repeat;
+  background-size: calc(var(--sign-scale) * 80mm) calc(var(--sign-scale) * 50mm);
+
+  &.recto {
+    background-image: url("../../images/sign/sign/aisle/aisle-bg-recto.svg");
+  }
+
+  &.verso {
+    background-image: url("../../images/sign/sign/aisle/aisle-bg-verso.svg");
+  }
+
+  .number {
+    position: absolute;
+    top: calc(var(--sign-scale) * 5.8mm);
+    width: calc(var(--sign-scale) * 20mm);
+    height: calc(var(--sign-scale) * 11.2mm);
+    text-align: center;
+
+    &.recto {
+      left: calc(var(--sign-scale) * 6mm);
+    }
+
+    &.verso {
+      right: calc(var(--sign-scale) * 6mm);
+    }
+
+    span {
+      font-family: Casto;
+      font-weight: 800;
+      font-size: calc(var(--sign-scale) * 38pt);
+      line-height: calc(var(--sign-scale) * 38pt);
+      color: white;
+    }
+  }
+
+  .picto {
+    position: absolute;
+    top: calc(var(--sign-scale) * 5mm);
+
+    img {
+      width: calc(var(--sign-scale) * 13mm);
+      height: calc(var(--sign-scale) * 13mm);
+    }
+
+    &.picto1 {
+      &.recto {
+        left: calc(var(--sign-scale) * 30.5mm);
+      }
+
+      &.verso {
+        right: calc(var(--sign-scale) * 30.5mm);
+      }
+    }
+
+    &.picto2 {
+      &.recto {
+        left: calc(var(--sign-scale) * 46.25mm);
+      }
+
+      &.verso {
+        right: calc(var(--sign-scale) * 46.25mm);
+      }
+    }
+
+    &.picto3 {
+      &.recto {
+        left: calc(var(--sign-scale) * 62mm);
+      }
+
+      &.verso {
+        right: calc(var(--sign-scale) * 62mm);
+      }
+    }
+  }
+
+  .text-recto-container {
+    position: absolute;
+    top: calc(var(--sign-scale) * 28.25mm);
+    left: calc(var(--sign-scale) * 5mm);
+    width: calc(var(--sign-scale) * 70mm);
+    height: calc(var(--sign-scale) * 16.5mm);
+    display: flex;
+    align-items: center;
+
+    &.rectp {
+      justify-content: start;
+    }
+
+    &.verso {
+      justify-content: end;
+      text-align: end;
+    }
+
+    div {
+      width: 100%;
+      font-family: Casto;
+      font-size: calc(var(--sign-scale) * 15pt);
+      font-weight: 800;
+      line-height: calc(var(--sign-scale) * 18pt);
+      color: white;
+    }
+  }
+}
