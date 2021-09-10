@@ -23,6 +23,12 @@ abstract class AbstractOrderSign implements OrderSignInterface
      */
     protected $order;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Sign::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    protected $sign;
+
     public function getQuantity(): ?int
     {
         return $this->quantity;
@@ -43,6 +49,18 @@ abstract class AbstractOrderSign implements OrderSignInterface
     public function setOrder(?Order $order): self
     {
         $this->order = $order;
+
+        return $this;
+    }
+
+    public function getSign(): ?Sign
+    {
+        return $this->sign;
+    }
+
+    public function setSign(?Sign $sign): self
+    {
+        $this->sign = $sign;
 
         return $this;
     }
