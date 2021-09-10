@@ -23,6 +23,7 @@ Encore
     .addEntry('app', './assets/app.js')
     .addEntry('adminShopList', './assets/scripts/admin/shop_list.js')
     .addEntry('orderList', './assets/scripts/order/order_list.js')
+    .addEntry('aisleSignEdit', './assets/scripts/sign/aisle_sign.js')
 
     .copyFiles({
         from: './assets/images',
