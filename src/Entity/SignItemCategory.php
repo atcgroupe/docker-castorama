@@ -34,6 +34,11 @@ class SignItemCategory
      */
     private $signItems;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Sign::class)
+     */
+    private $sign;
+
     public function __construct()
     {
         $this->signItems = new ArrayCollection();
@@ -94,6 +99,18 @@ class SignItemCategory
                 $signItem->setCategory(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSign(): ?Sign
+    {
+        return $this->sign;
+    }
+
+    public function setSign(?Sign $sign): self
+    {
+        $this->sign = $sign;
 
         return $this;
     }
