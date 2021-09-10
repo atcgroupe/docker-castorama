@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\AisleOrderSign;
+use App\Entity\Order;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -12,39 +13,32 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method AisleOrderSign[]    findAll()
  * @method AisleOrderSign[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class AisleOrderSignRepository extends ServiceEntityRepository
+class AisleOrderSignRepository extends ServiceEntityRepository implements OrderSignRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, AisleOrderSign::class);
     }
 
-    // /**
-    //  * @return AisleOrderSign[] Returns an array of AisleOrderSign objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @param Order $order
+     *
+     * @return AisleOrderSign[]
+     */
+    public function findByOrderWithRelations(Order $order): array
     {
         return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('a.id', 'ASC')
-            ->setMaxResults(10)
+            ->innerJoin('a.item1', 'item1')
+                ->addSelect('item1')
+            ->leftJoin('a.item2', 'item2')
+                ->addSelect('item2')
+            ->leftJoin('a.item3', 'item3')
+                ->addSelect('item3')
+            ->andWhere('a.order = :order')
+                ->setParameter('order', $order)
+            ->orderBy('a.aisleNumber', 'ASC')
             ->getQuery()
             ->getResult()
         ;
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?AisleOrderSign
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }
