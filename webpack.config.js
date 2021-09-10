@@ -24,6 +24,7 @@ Encore
     .addEntry('adminShopList', './assets/scripts/admin/shop_list.js')
     .addEntry('orderList', './assets/scripts/order/order_list.js')
     .addEntry('aisleSignEdit', './assets/scripts/sign/aisle_sign.js')
+    .addEntry('signQuantity', './assets/scripts/sign/sign_quantity.js')
 
     .copyFiles({
         from: './assets/images',
