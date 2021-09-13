@@ -35,19 +35,19 @@ class AisleOrderSign extends AbstractOrderSign
     private $aisleNumber;
 
     /**
-     * @ORM\ManyToOne(targetEntity=SignItem::class)
+     * @ORM\ManyToOne(targetEntity=AisleSignItem::class)
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotBlank(message="Merci de sélectionner au moins un produit.")
      */
     private $item1;
 
     /**
-     * @ORM\ManyToOne(targetEntity=SignItem::class)
+     * @ORM\ManyToOne(targetEntity=AisleSignItem::class)
      */
     private $item2;
 
     /**
-     * @ORM\ManyToOne(targetEntity=SignItem::class)
+     * @ORM\ManyToOne(targetEntity=AisleSignItem::class)
      */
     private $item3;
 
@@ -74,36 +74,36 @@ class AisleOrderSign extends AbstractOrderSign
         return $this;
     }
 
-    public function getItem1(): ?SignItem
+    public function getItem1(): ?AisleSignItem
     {
         return $this->item1;
     }
 
-    public function setItem1(?SignItem $item1): self
+    public function setItem1(?AisleSignItem $item1): self
     {
         $this->item1 = $item1;
 
         return $this;
     }
 
-    public function getItem2(): ?SignItem
+    public function getItem2(): ?AisleSignItem
     {
         return $this->item2;
     }
 
-    public function setItem2(?SignItem $item2): self
+    public function setItem2(?AisleSignItem $item2): self
     {
         $this->item2 = $item2;
 
         return $this;
     }
 
-    public function getItem3(): ?SignItem
+    public function getItem3(): ?AisleSignItem
     {
         return $this->item3;
     }
 
-    public function setItem3(?SignItem $item3): self
+    public function setItem3(?AisleSignItem $item3): self
     {
         $this->item3 = $item3;
 
@@ -129,49 +129,49 @@ class AisleOrderSign extends AbstractOrderSign
     }
 
     /**
-     * @return SignItemCategory|null
+     * @return AisleSignItemCategory|null
      */
-    public function getCategory1(): ?SignItemCategory
+    public function getCategory1(): ?AisleSignItemCategory
     {
         return $this->category1;
     }
 
     /**
-     * @param SignItemCategory|null $category1
+     * @param AisleSignItemCategory|null $category1
      */
-    public function setCategory1(?SignItemCategory $category1): void
+    public function setCategory1(?AisleSignItemCategory $category1): void
     {
         $this->category1 = $category1;
     }
 
     /**
-     * @return SignItemCategory|null
+     * @return AisleSignItemCategory|null
      */
-    public function getCategory2(): ?SignItemCategory
+    public function getCategory2(): ?AisleSignItemCategory
     {
         return $this->category2;
     }
 
     /**
-     * @param SignItemCategory|null $category2
+     * @param AisleSignItemCategory|null $category2
      */
-    public function setCategory2(?SignItemCategory $category2): void
+    public function setCategory2(?AisleSignItemCategory $category2): void
     {
         $this->category2 = $category2;
     }
 
     /**
-     * @return SignItemCategory|null
+     * @return AisleSignItemCategory|null
      */
-    public function getCategory3(): ?SignItemCategory
+    public function getCategory3(): ?AisleSignItemCategory
     {
         return $this->category3;
     }
 
     /**
-     * @param SignItemCategory|null $category3
+     * @param AisleSignItemCategory|null $category3
      */
-    public function setCategory3(?SignItemCategory $category3): void
+    public function setCategory3(?AisleSignItemCategory $category3): void
     {
         $this->category3 = $category3;
     }

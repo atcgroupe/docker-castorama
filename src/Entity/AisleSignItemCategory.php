@@ -2,15 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\SignItemCategoryRepository;
+use App\Repository\AisleSignItemCategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=SignItemCategoryRepository::class)
+ * @ORM\Entity(repositoryClass=AisleSignItemCategoryRepository::class)
  */
-class SignItemCategory
+class AisleSignItemCategory
 {
     /**
      * @ORM\Id
@@ -30,7 +30,7 @@ class SignItemCategory
     private $isActive;
 
     /**
-     * @ORM\OneToMany(targetEntity=SignItem::class, mappedBy="category")
+     * @ORM\OneToMany(targetEntity=AisleSignItem::class, mappedBy="category")
      */
     private $signItems;
 
@@ -74,14 +74,14 @@ class SignItemCategory
     }
 
     /**
-     * @return Collection|SignItem[]
+     * @return Collection|AisleSignItem[]
      */
     public function getSignItems(): Collection
     {
         return $this->signItems;
     }
 
-    public function addSignItem(SignItem $signItem): self
+    public function addSignItem(AisleSignItem $signItem): self
     {
         if (!$this->signItems->contains($signItem)) {
             $this->signItems[] = $signItem;
@@ -91,7 +91,7 @@ class SignItemCategory
         return $this;
     }
 
-    public function removeSignItem(SignItem $signItem): self
+    public function removeSignItem(AisleSignItem $signItem): self
     {
         if ($this->signItems->removeElement($signItem)) {
             // set the owning side to null (unless already changed)

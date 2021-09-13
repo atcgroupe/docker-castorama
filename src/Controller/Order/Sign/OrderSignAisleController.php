@@ -3,11 +3,11 @@
 namespace App\Controller\Order\Sign;
 
 use App\Entity\AisleOrderSign;
-use App\Entity\SignItem;
+use App\Entity\AisleSignItem;
 use App\Form\AisleOrderSignType;
 use App\Repository\AisleOrderSignRepository;
 use App\Repository\OrderRepository;
-use App\Repository\SignItemRepository;
+use App\Repository\AisleSignItemRepository;
 use App\Service\Alert\Alert;
 use App\Service\Controller\AbstractAppController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -51,7 +51,7 @@ class OrderSignAisleController extends AbstractAppController
     }
 
     #[Route('/sign/aisle/edit/itemsList', name: '_select_item')]
-    public function setSignItemsFromCategory(Request $request, SignItemRepository $itemRepository): JsonResponse
+    public function setSignItemsFromCategory(Request $request, AisleSignItemRepository $itemRepository): JsonResponse
     {
         $categoryId = $request->request->get('category');
         $items = $itemRepository->findBy(['category' => $categoryId]);
@@ -69,12 +69,12 @@ class OrderSignAisleController extends AbstractAppController
     }
 
     #[Route('/sign/aisle/edit/itemInfo', name: '_item_info')]
-    public function getSignItemData(Request $request, SignItemRepository $itemRepository): JsonResponse
+    public function getSignItemData(Request $request, AisleSignItemRepository $itemRepository): JsonResponse
     {
         $itemId = $request->request->get('itemId');
         $item = ($itemId !== '') ?
             $itemRepository->find($itemId) :
-            (new SignItem())->setImage('empty')->setLabel('')
+            (new AisleSignItem())->setImage('empty')->setLabel('')
         ;
 
         return new JsonResponse(

@@ -3,8 +3,8 @@
 namespace App\Form;
 
 use App\Entity\AisleOrderSign;
-use App\Entity\SignItem;
-use App\Entity\SignItemCategory;
+use App\Entity\AisleSignItem;
+use App\Entity\AisleSignItemCategory;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -106,7 +106,7 @@ class AisleOrderSignType extends AbstractType
             'category' . $categoryNumber,
             EntityType::class,
             [
-                'class' => SignItemCategory::class,
+                'class' => AisleSignItemCategory::class,
                 'choice_label' => 'label',
                 'placeholder' => 'Choisissez une catégorie',
                 'attr' => [
@@ -126,7 +126,7 @@ class AisleOrderSignType extends AbstractType
     private function formItemModifier(FormInterface $form, int $itemNumber, $category)
     {
         $options = [
-            'class' => SignItem::class,
+            'class' => AisleSignItem::class,
             'choice_label' => 'label',
             'placeholder' => '',
             'query_builder' => function (EntityRepository $repository) use ($category) {

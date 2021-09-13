@@ -3,12 +3,12 @@
 namespace App\DataFixtures;
 
 use App\Entity\AisleOrderSign;
-use App\Entity\SignItemCategory;
+use App\Entity\AisleSignItemCategory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class SignItemCategoryFixtures extends Fixture implements DependentFixtureInterface
+class AisleSignItemCategoryFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
@@ -32,7 +32,7 @@ class SignItemCategoryFixtures extends Fixture implements DependentFixtureInterf
         ];
 
         foreach ($data as $entry) {
-            $category = new SignItemCategory();
+            $category = new AisleSignItemCategory();
 
             $category->setLabel($entry);
             $category->setIsActive(true);
