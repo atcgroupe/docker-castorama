@@ -20,42 +20,42 @@ class SectorOrderSign extends AbstractOrderSign
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=SignItem::class)
+     * @ORM\ManyToOne(targetEntity=SectorSignItem::class)
      * @ORM\JoinColumn(nullable=false)
      */
-    private $itemOne;
+    private $item1;
 
     /**
-     * @ORM\ManyToOne(targetEntity=SignItem::class)
+     * @ORM\ManyToOne(targetEntity=SectorSignItem::class)
      * @ORM\JoinColumn(nullable=false)
      */
-    private $itemTwo;
+    private $item2;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getItemOne(): ?SignItem
+    public function getItem1(): ?SectorSignItem
     {
-        return $this->itemOne;
+        return $this->item1;
     }
 
-    public function setItemOne(?SignItem $itemOne): self
+    public function setItem1(?SectorSignItem $item1): self
     {
-        $this->itemOne = $itemOne;
+        $this->item1 = $item1;
 
         return $this;
     }
 
-    public function getItemTwo(): ?SignItem
+    public function getItem2(): ?SectorSignItem
     {
-        return $this->itemTwo;
+        return $this->item2;
     }
 
-    public function setItemTwo(?SignItem $itemTwo): self
+    public function setItem2(?SectorSignItem $item2): self
     {
-        $this->itemTwo = $itemTwo;
+        $this->item2 = $item2;
 
         return $this;
     }
