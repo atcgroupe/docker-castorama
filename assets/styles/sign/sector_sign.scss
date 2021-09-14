@@ -1,0 +1,31 @@
+.sector {
+  &.medium {
+    --sign-scale: 1;
+  }
+
+  &.small {
+    --sign-scale: 0.4;
+  }
+
+  width: calc(var(--sign-scale) * 160mm);
+  height: calc(var(--sign-scale) * 50mm);
+  position: relative;
+  background-repeat: no-repeat;
+  background-size: calc(var(--sign-scale) * 160mm) calc(var(--sign-scale) * 50mm);
+
+  &.grey {
+    background-image: url("../../images/sign/sign/sector/sector-bg-grey.svg");
+  }
+
+  &.blue {
+    background-image: url("../../images/sign/sign/sector/sector-bg-blue.svg");
+  }
+
+  .sector-text {
+    font-family: Casto;
+    font-weight: 800;
+    font-size: calc(var(--sign-scale) * 40pt);
+    line-height: calc(var(--sign-scale) * 40pt);
+    color: white;
+  }
+}
