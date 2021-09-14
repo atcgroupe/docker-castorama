@@ -25,7 +25,7 @@ class SectorOrderSignRepository extends ServiceEntityRepository implements Order
         return $this->createQueryBuilder('s')
             ->innerJoin('s.item1', 'item1')
                 ->addSelect('item1')
-            ->innerJoin('s.item2', 'item2')
+            ->leftJoin('s.item2', 'item2')
                 ->addSelect('item2')
             ->andWhere('s.order = :order')
                 ->setParameter('order', $order)
