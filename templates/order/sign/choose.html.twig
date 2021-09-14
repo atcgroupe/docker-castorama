@@ -14,7 +14,7 @@
 
                         <p class="card-text">{{ sign.description|raw }}</p>
 
-                        <a href="{{ path(sign.createRoute, {'orderId': orderId}) }}" class="btn btn-primary">
+                        <a href="{{ path('order_sign_create', {'orderId': orderId, 'signType': sign.type}) }}" class="btn btn-primary">
                             Sélectionner
                         </a>
                     </div>
