@@ -1,0 +1,75 @@
+{% extends 'core/core.html.twig' %}
+
+{% block content %}
+    <div class="container">
+        <div class="row mb-5 pt-5">
+            <div class="col">
+                <h3 class="text-primary mb-3">Panneau secteur</h3>
+
+                {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+                    {{ form_row(form.quantity) }}
+
+                    <h4 class="mt-4 mb-3">Personnalisation</h4>
+
+                    {{ form_widget(form.option) }}
+
+                    {{ form_row(form.item1) }}
+
+                    <div id="sector-item2-container">
+                        {{ form_row(form.item2) }}
+                    </div>
+
+                    <div class="mt-5 mb-4">
+                        {{ form_widget(form.save) }}
+
+                        {{ form_widget(form.saveAndNew) }}
+
+                        <a href="{{ path('orders_view', {'id': orderId}) }}" class="btn btn-outline-secondary w-100">
+                            Retour à la commande
+                        </a>
+                    </div>
+
+                {{ form_end(form) }}
+            </div>
+            <div class="col">
+                <div id="preview-recto-container">
+                    <h5 id="preview-recto-title" class="text-primary">Recto</h5>
+
+                    <div>
+                        {% include 'order/sign/sector/template.html.twig' with
+                            {
+                                'id': 1,
+                                'face': 'recto',
+                                'scale': 'medium',
+                                'color': 'grey',
+                                'text': ''
+                            }
+                        %}
+                    </div>
+                </div>
+
+                <div id="preview-verso-container">
+                    <h5 class="mt-3 text-primary">Verso</h5>
+
+                    <div>
+                        {% include 'order/sign/sector/template.html.twig' with
+                            {
+                                'id': 1,
+                                'face': 'verso',
+                                'scale': 'medium',
+                                'color': 'grey',
+                                'text': ''
+                            }
+                        %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {{ encore_entry_script_tags('sectorSignEdit') }}
+{% endblock %}
