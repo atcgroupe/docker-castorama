@@ -75,8 +75,6 @@ export const AisleSignHelper = {
     setSelectItemsFromCategory: (categorySelect) => {
         const value = categorySelect.value;
 
-        if (value === '') return;
-
         const itemSelect = document.getElementById(categorySelect.dataset.cible);
         const route = categorySelect.dataset.route;
         const form = new FormData();
@@ -89,6 +87,9 @@ export const AisleSignHelper = {
             return response.json();
         }).then(function (data) {
             FormHelper.setSelectOptions(itemSelect, data);
+            AisleSignHelper.setItemsSelectsStatusFromParent();
+            AisleSignHelper.setPreviewText()
+            AisleSignHelper.setPreviewImages(itemSelect);
         });
     }
 }
