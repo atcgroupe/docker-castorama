@@ -4,9 +4,12 @@ namespace App\Entity;
 
 use App\Repository\SectorOrderSignRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity(repositoryClass=SectorOrderSignRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
 class SectorOrderSign extends AbstractOrderSign
 {
@@ -19,21 +22,47 @@ class SectorOrderSign extends AbstractOrderSign
      */
     private $id;
 
+    private $option;
+
     /**
      * @ORM\ManyToOne(targetEntity=SectorSignItem::class)
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank
      */
     private $item1;
 
     /**
      * @ORM\ManyToOne(targetEntity=SectorSignItem::class)
-     * @ORM\JoinColumn(nullable=false)
      */
     private $item2;
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    /**
+     * @ORM\PostLoad()
+     */
+    public function initializeOption()
+    {
+        $this->option = $this->getItem2() === null ? 1 : 2;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOption()
+    {
+        return $this->option;
+    }
+
+    /**
+     * @param mixed $option
+     */
+    public function setOption($option): void
+    {
+        $this->option = $option;
     }
 
     public function getItem1(): ?SectorSignItem
@@ -66,5 +95,17 @@ class SectorOrderSign extends AbstractOrderSign
     public static function getType(): string
     {
         return self::TYPE;
+    }
+
+    /**
+     * @Assert\Callback
+     */
+    public function validate(ExecutionContextInterface $context, $payload)
+    {
+        if ($this->option === 2 && $this->item2 === null) {
+            $context->buildViolation('Cette valeur ne doit pas être vide.')
+                ->atPath('item2')
+                ->addViolation();
+        }
     }
 }
