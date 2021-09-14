@@ -18,7 +18,7 @@
                     {% for sign in signs %}
                         <div class="row mb-3 align-items-center">
                             <div class="col d-flex justify-content-center">
-                                {% include 'order/_view_' ~ sign.type ~ '_signs.html.twig' with {'sign': sign} %}
+                                {% include 'order/_view_' ~ sign.type ~ '_sign.html.twig' with {'sign': sign} %}
                             </div>
 
                             <div class="col">
@@ -37,8 +37,8 @@
                                                         class="form-control sign-quantity"
                                                         name="quantity"
                                                         data-route="{{
-                                                            path('order_sign_' ~ sign.type ~ '_update_quantity',
-                                                            {'id': sign.id})
+                                                            path('order_sign_update_quantity',
+                                                            {'id': sign.id, 'signType': sign.type})
                                                         }}"
                                                         value="{{ sign.quantity }}"/>
                                             </div>
@@ -47,13 +47,13 @@
 
                                     <div class="col text-end">
                                         <a
-                                                href="{{ path('order_sign_' ~ sign.type ~ '_update', {'id': sign.id}) }}"
+                                                href="{{ path('order_sign_update', {'id': sign.id, 'signType': sign.type}) }}"
                                                 class="btn btn-outline-primary">
                                             Modifier
                                         </a>
 
                                         <a
-                                                href="{{ path('order_sign_' ~ sign.type ~ '_delete', {'id': sign.id}) }}"
+                                                href="{{ path('order_sign_delete', {'id': sign.id, 'signType': sign.type}) }}"
                                                 class="btn btn-outline-danger">
                                             Supprimer
                                         </a>
