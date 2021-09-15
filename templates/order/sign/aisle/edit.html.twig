@@ -25,20 +25,24 @@
                         {{ form_errors(form.item1) }}
                     </div>
 
-                    <div class="mb-4">
+                    <div id="aisle-item2-container" class="item-container mb-4">
                         <h4>Ligne n°2</h4>
 
                         {{ form_widget(form.category2) }}
 
                         {{ form_widget(form.item2) }}
+
+                        {{ form_row(form.hideItem2Image) }}
                     </div>
 
-                    <div class="mb-4">
+                    <div id="aisle-item3-container" class="item-container mb-4">
                         <h4>Ligne n°3</h4>
 
                         {{ form_widget(form.category3) }}
 
                         {{ form_widget(form.item3) }}
+
+                        {{ form_row(form.hideItem3Image) }}
                     </div>
 
                     <div class="mb-4">
