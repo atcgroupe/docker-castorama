@@ -86,6 +86,16 @@ class Member
         return $this->name;
     }
 
+    public function getDisplayName(): string
+    {
+        $suffix = '';
+        if (null !== $this->getUser() && $this->getUser()->getRoles() === [User::ROLE_CUSTOMER_ADMIN]) {
+            $suffix = ' (Siège)';
+        }
+
+        return $this->getName() . $suffix;
+    }
+
     public function setName(string $name): self
     {
         $this->name = $name;

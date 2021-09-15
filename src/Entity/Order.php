@@ -65,6 +65,11 @@ class Order
      */
     private $status;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $comment;
+
     public function __construct()
     {
         $this->creationTime = new \DateTime('now');
@@ -188,6 +193,18 @@ class Order
     public function setStatus(?OrderStatus $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getComment(): ?string
+    {
+        return $this->comment;
+    }
+
+    public function setComment(?string $comment): self
+    {
+        $this->comment = $comment;
 
         return $this;
     }

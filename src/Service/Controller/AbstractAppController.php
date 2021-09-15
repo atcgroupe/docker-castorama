@@ -46,4 +46,15 @@ abstract class AbstractAppController extends AbstractController
     {
         return $this->isGranted(User::ROLE_CUSTOMER_SHOP);
     }
+
+    /**
+     * @return bool
+     */
+    protected function isCustomerUser(): bool
+    {
+        return
+            $this->isGranted(User::ROLE_CUSTOMER_SHOP) ||
+            $this->isGranted(User::ROLE_CUSTOMER_ADMIN)
+        ;
+    }
 }

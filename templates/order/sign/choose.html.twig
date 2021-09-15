@@ -12,7 +12,10 @@
                     <div class="card-body">
                         <h5 class="card-title">{{ sign.title }}</h5>
 
-                        <p class="card-text">{{ sign.description|raw }}</p>
+                        <p class="card-text">
+                            {{ sign.description|raw }}<br>
+                            Prix: {{ sign.price|format_number({fraction_digit: 2}) }}€
+                        </p>
 
                         <a href="{{ path('order_sign_create', {'orderId': orderId, 'signType': sign.type}) }}" class="btn btn-primary">
                             Sélectionner

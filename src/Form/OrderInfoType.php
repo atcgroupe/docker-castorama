@@ -21,7 +21,6 @@ class OrderInfoType extends AbstractType
                     'attr' => ['autofocus' => true]
                 ]
             )
-            ->add('customerReference', TextType::class, ['label' => 'Numéro DataMerch.'])
         ;
     }
 

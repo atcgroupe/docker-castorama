@@ -21,7 +21,9 @@ class OrderRegistrationListener
 
     public function prePersist(Order $order, LifecycleEventArgs $args)
     {
-        $order->setUser($this->security->getUser());
+        if (null === $order->getUser()) {
+            $order->setUser($this->security->getUser());
+        }
 
         $memberSession = $this->memberSessionHandler->get();
         $order->setMember(

@@ -3,6 +3,7 @@
 namespace App\Controller\Order;
 
 use App\Entity\Order;
+use App\Entity\OrderStatus;
 use App\Entity\User;
 use App\Form\OrderSendType;
 use App\Form\OrderUpdateDeliveryType;
@@ -13,6 +14,7 @@ use App\Repository\OrderRepository;
 use App\Security\Voter\OrderVoter;
 use App\Service\Alert\Alert;
 use App\Service\Controller\AbstractAppController;
+use App\Service\Order\OrderHelper;
 use App\Service\Order\OrderSignHelper;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -58,6 +60,7 @@ class OrderController extends AbstractAppController
     public function view(int $id, Request $request): Response
     {
         $order = $this->orderRepository->findOneWithRelations($id);
+        $resume = $this->signHelper->getOrderSignsResume($order);
         $signs = $this->signHelper->findOrderSigns($order);
 
         $referer = $request->headers->get('referer');
@@ -65,7 +68,7 @@ class OrderController extends AbstractAppController
             $this->requestStack->getSession()->set('referer', $referer);
         }
 
-        return $this->render('order/view.html.twig', ['order' => $order, 'orderSigns' => $signs]);
+        return $this->render('order/view.html.twig', ['order' => $order, 'orderSigns' => $signs, 'resume' => $resume]);
     }
 
     #[Route(
@@ -88,7 +91,7 @@ class OrderController extends AbstractAppController
                 break;
             case 'info':
                 $form = $this->createForm(OrderInfoType::class, $order);
-                $this->denyAccessUnlessGranted(User::ROLE_CUSTOMER_SHOP);
+                $this->denyAccessUnlessGranted(OrderVoter::UPDATE_INFO, $order);
                 break;
             default:
                 $this->dispatchAlert(Alert::WARNING, 'Un problème est survenu lors de la modification');
@@ -133,7 +136,7 @@ class OrderController extends AbstractAppController
     }
 
     #[Route('/{id}/send', name: '_send')]
-    public function send(int $id, Request $request): Response
+    public function send(int $id, Request $request, OrderHelper $orderHelper): Response
     {
         $order = $this->orderRepository->findOneWithRelations($id);
         $resume = $this->signHelper->getOrderSignsResume($order);
@@ -141,6 +144,7 @@ class OrderController extends AbstractAppController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $orderHelper->setOrderStatus($order, OrderStatus::SENT);
             $this->getDoctrine()->getManager()->flush();
 
             $this->dispatchAlert(Alert::SUCCESS, 'La commande a été envoyée avec succès.');

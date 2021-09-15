@@ -241,7 +241,7 @@ class AisleOrderSign extends AbstractOrderSign
      */
     public function getItem3Image(): string
     {
-        $image = (null === $this->getItem3() || $this->getHideItem2Image()) ? 'empty' : $this->getItem3()->getImage();
+        $image = (null === $this->getItem3() || $this->getHideItem3Image()) ? 'empty' : $this->getItem3()->getImage();
 
         return sprintf('/build/images/sign/sign/aisle/picto/%s.svg', $image);
     }

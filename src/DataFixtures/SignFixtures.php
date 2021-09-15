@@ -18,6 +18,7 @@ class SignFixtures extends Fixture
     private const BUILDER = 'builder';
     private const TEMPLATE = 'template';
     private const TYPE = 'type';
+    private const PRICE = 'price';
 
     public function load(ObjectManager $manager)
     {
@@ -31,6 +32,7 @@ class SignFixtures extends Fixture
                 self::WEIGHT => 0.50,
                 self::BUILDER => 'AisleSignBuilder',
                 self::TEMPLATE => 'AisleSignTemplate',
+                self::PRICE => 11.30,
             ],
             [
                 self::CLASS_NAME => SectorOrderSign::class,
@@ -41,6 +43,7 @@ class SignFixtures extends Fixture
                 self::WEIGHT => 1.50,
                 self::BUILDER => 'SectorSignBuilder',
                 self::TEMPLATE => 'SectorSignTemplate',
+                self::PRICE => 26.40,
             ]
         ];
 
@@ -56,6 +59,7 @@ class SignFixtures extends Fixture
             $sign->setSwitchFlowBuilder($entry[self::BUILDER]);
             $sign->setSwitchFlowTemplateFile($entry[self::TEMPLATE]);
             $sign->setIsActive(true);
+            $sign->setPrice($entry[self::PRICE]);
 
             $manager->persist($sign);
 
