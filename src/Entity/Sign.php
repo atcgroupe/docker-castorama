@@ -62,6 +62,11 @@ class Sign
      */
     private $type;
 
+    /**
+     * @ORM\Column(type="decimal", precision=5, scale=2)
+     */
+    private $price;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -186,5 +191,17 @@ class Sign
     public function getCreateRoute(): string
     {
         return sprintf('order_sign_%s_create', $this->type);
+    }
+
+    public function getPrice(): ?float
+    {
+        return $this->price;
+    }
+
+    public function setPrice(float $price): self
+    {
+        $this->price = $price;
+
+        return $this;
     }
 }
