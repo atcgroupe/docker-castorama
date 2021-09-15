@@ -1,8 +1,10 @@
 import {AisleSignHelper} from "./aisle_sign_helper";
+import $ from 'jquery';
 
 const aisleNumberInput = document.getElementById('aisle_order_sign_aisleNumber');
 const itemCategoriesSelects = document.getElementsByClassName('item_category_select');
 const itemsSelects = document.getElementsByClassName('item_select');
+const itemsCheckboxes = document.getElementsByClassName('item_checkbox');
 
 document.addEventListener("DOMContentLoaded", function(event) {
     // Preset data
@@ -30,6 +32,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
             AisleSignHelper.setItemsSelectsStatusFromParent();
             AisleSignHelper.setPreviewImages(itemSelect);
             AisleSignHelper.setPreviewText();
+        });
+    });
+
+    Array.from(itemsCheckboxes).forEach((checkbox) => {
+        checkbox.addEventListener('change', () => {
+            AisleSignHelper.setPreviewImages($(checkbox).closest('.item-container').find('.item_select')[0]);
         });
     });
 });

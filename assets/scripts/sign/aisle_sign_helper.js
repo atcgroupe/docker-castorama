@@ -1,4 +1,5 @@
 import {FormHelper} from "../app/form_helper";
+import $ from 'jquery';
 
 export const AisleSignHelper = {
     SetPreviewNumbers: (value) => {
@@ -28,10 +29,11 @@ export const AisleSignHelper = {
         });
     },
     setPreviewImages: (itemSelect) => {
+        const checkbox = $(itemSelect).closest('.item-container').find('input[type="checkbox"]');
         const route = itemSelect.dataset.route;
         const form = new FormData();
-        form.append('itemId', itemSelect.value)
-
+        form.append('itemId', itemSelect.value);
+        form.append('hideImage', checkbox.is(':checked'));
         fetch(route, {
             method: 'POST',
             body: form
@@ -46,7 +48,7 @@ export const AisleSignHelper = {
             });
         });
     },
-    setItemSelectsAttributes: (dataSelect, targetItemSelect, targetCategorySelect) => {
+    setItemSelectsAttributes: (dataSelect, targetItemSelect, targetCategorySelect, targetCheckbox) => {
         const option = dataSelect.options[dataSelect.selectedIndex];
 
         if (typeof option === 'undefined' || option.text === '') {
@@ -55,9 +57,12 @@ export const AisleSignHelper = {
             targetItemSelect.setAttribute('disabled', 'disabled');
             targetItemSelect.value = '';
             targetItemSelect.text = '';
+            targetCheckbox.setAttribute('disabled', 'disabled');
+            targetCheckbox.removeAttribute('checked');
         } else {
             targetCategorySelect.removeAttribute('disabled');
             targetItemSelect.removeAttribute('disabled');
+            targetCheckbox.removeAttribute('disabled');
         }
     },
     setItemsSelectsStatusFromParent: () => {
@@ -66,15 +71,16 @@ export const AisleSignHelper = {
         const itemThreeSelect = document.getElementById('aisle_order_sign_item3');
         const categoryTwoSelect = document.getElementById(`aisle_order_sign_category2`);
         const categoryThreeSelect = document.getElementById(`aisle_order_sign_category3`);
+        const itemTwoCheckbox = document.getElementById(`aisle_order_sign_hideItem2Image`);
+        const itemThreeCheckbox = document.getElementById(`aisle_order_sign_hideItem3Image`);
 
-        AisleSignHelper.setItemSelectsAttributes(itemOneSelect, itemTwoSelect, categoryTwoSelect);
-        AisleSignHelper.setItemSelectsAttributes(itemTwoSelect, itemThreeSelect, categoryThreeSelect);
+        AisleSignHelper.setItemSelectsAttributes(itemOneSelect, itemTwoSelect, categoryTwoSelect, itemTwoCheckbox);
+        AisleSignHelper.setItemSelectsAttributes(itemTwoSelect, itemThreeSelect, categoryThreeSelect, itemThreeCheckbox);
         AisleSignHelper.setPreviewImages(itemTwoSelect);
         AisleSignHelper.setPreviewImages(itemThreeSelect);
     },
     setSelectItemsFromCategory: (categorySelect) => {
         const value = categorySelect.value;
-
         const itemSelect = document.getElementById(categorySelect.dataset.cible);
         const route = categorySelect.dataset.route;
         const form = new FormData();
