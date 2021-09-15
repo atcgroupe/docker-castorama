@@ -3,6 +3,7 @@
 namespace App\Controller\Order;
 
 use App\Entity\Order;
+use App\Entity\OrderStatus;
 use App\Entity\User;
 use App\Form\OrderSendType;
 use App\Form\OrderUpdateDeliveryType;
@@ -13,6 +14,7 @@ use App\Repository\OrderRepository;
 use App\Security\Voter\OrderVoter;
 use App\Service\Alert\Alert;
 use App\Service\Controller\AbstractAppController;
+use App\Service\Order\OrderHelper;
 use App\Service\Order\OrderSignHelper;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -133,14 +135,14 @@ class OrderController extends AbstractAppController
     }
 
     #[Route('/{id}/send', name: '_send')]
-    public function send(int $id, Request $request): Response
+    public function send(int $id, Request $request, OrderHelper $orderHelper): Response
     {
         $order = $this->orderRepository->findOneWithRelations($id);
         $resume = $this->signHelper->getOrderSignsResume($order);
         $form = $this->createForm(OrderSendType::class, $order);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
+            $orderHelper->setOrderStatus($order, OrderStatus::SENT);
             $this->getDoctrine()->getManager()->flush();
 
             $this->dispatchAlert(Alert::SUCCESS, 'La commande a été envoyée avec succès.');
