@@ -28,7 +28,7 @@ class OrderListController extends AbstractAppController
         $isActive = true;
         $isShop = $this->isShopUser();
         $shopUser = $this->getShopUser($shopUserFilter);
-        $orders = $this->orderRepository->findWithRelations($isActive, $isShop, $shopUser);
+        $orders = $this->orderRepository->findWithRelations($isActive, $this->isCustomerUser(), $shopUser);
 
         $templateData = [
             'orders' => $orders,
