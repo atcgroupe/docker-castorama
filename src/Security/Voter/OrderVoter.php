@@ -16,6 +16,7 @@ class OrderVoter extends Voter
     public const SEND = 'SEND';
     public const UPDATE_DELIVERY_DATE = 'UPDATE_DELIVERY_DATE';
     public const UPDATE_INFO = 'UPDATE_INFO';
+    public const UPDATE_SIGN = 'UPDATE_SIGN';
 
     public function __construct(
         private Security $security,
@@ -24,8 +25,16 @@ class OrderVoter extends Voter
 
     protected function supports(string $attribute, $subject): bool
     {
-        return in_array($attribute, [self::DELETE, self::SEND, self::UPDATE_DELIVERY_DATE, self::UPDATE_INFO])
-            && $subject instanceof Order;
+        return in_array(
+            $attribute,
+            [
+                self::DELETE,
+                self::SEND,
+                self::UPDATE_DELIVERY_DATE,
+                self::UPDATE_INFO,
+                self::UPDATE_SIGN,
+            ]
+        ) && $subject instanceof Order;
     }
 
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
@@ -40,6 +49,7 @@ class OrderVoter extends Voter
             self::SEND => $this->canSend($subject),
             self::UPDATE_DELIVERY_DATE => $this->canUpdateDeliveryDate($subject),
             self::UPDATE_INFO => $this->canUpdateInfo($subject),
+            self::UPDATE_SIGN => $this->canUpdateSign($subject),
             default => false
         };
     }
@@ -94,5 +104,15 @@ class OrderVoter extends Voter
         return
             $this->security->isGranted('ROLE_CUSTOMER_SHOP') &&
             $order->getStatus()->getLabel() !== OrderStatus::DELIVERED;
+    }
+
+    private function canUpdateSign(Order $order): bool
+    {
+        return
+            (
+                $this->security->isGranted('ROLE_CUSTOMER_SHOP') ||
+                $this->security->isGranted('ROLE_CUSTOMER_ADMIN')
+            )
+            && $order->getStatus()->getLabel() === OrderStatus::CREATED;
     }
 }
