@@ -4,11 +4,13 @@
     <h1 class="fw-light my-5 text-center">Liste des commandes</h1>
 
     <div class="text-center text-md-end my-5">
-        {% if isShop %}
-                <a href="{{ path('orders_create') }}" class="btn btn-lg btn-outline-primary">
-                    Ajouter une nouvelle commande
-                </a>
-        {% else %}
+        {% if is_granted('ORDER_CREATE') %}
+            <a href="{{ path('orders_create') }}" class="btn btn-lg btn-outline-primary mb-5">
+                Ajouter une nouvelle commande
+            </a>
+        {% endif %}
+
+        {% if is_granted('ROLE_CUSTOMER_ADMIN') or is_granted('ROLE_COMPANY_ADMIN')  %}
             <select id="app-shop-user" class="form-select" aria-label="Default select example">
                 <option
                         value="all"

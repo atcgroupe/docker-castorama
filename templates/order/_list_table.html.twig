@@ -12,7 +12,7 @@
                     <th scope="col" class="sort" data-sort="shop">Magasin</th>
                 {% endif %}
 
-                <th scope="col" class="sort" data-sort="member">Membre</th>
+                <th scope="col" class="sort" data-sort="member">Créée par</th>
 
                 <th scope="col" class="sort" data-sort="delivery">Livraison</th>
 
@@ -39,7 +39,7 @@
                         <td class="shop">{{ order.user.userIdentifier }}</td>
                     {% endif %}
 
-                    <td class="member">{{ order.member.name }}</td>
+                    <td class="member">{{ order.member.displayName }}</td>
 
                     <td class="delivery">
                         {% if order.deliveryDate %}
