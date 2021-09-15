@@ -12,6 +12,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class OrderVoter extends Voter
 {
+    public const CREATE = 'ORDER_CREATE';
     public const DELETE = 'DELETE';
     public const SEND = 'SEND';
     public const UPDATE_DELIVERY_DATE = 'UPDATE_DELIVERY_DATE';
@@ -25,6 +26,10 @@ class OrderVoter extends Voter
 
     protected function supports(string $attribute, $subject): bool
     {
+        if ($attribute === self::CREATE) {
+            return true;
+        }
+
         return in_array(
             $attribute,
             [
@@ -45,6 +50,7 @@ class OrderVoter extends Voter
         }
 
         return match ($attribute) {
+            self::CREATE => $this->canCreate(),
             self::DELETE => $this->canDelete($subject),
             self::SEND => $this->canSend($subject),
             self::UPDATE_DELIVERY_DATE => $this->canUpdateDeliveryDate($subject),
@@ -52,6 +58,14 @@ class OrderVoter extends Voter
             self::UPDATE_SIGN => $this->canUpdateSign($subject),
             default => false
         };
+    }
+
+    private function canCreate(): bool
+    {
+        return
+            $this->security->isGranted('ROLE_CUSTOMER_ADMIN') ||
+            $this->security->isGranted('ROLE_CUSTOMER_SHOP')
+        ;
     }
 
     /**
@@ -66,8 +80,11 @@ class OrderVoter extends Voter
         }
 
         if (
-            $order->getStatus()->getLabel() === OrderStatus::CREATED &&
-            $this->security->isGranted(User::ROLE_CUSTOMER_SHOP)
+            (
+                $this->security->isGranted(User::ROLE_CUSTOMER_SHOP) ||
+                $this->security->isGranted('ROLE_CUSTOMER_ADMIN')
+            )
+            && $order->getStatus()->getLabel() === OrderStatus::CREATED
         ) {
             return true;
         }
@@ -83,8 +100,12 @@ class OrderVoter extends Voter
     private function canSend(Order $order): bool
     {
         return
-            $this->security->isGranted(User::ROLE_CUSTOMER_SHOP) &&
-            $order->getStatus()->getLabel() === OrderStatus::CREATED;
+            (
+                $this->security->isGranted(User::ROLE_CUSTOMER_SHOP) ||
+                $this->security->isGranted('ROLE_CUSTOMER_ADMIN')
+            )
+            && $order->getStatus()->getLabel() === OrderStatus::CREATED
+        ;
     }
 
     /**
@@ -96,14 +117,19 @@ class OrderVoter extends Voter
     {
         return
             $this->security->isGranted('ROLE_COMPANY_ADMIN') &&
-            $order->getStatus()->getLabel() !== OrderStatus::DELIVERED;
+            $order->getStatus()->getLabel() !== OrderStatus::DELIVERED
+        ;
     }
 
     public function canUpdateInfo(Order $order): bool
     {
         return
-            $this->security->isGranted('ROLE_CUSTOMER_SHOP') &&
-            $order->getStatus()->getLabel() !== OrderStatus::DELIVERED;
+            (
+                $this->security->isGranted('ROLE_CUSTOMER_SHOP') ||
+                $this->security->isGranted('ROLE_CUSTOMER_ADMIN')
+            )
+            && $order->getStatus()->getLabel() !== OrderStatus::DELIVERED
+        ;
     }
 
     private function canUpdateSign(Order $order): bool
@@ -113,6 +139,7 @@ class OrderVoter extends Voter
                 $this->security->isGranted('ROLE_CUSTOMER_SHOP') ||
                 $this->security->isGranted('ROLE_CUSTOMER_ADMIN')
             )
-            && $order->getStatus()->getLabel() === OrderStatus::CREATED;
+            && $order->getStatus()->getLabel() === OrderStatus::CREATED
+        ;
     }
 }
