@@ -34,7 +34,9 @@ class AisleOrderSignController extends AbstractAppController
     public function getSignItemData(Request $request, AisleSignItemRepository $itemRepository): JsonResponse
     {
         $itemId = $request->request->get('itemId');
-        $item = ($itemId !== '') ?
+        $hideImage = $request->request->get('hideImage') === 'true';
+
+        $item = ($itemId !== '' && !$hideImage) ?
             $itemRepository->find($itemId) :
             (new AisleSignItem())->setImage('empty')->setLabel('')
         ;
