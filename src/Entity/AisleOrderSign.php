@@ -51,11 +51,27 @@ class AisleOrderSign extends AbstractOrderSign
      */
     private $item3;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $hideItem2Image;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $hideItem3Image;
+
     private $category1;
 
     private $category2;
 
     private $category3;
+
+    public function __construct()
+    {
+        $this->setHideItem2Image(false);
+        $this->setHideItem3Image(false);
+    }
 
     public function getId(): ?int
     {
@@ -116,6 +132,30 @@ class AisleOrderSign extends AbstractOrderSign
     public static function getType(): string
     {
         return self::TYPE;
+    }
+
+    public function getHideItem2Image(): ?bool
+    {
+        return $this->hideItem2Image;
+    }
+
+    public function setHideItem2Image(bool $hideItem2Image): self
+    {
+        $this->hideItem2Image = $hideItem2Image;
+
+        return $this;
+    }
+
+    public function getHideItem3Image(): ?bool
+    {
+        return $this->hideItem3Image;
+    }
+
+    public function setHideItem3Image(bool $hideItem3Image): self
+    {
+        $this->hideItem3Image = $hideItem3Image;
+
+        return $this;
     }
 
     /**
@@ -191,7 +231,7 @@ class AisleOrderSign extends AbstractOrderSign
      */
     public function getItem2Image(): string
     {
-        $image = (null === $this->getItem2()) ? 'empty' : $this->getItem2()->getImage();
+        $image = (null === $this->getItem2() || $this->getHideItem2Image()) ? 'empty' : $this->getItem2()->getImage();
 
         return sprintf('/build/images/sign/sign/aisle/picto/%s.svg', $image);
     }
@@ -201,7 +241,7 @@ class AisleOrderSign extends AbstractOrderSign
      */
     public function getItem3Image(): string
     {
-        $image = (null === $this->getItem3()) ? 'empty' : $this->getItem3()->getImage();
+        $image = (null === $this->getItem3() || $this->getHideItem2Image()) ? 'empty' : $this->getItem3()->getImage();
 
         return sprintf('/build/images/sign/sign/aisle/picto/%s.svg', $image);
     }
