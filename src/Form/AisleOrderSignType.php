@@ -8,6 +8,7 @@ use App\Entity\AisleSignItemCategory;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -22,6 +23,7 @@ class AisleOrderSignType extends AbstractType
 {
     private const ITEM_CATEGORY_SELECT = 'item_category_select';
     private const ITEM_SELECT = 'item_select';
+    private const ITEM_CHECKBOX = 'item_checkbox';
 
     public function __construct(
         private UrlGeneratorInterface $urlGenerator,
@@ -34,6 +36,24 @@ class AisleOrderSignType extends AbstractType
             ->add('aisleNumber', TextType::class, ['label' => 'Numéro d\'allée'])
             ->add('quantity', NumberType::class, ['label' => 'Quantité', 'attr' => ['autofocus' => true]])
             ->add(
+                'hideItem2Image',
+                CheckboxType::class,
+                [
+                    'label' => 'Masquer le pictogramme',
+                    'attr' => [
+                        'class' => self::ITEM_CHECKBOX,
+                    ],
+                ]
+            )->add(
+                'hideItem3Image',
+                CheckboxType::class,
+                [
+                    'label' => 'Masquer le pictogramme',
+                    'attr' => [
+                        'class' => self::ITEM_CHECKBOX,
+                    ],
+                ]
+            )->add(
                 'save',
                 SubmitType::class,
                 [
@@ -135,7 +155,7 @@ class AisleOrderSignType extends AbstractType
                     ->setParameter('category', $category);
             },
             'attr' => [
-                'class' => self::ITEM_SELECT,
+                'class' => self::ITEM_SELECT . ' mb-1',
                 'data-route' => $this->urlGenerator->generate('order_sign_aisle_item_info'),
                 'data-item' => $itemNumber,
             ],
