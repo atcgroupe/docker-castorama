@@ -45,7 +45,7 @@
                 <a
                         href="{{ path('orders_update', {'element': 'info', 'id': order.id}) }}"
                         class="btn btn-outline-primary mt-3">
-                    Modifier les infos
+                    Modifier l'intitulé de la commande
                 </a>
             {% endif %}
         </div>
@@ -93,9 +93,11 @@
     <h1 class="h2 fw-light text-primary text-center">Liste des panneaux</h1>
 
     <p class="text-center text-lg-end mt-4">
-        <a href="{{ path('order_sign_choose', {'orderId': order.id}) }}" class="btn btn-outline-primary">
-            Ajouter un panneau
-        </a>
+        {% if is_granted('UPDATE_SIGN', order) %}
+            <a href="{{ path('order_sign_choose', {'orderId': order.id}) }}" class="btn btn-outline-primary">
+                Ajouter un panneau
+            </a>
+        {% endif %}
 
         <a href="#" class="btn btn-outline-secondary">Imprimer la liste</a>
     </p>
