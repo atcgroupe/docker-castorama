@@ -35,7 +35,7 @@ class OrderController extends AbstractAppController
     {
         $order = new Order();
 
-        $form = $this->createForm(OrderRegistrationType::class, $order);
+        $form = $this->createForm(OrderInfoType::class, $order);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
