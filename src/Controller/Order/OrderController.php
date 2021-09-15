@@ -37,7 +37,7 @@ class OrderController extends AbstractAppController
     {
         $order = new Order();
 
-        $form = $this->createForm(OrderInfoType::class, $order);
+        $form = $this->createForm(OrderRegistrationType::class, $order);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -60,6 +60,7 @@ class OrderController extends AbstractAppController
     public function view(int $id, Request $request): Response
     {
         $order = $this->orderRepository->findOneWithRelations($id);
+        $resume = $this->signHelper->getOrderSignsResume($order);
         $signs = $this->signHelper->findOrderSigns($order);
 
         $referer = $request->headers->get('referer');
@@ -67,7 +68,7 @@ class OrderController extends AbstractAppController
             $this->requestStack->getSession()->set('referer', $referer);
         }
 
-        return $this->render('order/view.html.twig', ['order' => $order, 'orderSigns' => $signs]);
+        return $this->render('order/view.html.twig', ['order' => $order, 'orderSigns' => $signs, 'resume' => $resume]);
     }
 
     #[Route(
@@ -90,7 +91,7 @@ class OrderController extends AbstractAppController
                 break;
             case 'info':
                 $form = $this->createForm(OrderInfoType::class, $order);
-                $this->denyAccessUnlessGranted(User::ROLE_CUSTOMER_SHOP);
+                $this->denyAccessUnlessGranted(OrderVoter::UPDATE_INFO, $order);
                 break;
             default:
                 $this->dispatchAlert(Alert::WARNING, 'Un problème est survenu lors de la modification');
@@ -141,6 +142,7 @@ class OrderController extends AbstractAppController
         $resume = $this->signHelper->getOrderSignsResume($order);
         $form = $this->createForm(OrderSendType::class, $order);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $orderHelper->setOrderStatus($order, OrderStatus::SENT);
             $this->getDoctrine()->getManager()->flush();
