@@ -2,21 +2,21 @@
 
 namespace App\Repository;
 
-use App\Entity\SignItem;
+use App\Entity\AisleSignItem;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method SignItem|null find($id, $lockMode = null, $lockVersion = null)
- * @method SignItem|null findOneBy(array $criteria, array $orderBy = null)
- * @method SignItem[]    findAll()
- * @method SignItem[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method AisleSignItem|null find($id, $lockMode = null, $lockVersion = null)
+ * @method AisleSignItem|null findOneBy(array $criteria, array $orderBy = null)
+ * @method AisleSignItem[]    findAll()
+ * @method AisleSignItem[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class SignItemRepository extends ServiceEntityRepository
+class AisleSignItemRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, SignItem::class);
+        parent::__construct($registry, AisleSignItem::class);
     }
 
     // /**

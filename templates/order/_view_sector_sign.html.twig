@@ -1,0 +1,28 @@
+{% include 'order/sign/sector/template.html.twig' with
+    {
+        'id': sign.id,
+        'class': 'me-2',
+        'face': 'recto',
+        'scale': 'small',
+        'color': sign.item1.color,
+        'text': sign.item1.label
+    }
+%}
+
+{% if sign.item2 is not null %}
+    {% set color = sign.item2.color %}
+    {% set label = sign.item2.label %}
+{% else %}
+    {% set color = sign.item1.color %}
+    {% set label = sign.item1.label %}
+{% endif %}
+
+{% include 'order/sign/sector/template.html.twig' with
+    {
+        'id': sign.id,
+        'face': 'verso',
+        'scale': 'small',
+        'color': color,
+        'text': label
+    }
+%}

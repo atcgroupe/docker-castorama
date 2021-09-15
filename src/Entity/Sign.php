@@ -57,6 +57,11 @@ class Sign
      */
     private $isActive;
 
+    /**
+     * @ORM\Column(type="string", length=30)
+     */
+    private $type;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -77,6 +82,14 @@ class Sign
     public function getImage(): ?string
     {
         return $this->image;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImagePath(): string
+    {
+        return 'build/images/sign/category/' . $this->getImage();
     }
 
     public function setImage(string $image): self
@@ -156,5 +169,22 @@ class Sign
         $this->isActive = $isActive;
 
         return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getCreateRoute(): string
+    {
+        return sprintf('order_sign_%s_create', $this->type);
     }
 }

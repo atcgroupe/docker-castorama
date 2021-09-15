@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Order;
 use App\Entity\SectorOrderSign;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -12,39 +13,25 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method SectorOrderSign[]    findAll()
  * @method SectorOrderSign[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class SectorOrderSignRepository extends ServiceEntityRepository
+class SectorOrderSignRepository extends ServiceEntityRepository implements OrderSignRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, SectorOrderSign::class);
     }
 
-    // /**
-    //  * @return SectorOrderSign[] Returns an array of SectorOrderSign objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findByOrderWithRelations(Order $order): array
     {
         return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
+            ->innerJoin('s.item1', 'item1')
+                ->addSelect('item1')
+            ->leftJoin('s.item2', 'item2')
+                ->addSelect('item2')
+            ->andWhere('s.order = :order')
+                ->setParameter('order', $order)
             ->orderBy('s.id', 'ASC')
-            ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?SectorOrderSign
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

@@ -25,6 +25,8 @@ class OrderController extends AbstractAppController
 {
     public function __construct(
         private RequestStack $requestStack,
+        private OrderRepository $orderRepository,
+        private OrderSignHelper $signHelper,
     ) {
     }
 
@@ -53,16 +55,17 @@ class OrderController extends AbstractAppController
     }
 
     #[Route('/{id}/view', name: '_view')]
-    public function view(int $id, OrderRepository $orderRepository, Request $request): Response
+    public function view(int $id, Request $request): Response
     {
-        $order = $orderRepository->findOneWithRelations($id);
+        $order = $this->orderRepository->findOneWithRelations($id);
+        $signs = $this->signHelper->findOrderSigns($order);
 
         $referer = $request->headers->get('referer');
         if (str_contains($referer, '/orders/list')) {
             $this->requestStack->getSession()->set('referer', $referer);
         }
 
-        return $this->render('order/view.html.twig', ['order' => $order]);
+        return $this->render('order/view.html.twig', ['order' => $order, 'orderSigns' => $signs]);
     }
 
     #[Route(
@@ -70,9 +73,9 @@ class OrderController extends AbstractAppController
         name: '_update',
         requirements: ['element' => 'status|delivery|info'],
     )]
-    public function update(int $id, string $element, Request $request, OrderRepository $orderRepository)
+    public function update(int $id, string $element, Request $request): Response
     {
-        $order = $orderRepository->findOneWithRelations($id);
+        $order = $this->orderRepository->findOneWithRelations($id);
 
         switch ($element) {
             case 'status':
@@ -107,9 +110,9 @@ class OrderController extends AbstractAppController
     }
 
     #[Route('/{id}/delete', name: '_delete')]
-    public function delete(int $id, OrderRepository $orderRepository, Request $request): Response
+    public function delete(int $id, Request $request): Response
     {
-        $order = $orderRepository->findOneWithRelations($id);
+        $order = $this->orderRepository->findOneWithRelations($id);
 
         $this->denyAccessUnlessGranted(OrderVoter::DELETE, $order);
 
@@ -130,14 +133,10 @@ class OrderController extends AbstractAppController
     }
 
     #[Route('/{id}/send', name: '_send')]
-    public function send(
-        int $id,
-        OrderRepository $orderRepository,
-        Request $request,
-        OrderSignHelper $signHelper
-    ): Response {
-        $order = $orderRepository->findOneWithRelations($id);
-        $resume = $signHelper->getOrderSignsResume($order);
+    public function send(int $id, Request $request): Response
+    {
+        $order = $this->orderRepository->findOneWithRelations($id);
+        $resume = $this->signHelper->getOrderSignsResume($order);
         $form = $this->createForm(OrderSendType::class, $order);
         $form->handleRequest($request);
 

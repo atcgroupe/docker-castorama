@@ -2,13 +2,13 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\SignItem;
+use App\Entity\AisleSignItem;
 use App\Service\Fixture\CsvReader;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class SignItemFixtures extends Fixture implements DependentFixtureInterface
+class AisleSignItemFixtures extends Fixture implements DependentFixtureInterface
 {
     private const CATEGORY = 'category';
     private const PRODUCT = 'product';
@@ -32,7 +32,7 @@ class SignItemFixtures extends Fixture implements DependentFixtureInterface
         );
 
         foreach ($data as $entry) {
-            $item = new SignItem();
+            $item = new AisleSignItem();
 
             $item->setLabel($entry[self::PRODUCT]);
             $item->setImage($this->getFormattedImageName($entry[self::IMAGE]));
@@ -48,7 +48,7 @@ class SignItemFixtures extends Fixture implements DependentFixtureInterface
     public function getDependencies(): array
     {
         return [
-            SignItemCategoryFixtures::class,
+            AisleSignItemCategoryFixtures::class,
         ];
     }
 

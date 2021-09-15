@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\SignItemRepository;
+use App\Repository\AisleSignItemRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=SignItemRepository::class)
+ * @ORM\Entity(repositoryClass=AisleSignItemRepository::class)
  */
-class SignItem
+class AisleSignItem
 {
     /**
      * @ORM\Id
@@ -33,7 +33,7 @@ class SignItem
     private $isActive;
 
     /**
-     * @ORM\ManyToOne(targetEntity=SignItemCategory::class, inversedBy="signItems")
+     * @ORM\ManyToOne(targetEntity=AisleSignItemCategory::class, inversedBy="signItems")
      */
     private $category;
 
@@ -78,12 +78,12 @@ class SignItem
         return $this;
     }
 
-    public function getCategory(): ?SignItemCategory
+    public function getCategory(): ?AisleSignItemCategory
     {
         return $this->category;
     }
 
-    public function setCategory(?SignItemCategory $category): self
+    public function setCategory(?AisleSignItemCategory $category): self
     {
         $this->category = $category;
 

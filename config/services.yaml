@@ -38,3 +38,8 @@ services:
             - name: doctrine.orm.entity_listener
               event: prePersist
               entity: App\Entity\Order
+
+    App\EventListener\OrderSignListener:
+      tags:
+        - name: doctrine.event_listener
+          event: prePersist

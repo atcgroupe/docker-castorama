@@ -1,9 +1,9 @@
 {% extends 'core/core.html.twig' %}
 
 {% block content %}
-    <div class="d-flex justify-content-between align-items-center my-3">
+    <div class="d-flex justify-content-between align-items-center mt-5 mb-4">
         <div>
-            <a href="{{ app.session.get('referer') }}">Retour à la liste</a>
+            <a href="{{ app.session.get('referer') }}" class="btn btn-outline-secondary">Retour à la liste</a>
         </div>
 
         <div>
@@ -21,9 +21,7 @@
         </div>
     </div>
 
-    <hr class="mb-5 mt-2"/>
-
-    <div class="row gx-5">
+    <div class="row mb-5 gx-0 bg-light py-5 px-4 rounded align-items-center border-primary border border-1">
         <div class="col-12 col-lg-6">
             <h1 class="h2 text-primary fw-light mb-1">Commande n° {{ order.id }}</h1>
 
@@ -52,7 +50,7 @@
             {% endif %}
         </div>
 
-        <div class="col-12 col-lg-6">
+        <div class="col-12 col-lg-6 text-end">
             <p class="lead">
                 Statut de la commande: <strong class="text-primary">{{ order.status.label }}</strong><br>
 
@@ -90,19 +88,29 @@
                 </p>
             {% endif %}
         </div>
+    </div>
 
-        <hr class="my-5"/>
+    <h1 class="h2 fw-light text-primary text-center">Liste des panneaux</h1>
 
-        <h1 class="h2 fw-light text-primary text-center">Liste des panneaux</h1>
+    <p class="text-center text-lg-end mt-4">
+        <a href="{{ path('order_sign_choose', {'orderId': order.id}) }}" class="btn btn-outline-primary">
+            Ajouter un panneau
+        </a>
 
-        <p class="text-center text-lg-end mt-4">
-            <a href="#" class="btn btn-outline-primary">Ajouter un panneau</a>
+        <a href="#" class="btn btn-outline-secondary">Imprimer la liste</a>
+    </p>
 
-            <a href="#" class="btn btn-outline-secondary">Imprimer la liste</a>
-        </p>
-
+    {% if orderSigns is not empty %}
+        {{ include('order/_view_signs.html.twig') }}
+    {% else %}
         <div class="alert alert-info lead text-center my-5" role="alert">
             Cette commande ne contient aucun panneau pour l'instant.
         </div>
-    </div>
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {{ encore_entry_script_tags('signQuantity') }}
 {% endblock %}

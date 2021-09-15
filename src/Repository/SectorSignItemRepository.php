@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\SignItemCategory;
+use App\Entity\SectorSignItem;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method SignItemCategory|null find($id, $lockMode = null, $lockVersion = null)
- * @method SignItemCategory|null findOneBy(array $criteria, array $orderBy = null)
- * @method SignItemCategory[]    findAll()
- * @method SignItemCategory[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method SectorSignItem|null find($id, $lockMode = null, $lockVersion = null)
+ * @method SectorSignItem|null findOneBy(array $criteria, array $orderBy = null)
+ * @method SectorSignItem[]    findAll()
+ * @method SectorSignItem[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class SignItemCategoryRepository extends ServiceEntityRepository
+class SectorSignItemRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, SignItemCategory::class);
+        parent::__construct($registry, SectorSignItem::class);
     }
 
     // /**
-    //  * @return SignItemCategory[] Returns an array of SignItemCategory objects
+    //  * @return SectorSignItem[] Returns an array of SectorSignItem objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class SignItemCategoryRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?SignItemCategory
+    public function findOneBySomeField($value): ?SectorSignItem
     {
         return $this->createQueryBuilder('s')
             ->andWhere('s.exampleField = :val')

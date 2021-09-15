@@ -1,0 +1,107 @@
+{% extends 'core/core.html.twig' %}
+
+{% block content %}
+    <div class="container">
+        <div class="row mb-5 pt-5">
+            <div class="col">
+                <h3 class="text-primary mb-3">Panneau allée</h3>
+
+                {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+                    {{ form_row(form.quantity)}}
+
+                    <h4 class="mt-5 mb-3">Personnalisation</h4>
+
+                    <div class="mb-4">
+                        {{ form_row(form.aisleNumber) }}
+                    </div>
+
+                    <div class="mb-4">
+                        <h4>Ligne n°1<span class="text-danger">*</span></h4>
+
+                        {{ form_widget(form.category1) }}
+
+                        {{ form_widget(form.item1) }}
+                        {{ form_errors(form.item1) }}
+                    </div>
+
+                    <div id="aisle-item2-container" class="item-container mb-4">
+                        <h4>Ligne n°2</h4>
+
+                        {{ form_widget(form.category2) }}
+
+                        {{ form_widget(form.item2) }}
+
+                        {{ form_row(form.hideItem2Image) }}
+                    </div>
+
+                    <div id="aisle-item3-container" class="item-container mb-4">
+                        <h4>Ligne n°3</h4>
+
+                        {{ form_widget(form.category3) }}
+
+                        {{ form_widget(form.item3) }}
+
+                        {{ form_row(form.hideItem3Image) }}
+                    </div>
+
+                    <div class="mb-4">
+                        {{ form_widget(form.save) }}
+
+                        {{ form_widget(form.saveAndNew) }}
+
+                        <a href="{{ path('orders_view', {'id': orderId}) }}" class="btn btn-outline-secondary w-100">
+                            Retour à la commande
+                        </a>
+                    </div>
+
+                {{ form_end(form) }}
+            </div>
+            <div class="col">
+                <h5 class="text-primary">Recto</h5>
+
+                <div>
+                    {% include 'order/sign/aisle/template.html.twig' with
+                        {
+                            'id': 1,
+                            'scale': 'medium',
+                            'face': 'recto',
+                            'number': '',
+                            'picto1': '',
+                            'picto2': '',
+                            'picto3': '',
+                            'text_line_1': '',
+                            'text_line_2': '',
+                            'text_line_3': ''
+                        }
+                    %}
+                </div>
+
+                <h5 class="mt-3 text-primary">Verso</h5>
+
+                <div>
+                    {% include 'order/sign/aisle/template.html.twig' with
+                        {
+                            'id': 1,
+                            'scale': 'medium',
+                            'face': 'verso',
+                            'number': '',
+                            'picto1': '',
+                            'picto2': '',
+                            'picto3': '',
+                            'text_line_1': '',
+                            'text_line_2': '',
+                            'text_line_3': ''
+                        }
+                    %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {{ encore_entry_script_tags('aisleSignEdit') }}
+{% endblock %}

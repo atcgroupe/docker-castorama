@@ -4,12 +4,22 @@ namespace App\Entity;
 
 use App\Repository\AisleOrderSignRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=AisleOrderSignRepository::class)
+ * @ORM\HasLifecycleCallbacks()
+ * @UniqueEntity(
+ *     fields={"order", "aisleNumber"},
+ *     errorPath="aisleNumber",
+ *     message="Un panneau allée avec ce numéro existe déjà dans cette commande"
+ * )
  */
 class AisleOrderSign extends AbstractOrderSign
 {
+    private const TYPE = 'aisle';
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -19,24 +29,49 @@ class AisleOrderSign extends AbstractOrderSign
 
     /**
      * @ORM\Column(type="smallint")
+     * @Assert\NotBlank
+     * @Assert\Positive
      */
     private $aisleNumber;
 
     /**
-     * @ORM\ManyToOne(targetEntity=SignItem::class)
+     * @ORM\ManyToOne(targetEntity=AisleSignItem::class)
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank(message="Merci de sélectionner au moins un produit.")
      */
-    private $itemOne;
+    private $item1;
 
     /**
-     * @ORM\ManyToOne(targetEntity=SignItem::class)
+     * @ORM\ManyToOne(targetEntity=AisleSignItem::class)
      */
-    private $itemTwo;
+    private $item2;
 
     /**
-     * @ORM\ManyToOne(targetEntity=SignItem::class)
+     * @ORM\ManyToOne(targetEntity=AisleSignItem::class)
      */
-    private $itemThree;
+    private $item3;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $hideItem2Image;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $hideItem3Image;
+
+    private $category1;
+
+    private $category2;
+
+    private $category3;
+
+    public function __construct()
+    {
+        $this->setHideItem2Image(false);
+        $this->setHideItem3Image(false);
+    }
 
     public function getId(): ?int
     {
@@ -55,39 +90,183 @@ class AisleOrderSign extends AbstractOrderSign
         return $this;
     }
 
-    public function getItemOne(): ?SignItem
+    public function getItem1(): ?AisleSignItem
     {
-        return $this->itemOne;
+        return $this->item1;
     }
 
-    public function setItemOne(?SignItem $itemOne): self
+    public function setItem1(?AisleSignItem $item1): self
     {
-        $this->itemOne = $itemOne;
+        $this->item1 = $item1;
 
         return $this;
     }
 
-    public function getItemTwo(): ?SignItem
+    public function getItem2(): ?AisleSignItem
     {
-        return $this->itemTwo;
+        return $this->item2;
     }
 
-    public function setItemTwo(?SignItem $itemTwo): self
+    public function setItem2(?AisleSignItem $item2): self
     {
-        $this->itemTwo = $itemTwo;
+        $this->item2 = $item2;
 
         return $this;
     }
 
-    public function getItemThree(): ?SignItem
+    public function getItem3(): ?AisleSignItem
     {
-        return $this->itemThree;
+        return $this->item3;
     }
 
-    public function setItemThree(?SignItem $itemThree): self
+    public function setItem3(?AisleSignItem $item3): self
     {
-        $this->itemThree = $itemThree;
+        $this->item3 = $item3;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getType(): string
+    {
+        return self::TYPE;
+    }
+
+    public function getHideItem2Image(): ?bool
+    {
+        return $this->hideItem2Image;
+    }
+
+    public function setHideItem2Image(bool $hideItem2Image): self
+    {
+        $this->hideItem2Image = $hideItem2Image;
+
+        return $this;
+    }
+
+    public function getHideItem3Image(): ?bool
+    {
+        return $this->hideItem3Image;
+    }
+
+    public function setHideItem3Image(bool $hideItem3Image): self
+    {
+        $this->hideItem3Image = $hideItem3Image;
+
+        return $this;
+    }
+
+    /**
+     * @ORM\PostLoad()
+     */
+    public function initializeCategories()
+    {
+        $this->setCategory1(($this->getItem1() !== null) ? $this->getItem1()->getCategory() : null);
+        $this->setCategory2(($this->getItem2() !== null) ? $this->getItem2()->getCategory() : null);
+        $this->setCategory3(($this->getItem3() !== null) ? $this->getItem3()->getCategory() : null);
+    }
+
+    /**
+     * @return AisleSignItemCategory|null
+     */
+    public function getCategory1(): ?AisleSignItemCategory
+    {
+        return $this->category1;
+    }
+
+    /**
+     * @param AisleSignItemCategory|null $category1
+     */
+    public function setCategory1(?AisleSignItemCategory $category1): void
+    {
+        $this->category1 = $category1;
+    }
+
+    /**
+     * @return AisleSignItemCategory|null
+     */
+    public function getCategory2(): ?AisleSignItemCategory
+    {
+        return $this->category2;
+    }
+
+    /**
+     * @param AisleSignItemCategory|null $category2
+     */
+    public function setCategory2(?AisleSignItemCategory $category2): void
+    {
+        $this->category2 = $category2;
+    }
+
+    /**
+     * @return AisleSignItemCategory|null
+     */
+    public function getCategory3(): ?AisleSignItemCategory
+    {
+        return $this->category3;
+    }
+
+    /**
+     * @param AisleSignItemCategory|null $category3
+     */
+    public function setCategory3(?AisleSignItemCategory $category3): void
+    {
+        $this->category3 = $category3;
+    }
+
+    /**
+     * @return string
+     */
+    public function getItem1Image(): string
+    {
+        $image = (null === $this->getItem1()) ? 'empty' : $this->getItem1()->getImage();
+
+        return sprintf('/build/images/sign/sign/aisle/picto/%s.svg', $image);
+    }
+
+    /**
+     * @return string
+     */
+    public function getItem2Image(): string
+    {
+        $image = (null === $this->getItem2() || $this->getHideItem2Image()) ? 'empty' : $this->getItem2()->getImage();
+
+        return sprintf('/build/images/sign/sign/aisle/picto/%s.svg', $image);
+    }
+
+    /**
+     * @return string
+     */
+    public function getItem3Image(): string
+    {
+        $image = (null === $this->getItem3() || $this->getHideItem2Image()) ? 'empty' : $this->getItem3()->getImage();
+
+        return sprintf('/build/images/sign/sign/aisle/picto/%s.svg', $image);
+    }
+
+    /**
+     * @return string
+     */
+    public function getItem1Label(): string
+    {
+        return (null === $this->getItem1()) ? '' : $this->getItem1()->getLabel();
+    }
+
+    /**
+     * @return string
+     */
+    public function getItem2Label(): string
+    {
+        return (null === $this->getItem2()) ? '' : $this->getItem2()->getLabel();
+    }
+
+    /**
+     * @return string
+     */
+    public function getItem3Label(): string
+    {
+        return (null === $this->getItem3()) ? '' : $this->getItem3()->getLabel();
     }
 }

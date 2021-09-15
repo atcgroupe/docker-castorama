@@ -1,0 +1,44 @@
+<div id="{{ id }}" class="aisle {{ face }} {{ scale }} {% if class is defined %}{{ class }}{% endif %}">
+    <div class="number {{ face }}"><span class="aisle-number-value">{{ number }}</span></div>
+    <div class="picto picto1 {{ face }}">
+        <img
+            class="picto1-img"
+            {% if picto1 != '' %}
+                src="{{ asset(picto1) }}"
+            {% else %}
+                src="{{ asset('build/images/sign/sign/aisle/picto/empty.svg') }}"
+            {% endif %}
+        >
+    </div>
+    <div class="picto picto2 {{ face }}">
+        <img
+            class="picto2-img"
+            {% if picto2 != '' %}
+                src="{{ asset(picto2) }}"
+            {% else %}
+                src="{{ asset('build/images/sign/sign/aisle/picto/empty.svg') }}"
+            {% endif %}
+        >
+    </div>
+    <div class="picto picto3 {{ face }}">
+        <img
+            class="picto3-img"
+            {% if picto3 != '' %}
+                src="{{ asset(picto3) }}"
+            {% else %}
+                src="{{ asset('build/images/sign/sign/aisle/picto/empty.svg') }}"
+            {% endif %}
+        >
+    </div>
+    <div class="text-recto-container {{ face }}">
+        <div class="items_text">
+            {{ text_line_1 }}
+            {% if text_line_2 != '' %}
+                <br />{{ text_line_2 }}
+            {% endif %}
+            {% if text_line_3 != '' %}
+                <br />{{ text_line_3 }}
+            {% endif %}
+        </div>
+    </div>
+</div>
