@@ -43,7 +43,7 @@ class OrderRepository extends ServiceEntityRepository
 
     /**
      * @param bool        $isActive
-     * @param bool        $isShopUser
+     * @param bool        $isCustomerUser
      * @param User|null   $user
      * @param int|null    $page
      * @param string|null $search
@@ -51,15 +51,15 @@ class OrderRepository extends ServiceEntityRepository
      * @return Order[]|[]
      */
     public function findWithRelations(
-        bool $isActive,
-        bool $isShopUser,
-        ?User $user = null,
-        ?int $page = null,
+        bool    $isActive,
+        bool    $isCustomerUser,
+        ?User   $user = null,
+        ?int    $page = null,
         ?string $search = null
     ): array {
         $builder = $this->getBaseQueryBuilder();
 
-        $this->setStatusFilter($builder, $isActive, $isShopUser);
+        $this->setStatusFilter($builder, $isActive, $isCustomerUser);
 
         if (null!== $search) {
             $this->addSearchFilter($builder, $search);
@@ -100,9 +100,9 @@ class OrderRepository extends ServiceEntityRepository
     /**
      * @param QueryBuilder $builder
      * @param bool         $isActive
-     * @param bool         $isShopUser
+     * @param bool         $isCustomerUser
      */
-    private function setStatusFilter(QueryBuilder $builder, bool $isActive, bool $isShopUser): void
+    private function setStatusFilter(QueryBuilder $builder, bool $isActive, bool $isCustomerUser): void
     {
         // active orders has all status except Delivered
         ($isActive) ?
@@ -113,7 +113,7 @@ class OrderRepository extends ServiceEntityRepository
         $builder->setParameter('deliveredLabel', OrderStatus::DELIVERED);
 
         // Admin users (Customer & Company) don't have to see created orders in active orders list.
-        if (!$isShopUser && $isActive) {
+        if (!$isCustomerUser && $isActive) {
             $builder->andWhere('status.label != :createdLabel');
 
             $builder->setParameter('createdLabel', OrderStatus::CREATED);
