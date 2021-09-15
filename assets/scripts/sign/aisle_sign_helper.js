@@ -58,7 +58,7 @@ export const AisleSignHelper = {
             targetItemSelect.value = '';
             targetItemSelect.text = '';
             targetCheckbox.setAttribute('disabled', 'disabled');
-            targetCheckbox.removeAttribute('checked');
+            $(targetCheckbox).prop('checked', false);
         } else {
             targetCategorySelect.removeAttribute('disabled');
             targetItemSelect.removeAttribute('disabled');
