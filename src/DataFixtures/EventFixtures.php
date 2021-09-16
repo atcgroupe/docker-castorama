@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Event;
+use App\Service\Event\OrderEvent;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -13,37 +14,37 @@ class EventFixtures extends Fixture
         $data = [
             [
                 1,
-                Event::ORDER_SENT,
+                OrderEvent::SENT,
                 "Commande validée",
                 "Lorsque vous validez une commande"
             ],
             [
                 2,
-                Event::ORDER_RECEIVED,
+                OrderEvent::RECEIVED,
                 "Commande reçue",
                 "Lorsqu'un membre de notre équipe a réceptionné votre commande."
             ],
             [
                 3,
-                Event::ORDER_PROCESS,
+                OrderEvent::PROCESS,
                 "Commande en cours de traitement",
                 "Votre commande est en cours de traitement par nos équipes."
             ],
             [
                 4,
-                Event::ORDER_PROCESSED,
+                OrderEvent::PROCESSED,
                 "Commande traitée",
                 "Votre commande est fabriquée et est prêtre à vous être expédiée"
             ],
             [
                 5,
-                Event::ORDER_SHIPPED,
+                OrderEvent::SHIPPED,
                 "Commande expédiée",
                 "Votre commande a été expédiée."
             ],
             [
                 6,
-                Event::ORDER_DELIVERED,
+                OrderEvent::RECEIVED,
                 "Commande livrée",
                 "Votre commande a été livrée en magasin."
             ]
