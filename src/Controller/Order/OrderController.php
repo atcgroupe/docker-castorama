@@ -14,8 +14,10 @@ use App\Repository\OrderRepository;
 use App\Security\Voter\OrderVoter;
 use App\Service\Alert\Alert;
 use App\Service\Controller\AbstractAppController;
+use App\Service\Event\OrderEvent;
 use App\Service\Order\OrderHelper;
 use App\Service\Order\OrderSignHelper;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -29,6 +31,7 @@ class OrderController extends AbstractAppController
         private RequestStack $requestStack,
         private OrderRepository $orderRepository,
         private OrderSignHelper $signHelper,
+        private EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -136,7 +139,7 @@ class OrderController extends AbstractAppController
     }
 
     #[Route('/{id}/send', name: '_send')]
-    public function send(int $id, Request $request, OrderHelper $orderHelper): Response
+    public function send(int $id, Request $request): Response
     {
         $order = $this->orderRepository->findOneWithRelations($id);
         $resume = $this->signHelper->getOrderSignsResume($order);
@@ -144,9 +147,9 @@ class OrderController extends AbstractAppController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $orderHelper->setOrderStatus($order, OrderStatus::SENT);
-            $this->getDoctrine()->getManager()->flush();
+            $this->eventDispatcher->dispatch(new OrderEvent($order), OrderEvent::SENT);
 
+            $this->getDoctrine()->getManager()->flush();
             $this->dispatchAlert(Alert::SUCCESS, 'La commande a été envoyée avec succès.');
 
             return $this->redirectToRoute('orders_view', ['id' => $id]);
