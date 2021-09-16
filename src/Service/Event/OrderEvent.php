@@ -7,7 +7,13 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class OrderEvent extends Event
 {
+    public const CREATED = 'order.created';
     public const SENT = 'order.sent';
+    public const RECEIVED = 'order.received';
+    public const PROCESS = 'order.process';
+    public const PROCESSED = 'order.processed';
+    public const SHIPPED = 'order.shipped';
+    public const DELIVERED = 'order.delivered';
 
     protected Order $order;
 
