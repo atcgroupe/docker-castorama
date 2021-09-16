@@ -6,6 +6,7 @@ use App\Entity\Member;
 use App\Entity\Order;
 use App\Entity\OrderStatus;
 use App\Service\Member\MemberSessionHandler;
+use App\Service\Order\OrderHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Symfony\Component\Security\Core\Security;
@@ -16,6 +17,7 @@ class OrderRegistrationListener
         private Security $security,
         private EntityManagerInterface $manager,
         private MemberSessionHandler $memberSessionHandler,
+        private OrderHelper $orderHelper,
     ) {
     }
 
@@ -30,8 +32,6 @@ class OrderRegistrationListener
             $this->manager->getRepository(Member::class)->find($memberSession->getId())
         );
 
-        $order->setStatus(
-            $this->manager->getRepository(OrderStatus::class)->findOneBy(['label' => OrderStatus::CREATED])
-        );
+        $this->orderHelper->setOrderStatus($order, OrderStatus::CREATED);
     }
 }

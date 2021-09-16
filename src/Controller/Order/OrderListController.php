@@ -64,7 +64,7 @@ class OrderListController extends AbstractAppController
 
         $orders = $this->orderRepository->findWithRelations($isActive, $isShop, $shopUser, $page, $search);
 
-        $countCriteria = ['status' => $orderStatusRepository->findOneBy(['label' => OrderStatus::DELIVERED])];
+        $countCriteria = ['status' => $orderStatusRepository->find(OrderStatus::DELIVERED)];
         if ($isShop) {
             $countCriteria['user'] = $shopUser;
         }
