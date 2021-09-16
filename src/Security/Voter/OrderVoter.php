@@ -84,7 +84,7 @@ class OrderVoter extends Voter
                 $this->security->isGranted(User::ROLE_CUSTOMER_SHOP) ||
                 $this->security->isGranted('ROLE_CUSTOMER_ADMIN')
             )
-            && $order->getStatus()->getLabel() === OrderStatus::CREATED
+            && $order->getStatus()->getId() === OrderStatus::CREATED
         ) {
             return true;
         }
@@ -104,7 +104,7 @@ class OrderVoter extends Voter
                 $this->security->isGranted(User::ROLE_CUSTOMER_SHOP) ||
                 $this->security->isGranted('ROLE_CUSTOMER_ADMIN')
             )
-            && $order->getStatus()->getLabel() === OrderStatus::CREATED
+            && $order->getStatus()->getId() === OrderStatus::CREATED
         ;
     }
 
@@ -117,7 +117,7 @@ class OrderVoter extends Voter
     {
         return
             $this->security->isGranted('ROLE_COMPANY_ADMIN') &&
-            $order->getStatus()->getLabel() !== OrderStatus::DELIVERED
+            $order->getStatus()->getId() !== OrderStatus::DELIVERED
         ;
     }
 
@@ -128,7 +128,7 @@ class OrderVoter extends Voter
                 $this->security->isGranted('ROLE_CUSTOMER_SHOP') ||
                 $this->security->isGranted('ROLE_CUSTOMER_ADMIN')
             )
-            && $order->getStatus()->getLabel() !== OrderStatus::DELIVERED
+            && $order->getStatus()->getId() !== OrderStatus::DELIVERED
         ;
     }
 
@@ -139,7 +139,7 @@ class OrderVoter extends Voter
                 $this->security->isGranted('ROLE_CUSTOMER_SHOP') ||
                 $this->security->isGranted('ROLE_CUSTOMER_ADMIN')
             )
-            && $order->getStatus()->getLabel() === OrderStatus::CREATED
+            && $order->getStatus()->getId() === OrderStatus::CREATED
         ;
     }
 }

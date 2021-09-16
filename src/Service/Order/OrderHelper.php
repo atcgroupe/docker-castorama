@@ -12,8 +12,8 @@ class OrderHelper
     ) {
     }
 
-    public function setOrderStatus(Order $order, string $orderStatus)
+    public function setOrderStatus(Order $order, string $statusId)
     {
-        $order->setStatus($this->statusRepository->findOneBy(['label' => $orderStatus]));
+        $order->setStatus($this->statusRepository->find($statusId));
     }
 }

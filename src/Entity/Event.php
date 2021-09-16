@@ -11,14 +11,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 class Event
 {
-    public const ORDER_CREATED = 'onOrderCreated';
-    public const ORDER_SENT = 'onOrderSend';
-    public const ORDER_RECEIVED = 'onOrderReceived';
-    public const ORDER_PROCESS = 'onOrderProcess';
-    public const ORDER_PROCESSED = 'onOrderProcessed';
-    public const ORDER_SHIPPED = 'onOrderShipped';
-    public const ORDER_DELIVERED = 'onOrderDelivered';
-
     /**
      * @ORM\Id
      * @ORM\Column(type="string")
@@ -39,6 +31,8 @@ class Event
     private $help;
 
     /**
+     * used to display events in a precise order.
+     *
      * @ORM\Column(type="integer")
      * @Groups({"member_session"})
      */

@@ -10,18 +10,17 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class OrderStatus
 {
-    public const CREATED = 'Création';
-    public const SENT = 'Envoyée';
-    public const RECEIVED = 'Reçue';
-    public const PROCESSING = 'En cours de traitement';
-    public const PROCESSED = 'Traitée';
-    public const DELIVERY = 'Expédiée';
-    public const DELIVERED = 'Livrée';
+    public const CREATED = 'CREATED';
+    public const SENT = 'SENT';
+    public const RECEIVED = 'RECEIVED';
+    public const PROCESSING = 'PROCESSING';
+    public const PROCESSED = 'PROCESSED';
+    public const DELIVERY = 'DELIVERY';
+    public const DELIVERED = 'DELIVERED';
 
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string")
      */
     private $id;
 
@@ -35,9 +34,16 @@ class OrderStatus
      */
     private $event;
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
+    }
+
+    public function setId(string $id): self
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getLabel(): ?string

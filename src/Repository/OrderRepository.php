@@ -106,17 +106,17 @@ class OrderRepository extends ServiceEntityRepository
     {
         // active orders has all status except Delivered
         ($isActive) ?
-            $builder->andWhere('status.label != :deliveredLabel') :
-            $builder->andWhere('status.label = :deliveredLabel')
+            $builder->andWhere('status.id != :delivered') :
+            $builder->andWhere('status.id = :delivered')
         ;
 
-        $builder->setParameter('deliveredLabel', OrderStatus::DELIVERED);
+        $builder->setParameter('delivered', OrderStatus::DELIVERED);
 
         // Admin users (Customer & Company) don't have to see created orders in active orders list.
         if (!$isCustomerUser && $isActive) {
-            $builder->andWhere('status.label != :createdLabel');
+            $builder->andWhere('status.id != :created');
 
-            $builder->setParameter('createdLabel', OrderStatus::CREATED);
+            $builder->setParameter('created', OrderStatus::CREATED);
         }
     }
 
