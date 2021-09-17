@@ -27,6 +27,10 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/orders', name: 'orders')]
 class OrderController extends AbstractAppController
 {
+    private const UPDATE_ELEMENT_STATUS = 'status';
+    private const UPDATE_ELEMENT_DELIVERY = 'delivery';
+    private const UPDATE_ELEMENT_INFO = 'info';
+
     public function __construct(
         private RequestStack $requestStack,
         private OrderRepository $orderRepository,
@@ -53,7 +57,7 @@ class OrderController extends AbstractAppController
                 'Votre commande est créée. Vous pouvez maintenant ajouter des panneaux!'
             );
 
-            return $this->redirectToRoute('orders_list_active');
+            return $this->redirectToRoute('orders_view', ['id' => $order->getId()]);
         }
 
         return $this->render('order/create.html.twig', ['form' => $form->createView()]);
@@ -84,15 +88,15 @@ class OrderController extends AbstractAppController
         $order = $this->orderRepository->findOneWithRelations($id);
 
         switch ($element) {
-            case 'status':
+            case self::UPDATE_ELEMENT_STATUS:
                 $form = $this->createForm(OrderUpdateStatusType::class, $order);
                 $this->denyAccessUnlessGranted(User::ROLE_COMPANY_ADMIN);
                 break;
-            case 'delivery':
+            case self::UPDATE_ELEMENT_DELIVERY:
                 $form = $this->createForm(OrderUpdateDeliveryType::class, $order);
                 $this->denyAccessUnlessGranted(User::ROLE_COMPANY_ADMIN);
                 break;
-            case 'info':
+            case self::UPDATE_ELEMENT_INFO:
                 $form = $this->createForm(OrderInfoType::class, $order);
                 $this->denyAccessUnlessGranted(OrderVoter::UPDATE_INFO, $order);
                 break;
@@ -106,6 +110,10 @@ class OrderController extends AbstractAppController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
+
+            if ($element === self::UPDATE_ELEMENT_STATUS) {
+                $this->eventDispatcher->dispatch(new OrderEvent($order), OrderEvent::STATUS_CHANGED);
+            };
 
             $this->dispatchAlert(Alert::INFO, 'Modifications enregistrées');
 
@@ -147,10 +155,12 @@ class OrderController extends AbstractAppController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->eventDispatcher->dispatch(new OrderEvent($order), OrderEvent::SENT);
+            $this->eventDispatcher->dispatch(new OrderEvent($order), OrderEvent::SEND);
 
             $this->getDoctrine()->getManager()->flush();
+
             $this->dispatchAlert(Alert::SUCCESS, 'La commande a été envoyée avec succès.');
+            $this->eventDispatcher->dispatch(new OrderEvent($order), OrderEvent::STATUS_CHANGED);
 
             return $this->redirectToRoute('orders_view', ['id' => $id]);
         }
