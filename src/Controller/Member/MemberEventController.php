@@ -21,7 +21,7 @@ class MemberEventController extends AbstractAppController
 
         if ($request->isMethod('POST')) {
             foreach ($events as $event) {
-                ($request->request->has($event->getId())) ?
+                ($request->request->has(str_replace('.', '_', $event->getId()))) ?
                     $member->addEvent($event) : $member->removeEvent($event);
             }
 

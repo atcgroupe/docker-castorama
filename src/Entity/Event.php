@@ -38,6 +38,11 @@ class Event
      */
     private $displayOrder;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $emailMessage;
+
     public function getId(): ?string
     {
         return $this->id;
@@ -80,6 +85,18 @@ class Event
     public function setDisplayOrder(int $displayOrder): self
     {
         $this->displayOrder = $displayOrder;
+
+        return $this;
+    }
+
+    public function getEmailMessage(): ?string
+    {
+        return $this->emailMessage;
+    }
+
+    public function setEmailMessage(?string $emailMessage): self
+    {
+        $this->emailMessage = $emailMessage;
 
         return $this;
     }

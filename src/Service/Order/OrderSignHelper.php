@@ -46,6 +46,7 @@ class OrderSignHelper
         foreach ($this->getSignsTypes() as $type) {
             $repository = $this->manager->getRepository($type->getClass());
             $count = $this->countSigns($repository->findBy(['order' => $order]));
+            $countModels = $repository->count(['order' => $order]);
             $price = $type->getPrice();
             $countPrice = $count * $price;
             $totalCount += $count;
@@ -53,8 +54,9 @@ class OrderSignHelper
             if ($count > 0) {
                 $signResume[$type->getTitle()] = [
                     'count' => $count,
+                    'countModels' => $countModels,
                     'unitPrice' => $type->getPrice(),
-                    'countPrice' => $type->getPrice() * $count
+                    'countPrice' => $type->getPrice() * $count,
                 ];
             }
         }

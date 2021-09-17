@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Order;
 use App\Entity\OrderStatus;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -20,6 +21,11 @@ class OrderUpdateStatusType extends AbstractType
                 'label' => 'Statut de la commande',
                 'class' => OrderStatus::class,
                 'choice_label' => 'label',
+                'query_builder' => function (EntityRepository $repository) {
+                    return $repository->createQueryBuilder('o')
+                        ->innerJoin('o.event', 'event')
+                        ->orderBy('event.displayOrder', 'ASC');
+                },
             ]
         );
     }

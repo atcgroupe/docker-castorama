@@ -2,12 +2,18 @@
 
 namespace App\EventListener;
 
-use App\Entity\Order;
-use Doctrine\Persistence\Event\LifecycleEventArgs;
+use App\Service\Event\OrderEvent;
+use App\Service\Order\OrderNotificationDispatcher;
 
 class OrderStatusListener
 {
-    public function postUpdate(Order $order, LifecycleEventArgs $args)
+    public function __construct(
+        private OrderNotificationDispatcher $orderNotificationDispatcher
+    ) {
+    }
+
+    public function onOrderStatusChanged(OrderEvent $event)
     {
+        $this->orderNotificationDispatcher->send($event->getOrder()->getId());
     }
 }
