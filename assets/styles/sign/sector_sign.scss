@@ -12,6 +12,9 @@
   position: relative;
   background-repeat: no-repeat;
   background-size: calc(var(--sign-scale) * 160mm) calc(var(--sign-scale) * 50mm);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   &.grey {
     background-image: url("../../images/sign/sign/sector/sector-bg-grey.svg");
@@ -24,8 +27,13 @@
   .sector-text {
     font-family: Casto;
     font-weight: 800;
+    margin-top: calc(var(--sign-scale) * 2mm);
+    margin-left: calc(var(--sign-scale) * 5mm);
+    margin-right: calc(var(--sign-scale) * 5mm);
     font-size: calc(var(--sign-scale) * 40pt);
     line-height: calc(var(--sign-scale) * 40pt);
     color: white;
+    text-align: center;
+    vertical-align: baseline;
   }
 }
