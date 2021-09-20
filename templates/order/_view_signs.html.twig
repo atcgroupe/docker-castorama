@@ -1,7 +1,7 @@
 <div class="accordion mb-5" id="aisleAccordion">
     {% for category, signs in orderSigns %}
         <div class="accordion-item">
-            <h2 class="accordion-header" id="heading{{ loop.index }}">
+            <h2 class="accordion-header d-print-none" id="heading{{ loop.index }}">
                 <button
                         class="accordion-button"
                         type="button"
@@ -24,7 +24,7 @@
                             <div class="col">
                                 <div class="row">
                                     <div class="col">
-                                        <div class="row align-items-center">
+                                        <div class="row align-items-center d-print-none">
                                             <div class="col col-4 text-end">
                                                 <label for="sign-quantity-{{ sign.id }}">Quantité</label>
                                             </div>
@@ -43,9 +43,12 @@
                                                         value="{{ sign.quantity }}"/>
                                             </div>
                                         </div>
+                                        <div class="d-none d-print-block">
+                                            {{ sign.quantity }} Ex.
+                                        </div>
                                     </div>
 
-                                    <div class="col text-end">
+                                    <div class="col text-end d-print-none">
                                         <a
                                                 href="{{ path('order_sign_update', {'id': sign.id, 'signType': sign.type}) }}"
                                                 class="btn btn-outline-primary">
