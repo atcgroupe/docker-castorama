@@ -1,10 +1,9 @@
 <div
         id="{{ id }}-{{ face }}"
-        class="
-            sector d-flex justify-content-center align-items-center
+        class="sector
             {{ face }} {{ color }} {{ scale }}
             {% if class is defined %}{{ class }}{% endif %}">
-    <div id="{{ id }}-{{ face }}-sector-text" class="sector-text text-center">
+    <div id="{{ id }}-{{ face }}-sector-text" class="sector-text">
         {{ text }}
     </div>
 </div>
