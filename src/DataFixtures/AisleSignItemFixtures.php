@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\AisleSignItem;
 use App\Service\Fixture\CsvReader;
+use App\Service\Image\ImageNameFormatter;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -16,6 +17,7 @@ class AisleSignItemFixtures extends Fixture implements DependentFixtureInterface
 
     public function __construct(
         private CsvReader $csvReader,
+        private ImageNameFormatter $formatter,
     ) {
     }
 
@@ -35,7 +37,7 @@ class AisleSignItemFixtures extends Fixture implements DependentFixtureInterface
             $item = new AisleSignItem();
 
             $item->setLabel($entry[self::PRODUCT]);
-            $item->setImage($this->getFormattedImageName($entry[self::IMAGE]));
+            $item->setImage($this->formatter->getFormattedName($entry[self::IMAGE]));
             $item->setIsActive(true);
             $item->setCategory($this->getReference($entry[self::CATEGORY]));
 
@@ -50,49 +52,5 @@ class AisleSignItemFixtures extends Fixture implements DependentFixtureInterface
         return [
             AisleSignItemCategoryFixtures::class,
         ];
-    }
-
-    /**
-     * @param string $data
-     *
-     * @return string
-     */
-    private function getFormattedImageName(string $data): string
-    {
-        $filter = [
-            ' - ' => '_',
-            '- ' => '_',
-            ' -' => '_',
-            ' ' => '_',
-            '-' => '_',
-            'À' => 'A',
-            'Â' => 'A',
-            'Ä' => 'A',
-            'È' => 'E',
-            'É' => 'E',
-            'Ê' => 'E',
-            'Ë' => 'E',
-            'D\'' => '',
-            '&' => 'ET',
-            'L\'' => '',
-            '.' => '',
-            'Ç' => 'C',
-            'Î' => 'I',
-            'Ï' => 'I',
-            'Ô' => 'O',
-            'Ö' => 'O',
-            'Û' => 'U',
-            'Ü' => 'U',
-        ];
-
-        $searches = [];
-        $replaces = [];
-
-        foreach ($filter as $key => $value) {
-            $searches[] = $key;
-            $replaces[] = $value;
-        }
-
-        return strtolower(str_replace($searches, $replaces, strtoupper($data)));
     }
 }
