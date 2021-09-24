@@ -8,7 +8,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class AisleSignItemCategoryFixtures extends Fixture implements DependentFixtureInterface
+class AisleSignItemCategoryFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
@@ -36,19 +36,11 @@ class AisleSignItemCategoryFixtures extends Fixture implements DependentFixtureI
 
             $category->setLabel($entry);
             $category->setIsActive(true);
-            $category->setSign($this->getReference(AisleOrderSign::class));
 
             $manager->persist($category);
             $this->setReference($entry, $category);
         }
 
         $manager->flush();
-    }
-
-    public function getDependencies(): array
-    {
-        return [
-            SignFixtures::class,
-        ];
     }
 }
