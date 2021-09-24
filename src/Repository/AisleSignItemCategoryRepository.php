@@ -18,21 +18,4 @@ class AisleSignItemCategoryRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, AisleSignItemCategory::class);
     }
-
-    /**
-     * @param string $class
-     *
-     * @return AisleSignItemCategory[]
-     */
-    public function findBySignClass(string $class): array
-    {
-        return $this->createQueryBuilder('signItemCategory')
-            ->leftJoin('signItemCategory.sign', 'sign')
-            ->andWhere('sign.class = :class')
-                ->setParameter('class', $class)
-            ->orderBy('signItemCategory.id', 'ASC')
-            ->getQuery()
-            ->getResult()
-        ;
-    }
 }
