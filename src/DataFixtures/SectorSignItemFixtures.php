@@ -52,6 +52,7 @@ class SectorSignItemFixtures extends Fixture
                 $item = new SectorSignItem();
                 $item->setLabel($label);
                 $item->setColor($color);
+                $item->setIsActive(true);
 
                 $manager->persist($item);
             }
