@@ -2,10 +2,8 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\AisleOrderSign;
 use App\Entity\AisleSignItemCategory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
 class AisleSignItemCategoryFixtures extends Fixture
