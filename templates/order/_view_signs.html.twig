@@ -18,7 +18,7 @@
                     {% for sign in signs %}
                         <div class="row mb-3 align-items-center">
                             <div class="col d-flex justify-content-center">
-                                {% include 'order/_view_' ~ sign.type ~ '_sign.html.twig' with {'sign': sign} %}
+                                {% include 'order/sign/' ~ sign.type ~ '/_view.html.twig' with {'sign': sign} %}
                             </div>
 
                             <div class="col">
