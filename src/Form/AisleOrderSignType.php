@@ -120,7 +120,7 @@ class AisleOrderSignType extends AbstractType
      * @param FormBuilderInterface $builder
      * @param int                  $categoryNumber
      */
-    private function formCategoryModifier(FormBuilderInterface $builder, int $categoryNumber)
+    protected function formCategoryModifier(FormBuilderInterface $builder, int $categoryNumber)
     {
         $builder->add(
             'category' . $categoryNumber,
@@ -143,7 +143,7 @@ class AisleOrderSignType extends AbstractType
      * @param int           $itemNumber
      * @param               $category
      */
-    private function formItemModifier(FormInterface $form, int $itemNumber, $category)
+    protected function formItemModifier(FormInterface $form, int $itemNumber, $category)
     {
         $options = [
             'class' => AisleSignItem::class,

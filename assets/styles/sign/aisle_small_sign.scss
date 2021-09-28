@@ -1,0 +1,85 @@
+// Aisle small sign
+:root {
+  --sign-scale: 1.8;
+}
+
+.aisle-small {
+  &.medium {
+    --sign-scale: 1.8;
+  }
+
+  &.small {
+    --sign-scale: 0.7;
+  }
+
+  width: calc(var(--sign-scale) * 80mm);
+  height: calc(var(--sign-scale) * 30mm);
+  position: relative;
+  background-repeat: no-repeat;
+  background-size: calc(var(--sign-scale) * 80mm) calc(var(--sign-scale) * 30mm);
+
+  &.recto {
+    background-image: url("../../images/sign/sign/aisleSmall/aisle-small-bg-recto.svg");
+  }
+
+  &.verso {
+    background-image: url("../../images/sign/sign/aisleSmall/aisle-small-bg-verso.svg");
+  }
+
+  .number {
+    position: absolute;
+    top: 0;
+    width: calc(var(--sign-scale) * 30mm);
+    height: calc(var(--sign-scale) * 30mm);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &.recto {
+      left: 0;
+    }
+
+    &.verso {
+      right: 0;
+    }
+
+    div {
+      text-align: center;
+      font-family: Casto;
+      font-weight: 800;
+      font-size: calc(var(--sign-scale) * 40pt);
+      line-height: calc(var(--sign-scale) * 40pt);
+      color: white;
+    }
+  }
+
+  .text-recto-container {
+    position: absolute;
+    top: 0;
+
+    width: calc(var(--sign-scale) * 70mm);
+    height: calc(var(--sign-scale) * 30mm);
+    display: flex;
+    align-items: center;
+
+    &.recto {
+      left: calc(var(--sign-scale) * 32mm);
+      justify-content: start;
+    }
+
+    &.verso {
+      right: calc(var(--sign-scale) * 32mm);
+      justify-content: end;
+      text-align: end;
+    }
+
+    div {
+      width: 100%;
+      font-family: Casto;
+      font-size: calc(var(--sign-scale) * 11pt);
+      font-weight: 800;
+      line-height: calc(var(--sign-scale) * 16pt);
+      color: white;
+    }
+  }
+}

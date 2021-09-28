@@ -24,3 +24,7 @@ yarn-error.log
 ###> resources ###
 /resource/
 ###< resources ###
+
+###> os ###
+*.DS_Store
+###< os ###

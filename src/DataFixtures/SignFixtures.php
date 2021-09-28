@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\AisleOrderSign;
+use App\Entity\AisleSmallOrderSign;
 use App\Entity\SectorOrderSign;
 use App\Entity\Sign;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -33,6 +34,17 @@ class SignFixtures extends Fixture
                 self::BUILDER => 'AisleSignBuilder',
                 self::TEMPLATE => 'AisleSignTemplate',
                 self::PRICE => 11.30,
+            ],
+            [
+                self::CLASS_NAME => AisleSmallOrderSign::class,
+                self::TYPE => AisleSmallOrderSign::getType(),
+                self::IMAGE => 'aisle_small_order_sign.jpg',
+                self::TITLE => 'Panneau allée Small',
+                self::DESCRIPTION => 'Format: 800x300mm<br>Impression: Recto/Verso<br>Matière: PVC 5MM',
+                self::WEIGHT => 0.40,
+                self::BUILDER => 'AisleSmallSignBuilder',
+                self::TEMPLATE => 'AisleSmallSignTemplate',
+                self::PRICE => 8.20,
             ],
             [
                 self::CLASS_NAME => SectorOrderSign::class,

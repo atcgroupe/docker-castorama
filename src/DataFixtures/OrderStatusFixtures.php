@@ -2,8 +2,6 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Event;
-use App\Entity\Order;
 use App\Entity\OrderStatus;
 use App\Service\Event\OrderEvent;
 use Doctrine\Bundle\FixturesBundle\Fixture;

@@ -1,0 +1,16 @@
+<div id="{{ id }}" class="aisle-small {{ face }} {{ scale }} {% if class is defined %}{{ class }}{% endif %}">
+    <div class="number {{ face }}">
+        <div class="aisle-number-value">{{ number }}</div>
+    </div>
+    <div class="text-recto-container {{ face }}">
+        <div class="items_text">
+            {{ text_line_1 }}
+            {% if text_line_2 != '' %}
+                <br />{{ text_line_2 }}
+            {% endif %}
+            {% if text_line_3 != '' %}
+                <br />{{ text_line_3 }}
+            {% endif %}
+        </div>
+    </div>
+</div>

@@ -2,10 +2,8 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\AisleOrderSign;
 use App\Entity\AisleSignItemCategory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
 class AisleSignItemCategoryFixtures extends Fixture
@@ -25,10 +23,8 @@ class AisleSignItemCategoryFixtures extends Fixture
             'PLOMBERIE',
             'QUINCAILLERIE',
             'RANGEMENT',
-            'SALE DE BAIN',
+            'SALLE DE BAIN',
             'SOL',
-            'BÂTI EXTÉRIEUR',
-            'BÂTI EXTÉRIEUR 2',
         ];
 
         foreach ($data as $entry) {

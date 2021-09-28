@@ -19,6 +19,9 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class SectorOrderSignType extends AbstractType
 {
+    private const SIDE_RECTO = 'recto';
+    private const SIDE_VERSO = 'verso';
+
     public function __construct(
         private UrlGeneratorInterface $urlGenerator,
     ) {
@@ -43,34 +46,11 @@ class SectorOrderSignType extends AbstractType
             )->add(
                 'item1',
                 EntityType::class,
-                [
-                    'class' => SectorSignItem::class,
-                    'choice_label' => 'label',
-                    'placeholder' => 'Choisissez un secteur',
-                    'label' => 'Secteur Recto',
-                    'label_attr' => [
-                        'id' => 'sector-item1-label',
-                    ],
-                    'attr' => [
-                        'class' => 'sector-item-select',
-                        'data-route' => $this->urlGenerator->generate('order_sign_sector_color'),
-                        'data-face' => 'recto',
-                    ]
-                ]
+                $this->getItemSelectOption(self::SIDE_RECTO)
             )->add(
                 'item2',
                 EntityType::class,
-                [
-                    'class' => SectorSignItem::class,
-                    'choice_label' => 'label',
-                    'placeholder' => 'Choisissez un secteur',
-                    'label' => 'Secteur Verso',
-                    'attr' => [
-                        'class' => 'sector-item-select',
-                        'data-route' => $this->urlGenerator->generate('order_sign_sector_color'),
-                        'data-face' => 'verso',
-                    ]
-                ]
+                $this->getItemSelectOption(self::SIDE_VERSO)
             )->add(
                 'save',
                 SubmitType::class,
@@ -98,5 +78,38 @@ class SectorOrderSignType extends AbstractType
         $resolver->setDefaults([
             'data_class' => SectorOrderSign::class,
         ]);
+    }
+
+    /**
+     * @param string $side
+     *
+     * @return array
+     */
+    private function getItemSelectOption(string $side): array
+    {
+        $data = [
+            'class' => SectorSignItem::class,
+            'choice_label' => 'label',
+            'placeholder' => 'Choisissez un secteur',
+            'label' => sprintf('Secteur %s', $side),
+            'query_builder' => function (EntityRepository $repository) {
+                return $repository->createQueryBuilder('s')
+                    ->orderBy('s.label', 'ASC');
+
+            },
+            'attr' => [
+                'class' => 'sector-item-select',
+                'data-route' => $this->urlGenerator->generate('order_sign_sector_color'),
+                'data-face' => $side,
+            ]
+        ];
+
+        if ($side === self::SIDE_RECTO) {
+            $data['label_attr'] = [
+                'id' => 'sector-item1-label',
+            ];
+        }
+
+        return $data;
     }
 }
