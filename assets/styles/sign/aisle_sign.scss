@@ -99,7 +99,7 @@
     display: flex;
     align-items: center;
 
-    &.rectp {
+    &.recto {
       justify-content: start;
     }
 
@@ -111,7 +111,7 @@
     div {
       width: 100%;
       font-family: Casto;
-      font-size: calc(var(--sign-scale) * 15pt);
+      font-size: calc(var(--sign-scale) * 13.4pt);
       font-weight: 800;
       line-height: calc(var(--sign-scale) * 18pt);
       color: white;
