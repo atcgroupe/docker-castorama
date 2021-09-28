@@ -23,10 +23,8 @@ class AisleSignItemCategoryFixtures extends Fixture
             'PLOMBERIE',
             'QUINCAILLERIE',
             'RANGEMENT',
-            'SALE DE BAIN',
+            'SALLE DE BAIN',
             'SOL',
-            'BÂTI EXTÉRIEUR',
-            'BÂTI EXTÉRIEUR 2',
         ];
 
         foreach ($data as $entry) {
