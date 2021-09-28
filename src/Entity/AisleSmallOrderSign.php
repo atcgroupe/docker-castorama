@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=AisleSmallOrderSignRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
 class AisleSmallOrderSign extends AbstractAisleOrderSign
 {
