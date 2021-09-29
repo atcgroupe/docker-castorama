@@ -8,6 +8,7 @@ use App\Entity\SectorOrderSign;
 use App\Entity\Sign;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use phpDocumentor\Reflection\Types\Self_;
 
 class SignFixtures extends Fixture
 {
@@ -20,6 +21,7 @@ class SignFixtures extends Fixture
     private const TEMPLATE = 'template';
     private const TYPE = 'type';
     private const PRICE = 'price';
+    private const CUSTOMER_REF = 'customerRef';
 
     public function load(ObjectManager $manager)
     {
@@ -29,33 +31,36 @@ class SignFixtures extends Fixture
                 self::TYPE => AisleOrderSign::getType(),
                 self::IMAGE => 'aisle_order_sign.jpg',
                 self::TITLE => 'Panneau allée',
-                self::DESCRIPTION => 'Format: 800x500mm<br>Impression: Recto/Verso<br>Matière: PVC 5MM',
+                self::DESCRIPTION => 'Format: 800x500mm<br>Impression: Recto/Verso<br>Finition: 2 Perfos hautes<br>Matière: PVC 5MM',
                 self::WEIGHT => 0.50,
                 self::BUILDER => 'AisleSignBuilder',
                 self::TEMPLATE => 'AisleSignTemplate',
-                self::PRICE => 11.30,
+                self::PRICE => 14.39,
+                self::CUSTOMER_REF => '12AS52115',
             ],
             [
                 self::CLASS_NAME => AisleSmallOrderSign::class,
                 self::TYPE => AisleSmallOrderSign::getType(),
                 self::IMAGE => 'aisle_small_order_sign.jpg',
-                self::TITLE => 'Panneau allée Small',
-                self::DESCRIPTION => 'Format: 800x300mm<br>Impression: Recto/Verso<br>Matière: PVC 5MM',
+                self::TITLE => 'Panneau allée New',
+                self::DESCRIPTION => 'Format: 800x300mm<br>Impression: Recto/Verso<br>Finition: 2 Perfos hautes<br>Matière: PVC 5MM',
                 self::WEIGHT => 0.40,
                 self::BUILDER => 'AisleSmallSignBuilder',
                 self::TEMPLATE => 'AisleSmallSignTemplate',
-                self::PRICE => 8.20,
+                self::PRICE => 9.27,
+                self::CUSTOMER_REF => '1RAS52115',
             ],
             [
                 self::CLASS_NAME => SectorOrderSign::class,
                 self::TYPE => SectorOrderSign::getType(),
                 self::IMAGE => 'sector_order_sign.jpg',
                 self::TITLE => 'Panneau secteur',
-                self::DESCRIPTION => 'Format: 1600x500mm<br>Impression: Recto/Verso<br>Matière: PVC 10MM',
+                self::DESCRIPTION => 'Format: 1600x500mm<br>Impression: Recto/Verso<br>Finition: 2 Perfos hautes<br>Matière: PVC 10MM',
                 self::WEIGHT => 1.50,
                 self::BUILDER => 'SectorSignBuilder',
                 self::TEMPLATE => 'SectorSignTemplate',
-                self::PRICE => 26.40,
+                self::PRICE => 38.97,
+                self::CUSTOMER_REF => '12AS3658',
             ]
         ];
 
@@ -72,6 +77,7 @@ class SignFixtures extends Fixture
             $sign->setSwitchFlowTemplateFile($entry[self::TEMPLATE]);
             $sign->setIsActive(true);
             $sign->setPrice($entry[self::PRICE]);
+            $sign->setCustomerReference($entry[self::CUSTOMER_REF]);
 
             $manager->persist($sign);
 
