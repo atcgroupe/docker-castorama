@@ -67,6 +67,11 @@ class Sign
      */
     private $price;
 
+    /**
+     * @ORM\Column(type="string", length=30)
+     */
+    private $customerReference;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -201,6 +206,18 @@ class Sign
     public function setPrice(float $price): self
     {
         $this->price = $price;
+
+        return $this;
+    }
+
+    public function getCustomerReference(): ?string
+    {
+        return $this->customerReference;
+    }
+
+    public function setCustomerReference(string $customerReference): self
+    {
+        $this->customerReference = $customerReference;
 
         return $this;
     }
