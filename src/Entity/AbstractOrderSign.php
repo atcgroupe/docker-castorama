@@ -11,6 +11,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 abstract class AbstractOrderSign implements OrderSignInterface
 {
     /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
+    protected $id;
+
+    /**
      * @ORM\Column(type="smallint")
      * @Assert\NotBlank
      * @Assert\Positive
@@ -28,6 +35,11 @@ abstract class AbstractOrderSign implements OrderSignInterface
      * @ORM\JoinColumn(nullable=false)
      */
     protected $sign;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
     public function getQuantity(): ?int
     {

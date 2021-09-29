@@ -15,13 +15,6 @@ class SectorOrderSign extends AbstractOrderSign
 {
     private const TYPE = 'sector';
 
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
-
     private $option;
 
     /**
@@ -35,11 +28,6 @@ class SectorOrderSign extends AbstractOrderSign
      * @ORM\ManyToOne(targetEntity=SectorSignItem::class)
      */
     private $item2;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     /**
      * @ORM\PostLoad()
