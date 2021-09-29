@@ -5,7 +5,7 @@ namespace App\Service\Alert;
 class Alert
 {
     public const DEFAULT_AUTOHIDE = true;
-    public const DEFAULT_DELAY = 5000;
+    public const DEFAULT_DELAY = 3000;
     public const FLASH_TYPE = 'alert';
 
     public const BASIC = 'basic';
