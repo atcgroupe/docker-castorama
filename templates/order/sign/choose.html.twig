@@ -10,11 +10,14 @@
                     <img src="{{ asset(sign.imagePath) }}" class="card-img-top" alt="{{ sign.title }}">
 
                     <div class="card-body">
-                        <h5 class="card-title">{{ sign.title }}</h5>
+                        <h5 class="card-title mt-0">{{ sign.title }}</h5>
 
                         <p class="card-text">
                             {{ sign.description|raw }}<br>
+                            <hr />
+                            Ref Castorama: {{ sign.customerReference }}
                             Prix: {{ sign.price|format_number({fraction_digit: 2}) }}€
+                            <hr />
                         </p>
 
                         <a href="{{ path('order_sign_create', {'orderId': orderId, 'signType': sign.type}) }}" class="btn btn-primary">
