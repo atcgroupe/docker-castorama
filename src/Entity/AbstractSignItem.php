@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\MappedSuperclass()
  */
-abstract class AbstractSignItem
+abstract class AbstractSignItem implements SignItemInterface
 {
     /**
      * @ORM\Id
