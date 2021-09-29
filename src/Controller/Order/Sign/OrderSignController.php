@@ -25,7 +25,7 @@ class OrderSignController extends AbstractAppController
     #[Route('/{orderId}/sign/choose', name: '_choose')]
     public function choose(int $orderId, SignRepository $signRepository): Response
     {
-        $signs = $signRepository->findAll();
+        $signs = $signRepository->findBy(['isActive' => true]);
 
         return $this->render('order/sign/choose.html.twig', ['signs' => $signs, 'orderId' => $orderId]);
     }
