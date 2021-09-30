@@ -5,6 +5,7 @@ export class AisleSignHelper {
     constructor(formName) {
         this.formName = formName;
         this.isSmall = (formName.search('small') !== -1);
+        this.maxAisleNumber = 199;
         this.aisleNumberInput = document.getElementById(`${formName}_aisleNumber`);
         this.previewAisleNumbers = document.getElementsByClassName('aisle-number-value');
         this.itemSelects = document.getElementsByClassName('item_select');
@@ -22,7 +23,7 @@ export class AisleSignHelper {
     };
 
     setPreviewNumber() {
-        if (this.aisleNumberInput.value >= 99) this.aisleNumberInput.value = 99;
+        if (this.aisleNumberInput.value >= this.maxAisleNumber) this.aisleNumberInput.value = this.maxAisleNumber;
 
         Array.from(this.previewAisleNumbers).forEach((aisleNumber) => {
             aisleNumber.innerHTML = this.aisleNumberInput.value;
