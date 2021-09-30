@@ -36,7 +36,7 @@ class SignFixtures extends Fixture
                 self::BUILDER => 'AisleSignBuilder',
                 self::TEMPLATE => 'AisleSignTemplate',
                 self::PRICE => 14.39,
-                self::CUSTOMER_REF => '12AS52115',
+                self::CUSTOMER_REF => '178738',
             ],
             [
                 self::CLASS_NAME => AisleSmallOrderSign::class,
@@ -48,7 +48,7 @@ class SignFixtures extends Fixture
                 self::BUILDER => 'AisleSmallSignBuilder',
                 self::TEMPLATE => 'AisleSmallSignTemplate',
                 self::PRICE => 9.27,
-                self::CUSTOMER_REF => '1RAS52115',
+                self::CUSTOMER_REF => '178737',
             ],
             [
                 self::CLASS_NAME => SectorOrderSign::class,
@@ -60,7 +60,7 @@ class SignFixtures extends Fixture
                 self::BUILDER => 'SectorSignBuilder',
                 self::TEMPLATE => 'SectorSignTemplate',
                 self::PRICE => 38.97,
-                self::CUSTOMER_REF => '12AS3658',
+                self::CUSTOMER_REF => '178736',
             ]
         ];
 
