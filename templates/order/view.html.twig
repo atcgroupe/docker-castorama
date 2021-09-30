@@ -27,115 +27,183 @@
         </div>
     </div>
 
-    <div class="row mb-5 gx-0 bg-light py-3 px-4 rounded align-items-center border-primary border border-1 d-print-none">
-        <div class="col-12 col-lg-6">
-            <h1 class="h2 text-primary fw-light mb-1">Commande n° {{ order.id }}</h1>
+    <div class="my-5 d-print-none">
+        <h2 class="h3 ms-3">Références commande</h2>
 
-            <h2 class="h5 fw-light text-primary mb-4">{{ order.title }}</h2>
+        <ul class="list-group shadow-sm">
+            <li class="list-group-item d-flex align-items-center">
+                <div class="w-50">Ref. commande Imprimeur</div>
 
-            <p class="lead">
-                {% if not is_granted('ROLE_CUSTOMER_SHOP') %}
-                    Magasin: <strong class="text-primary">{{ order.user.userIdentifier }}</strong><br>
-                {% endif %}
+                <div class="w-50 ps-2 text-primary">{{ order.id }}</div>
+            </li>
 
-                Numéro DataMerch:
-                {% if order.customerReference %}
-                    <strong class="text-primary">{{ order.customerReference }}</strong>
-                {% else %}
-                    <i class="text-muted">Non défini</i>
-                {% endif %}
-            </p>
+            <li class="list-group-item d-flex align-items-center">
+                <div class="w-50">
+                    Ref. commande Castorama<br>
+                    <small class="small text-muted">Numéro de commande DataMerch</small>
+                </div>
 
-            {% if resume %}
-                <p>
-                    Prix total de la commande:
-                    <strong class="text-primary">
-                        {{ resume['global']['price']|format_number({fraction_digit: 2}) }}€
-                    </strong>
-                    <br>
-                    Nombre total de panneaux:
-                    <strong class="text-primary">{{ resume['global']['count'] }} Exemplaires</strong>
-                    <br>
-                    <i>
-                        {% for title, data in resume['sign'] %}
-                            {{ title }} :
-                            <strong class="text-primary">
-                                {{ data['count'] }} Exemplaires
-                                ( {{ data['countPrice']|format_number({fraction_digit: 2}) }}€ )
-                            </strong><br />
-                        {% endfor %}
-                    </i>
-                </p>
+                <div class="w-50 ps-2 text-primary">
+                    {% if order.customerReference %}
+                        {{ order.customerReference }}
+                    {% else %}
+                        <span class="text-muted small">A définir au moment de la validation de la commande</span>
+                    {% endif %}
+                </div>
+            </li>
+
+            {% if not is_granted('ROLE_CUSTOMER_SHOP') %}
+                <li class="list-group-item d-flex align-items-center">
+                    <div class="w-50">Magasin</div>
+
+                    <div class="w-50 ps-2 text-primary">{{ order.user.userIdentifier }}</div>
+                </li>
             {% endif %}
 
-            {% if is_granted('UPDATE_INFO', order) %}
-                <a
-                        href="{{ path('orders_update', {'element': 'info', 'id': order.id}) }}"
-                        class="btn btn-outline-primary mt-2">
-                    Modifier l'intitulé de la commande
-                </a>
-            {% endif %}
-        </div>
+            <li class="list-group-item d-flex align-items-center">
+                <div class="w-50">Intitulé de la commande</div>
 
-        <div class="col-12 col-lg-6 text-end">
-            <p class="lead">
-                Statut de la commande: <strong class="text-primary">{{ order.status.label }}</strong><br>
-
-                Date de livraison prévue:
-                {% if order.deliveryDate %}
-                    <strong class="text-primary">{{ order.deliveryDate|date('d/m/Y') }}</strong>
-                {% else %}
-                    <i class="text-muted">Non définie</i>
-                {% endif %}
-            </p>
+                <div class="w-50 ps-2 text-primary d-flex justify-content-between align-items-center">
+                    <div class="me-3">{{ order.title }}</div>
+                    {% if is_granted('UPDATE_INFO', order) %}
+                        <div>
+                            <a
+                                    href="{{ path('orders_update', {'element': 'info', 'id': order.id}) }}"
+                                    class="btn btn-sm btn-outline-primary">
+                                Modifier
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </li>
 
             {% if order.comment %}
-                <p>
-                    Commentaire à l'attention de l'imprimeur<br>
-                    <strong class="text-primary">{{ order.comment }}</strong>
-                </p>
+                <li class="list-group-item d-flex align-items-center">
+                    <div class="w-50">Commentaire à l'attention de l'imprimeur</div>
 
-                </i>
+                    <div class="w-50 ps-2 text-primary">{{ order.comment }}</div>
+                </li>
             {% endif %}
+        </ul>
 
-            Créée par: <strong class="text-primary">{{ order.member.displayName }}</strong><br>
+        <h2 class="h3 mt-4 ms-3 mt-4">Statut</h2>
 
-            Date de création:
-            <strong class="text-primary">{{ order.creationTime|date('d/m/Y à H:m') }}</strong><br>
+        <ul class="list-group mt-2 shadow-sm">
+            <li class="list-group-item d-flex align-items-center">
+                <div class="w-50">Statut de la commande</div>
 
-            Date de dernière modification:
-            <strong class="text-primary">{{ order.lastUpdateTime|date('d/m/Y à H:m') }}</strong>
+                <div class="w-50 ps-2 text-primary d-flex align-items-center">
+                    <div class="me-2">{{ order.status.label }}</div>
+                    {% if is_granted('ROLE_COMPANY_ADMIN') %}
+                        <div>
+                            <a
+                                    href="{{ path('orders_update', {'element': 'status', 'id': order.id}) }}"
+                                    class="btn btn-sm btn-outline-primary">
+                                Modifier
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </li>
 
-            {% if is_granted('ROLE_COMPANY_ADMIN') %}
-                <p class="mt-4">
-                    <a
-                            href="{{ path('orders_update', {'element': 'status', 'id': order.id}) }}"
-                            class="btn btn-outline-primary me-2">
-                        Modifier le statut
-                    </a>
+            <li class="list-group-item d-flex align-items-center">
+                <div class="w-50">Date de livraison prévue</div>
+
+                <div class="w-50 ps-2 text-primary d-flex justify-content-between align-items-center">
+                    <div class="me-2">
+                        {% if order.deliveryDate %}
+                            {{ order.deliveryDate|date('d/m/Y') }}
+                        {% else %}
+                            <span class="text-muted small">
+                                Le délai de fabrication est de 3 semaines.<br>
+                                La date de livraison sera calculée automatiquement au moment de la validation de la commande.
+                            </span>
+                        {% endif %}
+                    </div>
 
                     {% if is_granted('UPDATE_DELIVERY_DATE', order) %}
-                        <a
-                                href="{{ path('orders_update', {'element': 'delivery', 'id': order.id}) }}"
-                                class="btn btn-outline-primary">
-                            Modifier la date de livraison
-                        </a>
+                        <div>
+                            <a
+                                    href="{{ path('orders_update', {'element': 'delivery', 'id': order.id}) }}"
+                                    class="btn btn-sm btn-outline-primary">
+                                Modifier
+                            </a>
+                        </div>
                     {% endif %}
-                </p>
+                </div>
+            </li>
+
+            <li class="list-group-item d-flex align-items-center">
+                <div class="w-50">Créée par</div>
+
+                <div class="w-50 ps-2 text-primary">{{ order.member.displayName }}</div>
+            </li>
+
+            <li class="list-group-item d-flex align-items-center">
+                <div class="w-50">Date de création</div>
+
+                <div class="w-50 ps-2 text-primary">{{ order.creationTime|date('d/m/Y à H:m') }}</div>
+            </li>
+
+            <li class="list-group-item d-flex align-items-center">
+                <div class="w-50">Date de dernière modification</div>
+
+                <div class="w-50 ps-2 text-primary">{{ order.lastUpdateTime|date('d/m/Y à H:m') }}</div>
+            </li>
+        </ul>
+
+        {% if resume %}
+            <h2 class="h3 mt-4 ms-3 mt-4">Résumé</h2>
+
+            <ul class="list-group mt-2 shadow-sm">
+                <li class="list-group-item d-flex align-items-center">
+                    <div class="w-50">Prix total de la commande</div>
+
+                    <div class="w-50 ps-2 text-primary">
+                        {{ resume['global']['price']|format_number({fraction_digit: 2}) }}€
+                    </div>
+                </li>
+
+                <li class="list-group-item d-flex align-items-center">
+                    <div class="w-50">Nombre total de panneaux</div>
+
+                    <div class="w-50 ps-2 text-primary">{{ resume['global']['count'] }} Exemplaires</div>
+                </li>
+
+                {% for title, data in resume['sign'] %}
+                    <li class="list-group-item d-flex align-items-center">
+                        <div class="w-50">
+                            {{ title }}<br>
+                            <span class="small text-muted fst-italic">
+                                Code DataMerch: {{ data['customerReference'] }}
+                            </span>
+                        </div>
+
+                        <div class="w-50 ps-2 text-primary">
+                            {{ data['count'] }} Exemplaires
+                            ( {{ data['countPrice']|format_number({fraction_digit: 2}) }}€ )
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mt-4 mb-2 d-print-none">
+        <h2 class="h3 ms-3">Liste des panneaux</h2>
+
+        <div>
+            {% if is_granted('UPDATE_SIGN', order) %}
+                <a href="{{ path('order_sign_choose', {'orderId': order.id}) }}" class="btn btn-outline-primary">
+                    Ajouter un panneau
+                </a>
             {% endif %}
+            <a href="#" id="app-signs-print" class="btn btn-outline-secondary">Imprimer la liste</a>
         </div>
     </div>
 
-    <h1 class="h2 fw-light text-primary text-center d-print-none">Liste des panneaux</h1>
 
-    <p class="text-center text-lg-end mt-4 d-print-none">
-        {% if is_granted('UPDATE_SIGN', order) %}
-            <a href="{{ path('order_sign_choose', {'orderId': order.id}) }}" class="btn btn-outline-primary">
-                Ajouter un panneau
-            </a>
-        {% endif %}
-        <a href="#" id="app-signs-print" class="btn btn-outline-secondary">Imprimer la liste</a>
-    </p>
+
 
     {% if orderSigns is not empty %}
         {{ include('order/_view_signs.html.twig') }}

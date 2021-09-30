@@ -13,8 +13,14 @@ class OrderSendType extends OrderInfoType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('customerReference', TextType::class, ['label' => 'Numéro DataMerch.'])
             ->add(
+                'customerReference',
+                TextType::class,
+                [
+                    'label' => 'Référence commande Castorama.',
+                    'help' => 'Il s\'agit du numéro de commande DataMerch',
+                ]
+            )->add(
                 'comment',
                 TextareaType::class,
                 [

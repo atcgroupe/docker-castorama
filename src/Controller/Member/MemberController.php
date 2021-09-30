@@ -62,10 +62,13 @@ class MemberController extends AbstractAppController
 
             $this->dispatchHtmlAlert(
                 Alert::INFO,
-                sprintf('Le membre <b>%s</b> a été ajouté avec succès.', $member->getName())
+                sprintf('Bienvenue <b>%s</b>!', $member->getName())
             );
 
-            return $this->redirectToRoute('member_choose');
+            $this->memberSessionHandler->destroy();
+            $this->memberSessionHandler->set($member);
+
+            return $this->redirectToRoute('member_events', ['id' => $member->getId()]);
         }
 
         return $this->render('member/create.html.twig', ['form' => $form->createView()]);

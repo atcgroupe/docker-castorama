@@ -40,7 +40,8 @@
                                                             path('order_sign_update_quantity',
                                                             {'id': sign.id, 'signType': sign.type})
                                                         }}"
-                                                        value="{{ sign.quantity }}"/>
+                                                        value="{{ sign.quantity }}"
+                                                        {% if not is_granted('UPDATE_SIGN', order) %}disabled{% endif %}/>
                                             </div>
                                         </div>
                                         <div class="d-none d-print-block">
@@ -49,17 +50,19 @@
                                     </div>
 
                                     <div class="col text-end d-print-none">
-                                        <a
-                                                href="{{ path('order_sign_update', {'id': sign.id, 'signType': sign.type}) }}"
-                                                class="btn btn-outline-primary">
-                                            Modifier
-                                        </a>
+                                        {% if is_granted('UPDATE_SIGN', order) %}
+                                            <a
+                                                    href="{{ path('order_sign_update', {'id': sign.id, 'signType': sign.type}) }}"
+                                                    class="btn btn-outline-primary">
+                                                Modifier
+                                            </a>
 
-                                        <a
-                                                href="{{ path('order_sign_delete', {'id': sign.id, 'signType': sign.type}) }}"
-                                                class="btn btn-outline-danger">
-                                            Supprimer
-                                        </a>
+                                            <a
+                                                    href="{{ path('order_sign_delete', {'id': sign.id, 'signType': sign.type}) }}"
+                                                    class="btn btn-outline-danger">
+                                                Supprimer
+                                            </a>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>

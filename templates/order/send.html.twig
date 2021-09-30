@@ -10,7 +10,7 @@
 
     <div class="row justify-content-md-center gx-lg-5">
         {% if resume is null %}
-            <div class="col col-lg-6">
+            <div class="col-12 col-lg-6">
                 <div class="alert alert-warning" role="alert">
                     La commande ne peut pas être validée car elle ne contient aucun panneau.
                 </div>
@@ -24,30 +24,42 @@
                 </div>
             </div>
         {% else %}
-            <div class="col col-lg-6">
-                <hr class="my-4" />
-
+            <div class="col-12 col-lg-6">
                 <h3 class="h4 fw-light text-primary mt-4">Résumé de la commande</h3>
 
-                <p class="lead mb-3">
-                    Prix total de la commande:
-                    <strong class="text-primary">
-                        {{ resume['global']['price']|format_number({fraction_digit: 2}) }}€
-                    </strong>
-                    <br>
-                    Nombre total de panneaux:
-                    <strong class="text-primary">{{ resume['global']['count'] }} Exemplaires</strong>
-                    <br><br>
-                    <i>
-                        {% for title, data in resume['sign'] %}
-                            {{ title }} :
-                            <strong class="text-primary">
+                <ul class="list-group mb-4 shadow-sm">
+                    <li class="list-group-item d-flex align-items-center">
+                        <div class="w-50">Prix total de la commande</div>
+
+                        <div class="w-50 ps-2 text-primary">
+                            {{ resume['global']['price']|format_number({fraction_digit: 2}) }}€
+                        </div>
+                    </li>
+
+                    <li class="list-group-item d-flex align-items-center">
+                        <div class="w-50">Nombre total de panneaux</div>
+
+                        <div class="w-50 ps-2 text-primary">
+                            {{ resume['global']['count'] }} Exemplaires
+                        </div>
+                    </li>
+
+                    {% for title, data in resume['sign'] %}
+                        <li class="list-group-item d-flex align-items-center">
+                            <div class="w-50">
+                                {{ title }}<br>
+                                <span class="small text-muted fst-italic">
+                                    Code DataMerch: {{ data['customerReference'] }}
+                                </span>
+                            </div>
+
+                            <div class="w-50 ps-2 text-primary">
                                 {{ data['count'] }} Exemplaires
                                 ( {{ data['countPrice']|format_number({fraction_digit: 2}) }}€ )
-                            </strong><br />
-                        {% endfor %}
-                    </i>
-                </p>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
 
                 <hr class="my-4" />
 
@@ -68,7 +80,7 @@
                 <hr class="my-4" />
             </div>
 
-            <div class="col col-lg-6 pt-lg-3">
+            <div class="col-12 col-lg-6 pt-lg-3">
                 {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 
                 {{ form_row(form.customerReference, {'attr': {'autofocus': true}}) }}

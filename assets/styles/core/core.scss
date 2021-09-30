@@ -26,3 +26,9 @@ textarea {
   cursor: pointer;
   color: $primary;
 }
+
+/* Forms */
+label.required:after {
+  content: "*";
+  color: red;
+}

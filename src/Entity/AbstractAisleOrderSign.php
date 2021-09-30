@@ -11,13 +11,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 abstract class AbstractAisleOrderSign extends AbstractOrderSign
 {
     /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    protected $id;
-
-    /**
      * @ORM\Column(type="smallint")
      * @Assert\NotBlank
      * @Assert\Positive
@@ -46,11 +39,6 @@ abstract class AbstractAisleOrderSign extends AbstractOrderSign
     protected $category2;
 
     protected $category3;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getAisleNumber(): ?int
     {

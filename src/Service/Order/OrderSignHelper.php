@@ -53,6 +53,7 @@ class OrderSignHelper
             $totalPrice += $countPrice;
             if ($count > 0) {
                 $signResume[$type->getTitle()] = [
+                    'customerReference' => $type->getCustomerReference(),
                     'count' => $count,
                     'countModels' => $countModels,
                     'unitPrice' => $type->getPrice(),

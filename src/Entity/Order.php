@@ -44,7 +44,10 @@ class Order
 
     /**
      * @ORM\Column(type="string", length=20, nullable=true)
-     * @Assert\NotBlank(groups={"order_send"}, message="Le numéro DataMerch est obligatoire pour valider la commande")
+     * @Assert\NotBlank(
+     *     groups={"order_send"},
+     *     message="Le numéro de commande Castorama est obligatoire pour valider une commande"
+     * )
      */
     private $customerReference;
 

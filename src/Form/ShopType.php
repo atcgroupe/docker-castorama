@@ -40,6 +40,7 @@ class ShopType extends AbstractType
                 TextareaType::class,
                 [
                     'label' => 'Infos de livraison',
+                    'required' => false,
                     'attr' => [
                         'rows' => 5
                     ]

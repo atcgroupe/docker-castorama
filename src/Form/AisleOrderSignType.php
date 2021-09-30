@@ -40,6 +40,7 @@ class AisleOrderSignType extends AbstractType
                 CheckboxType::class,
                 [
                     'label' => 'Masquer le pictogramme',
+                    'required' => false,
                     'attr' => [
                         'class' => self::ITEM_CHECKBOX,
                     ],
@@ -49,6 +50,7 @@ class AisleOrderSignType extends AbstractType
                 CheckboxType::class,
                 [
                     'label' => 'Masquer le pictogramme',
+                    'required' => false,
                     'attr' => [
                         'class' => self::ITEM_CHECKBOX,
                     ],

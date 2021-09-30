@@ -28,24 +28,24 @@
 
   .number {
     position: absolute;
-    top: calc(var(--sign-scale) * 5.8mm);
+    top: calc(var(--sign-scale) * 6.6mm);
     width: calc(var(--sign-scale) * 20mm);
-    height: calc(var(--sign-scale) * 11.2mm);
+    height: calc(var(--sign-scale) * 10mm);
     text-align: center;
 
     &.recto {
-      left: calc(var(--sign-scale) * 6mm);
+      left: calc(var(--sign-scale) * 5mm);
     }
 
     &.verso {
-      right: calc(var(--sign-scale) * 6mm);
+      right: calc(var(--sign-scale) * 5mm);
     }
 
     span {
       font-family: Casto;
       font-weight: 800;
-      font-size: calc(var(--sign-scale) * 38pt);
-      line-height: calc(var(--sign-scale) * 38pt);
+      font-size: calc(var(--sign-scale) * 34.2pt);
+      line-height: calc(var(--sign-scale) * 34.2pt);
       color: white;
     }
   }
