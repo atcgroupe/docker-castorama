@@ -11,8 +11,8 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserFixtures extends Fixture implements DependentFixtureInterface
 {
-    private const USERNAME = 'username';
-    private const PASSWORD = 'password';
+    public const USERNAME = 'username';
+    public const PASSWORD = 'password';
 
     public function __construct(
         private UserPasswordHasherInterface $passwordHasher,
@@ -24,7 +24,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
     {
         // Shops users
         $shopUsersData = $this->csvReader->getData(
-            \dirname(__DIR__, 2) . '/resource/shop_listing.csv',
+            \dirname(__DIR__, 2) . '/resource/shop_listing_pw_encoded.csv',
             [
                 ShopFixtures::SHOP_NAME,
                 self::USERNAME,
@@ -36,7 +36,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
             $user = new User();
 
             $user->setUsername($entry[self::USERNAME]);
-            $user->setPassword($this->passwordHasher->hashPassword($user, $entry[self::PASSWORD]));
+            $user->setPassword($entry[self::PASSWORD]);
             $user->setRoles([User::ROLE_CUSTOMER_SHOP]);
             $user->setIsActive(true);
             $user->setShop($this->getReference($entry[ShopFixtures::SHOP_NAME]));
