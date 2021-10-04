@@ -3,17 +3,22 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\MappedSuperclass()
  */
-abstract class AbstractOrderSign implements OrderSignInterface
+abstract class AbstractOrderSign implements OrderSignInterface, OrderSignApiInterface
 {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     *
+     * @Groups({"api_xml_object"})
+     * @SerializedName("signId")
      */
     protected $id;
 
@@ -21,6 +26,8 @@ abstract class AbstractOrderSign implements OrderSignInterface
      * @ORM\Column(type="smallint")
      * @Assert\NotBlank
      * @Assert\Positive
+     *
+     * @Groups({"api_xml_object"})
      */
     protected $quantity;
 
@@ -35,6 +42,13 @@ abstract class AbstractOrderSign implements OrderSignInterface
      * @ORM\JoinColumn(nullable=false)
      */
     protected $sign;
+
+    /**
+     * Used for API json data
+     *
+     * @var string
+     */
+    protected string $data;
 
     public function getId(): ?int
     {
@@ -75,5 +89,61 @@ abstract class AbstractOrderSign implements OrderSignInterface
         $this->sign = $sign;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFileName(): string
+    {
+        return sprintf('%s_%s_%s.xml', $this->getOrderId(), $this->getSign()->getType(), $this->getId());
+    }
+
+    /**
+     * @return string
+     *
+     * @Groups({"api_xml_object"})
+     */
+    public function getSwitchBuilder(): string
+    {
+        return $this->getSign()->getSwitchFlowBuilder();
+    }
+
+    /**
+     * @return string
+     *
+     * @Groups({"api_xml_object"})
+     */
+    public function getSwitchTemplate(): string
+    {
+        return $this->getSign()->getSwitchFlowTemplateFile();
+    }
+
+    /**
+     * @return string
+     *
+     * @Groups({"api_xml_object"})
+     */
+    public function getData(): string
+    {
+        return $this->data;
+    }
+
+    /**
+     * @param string $data
+     */
+    public function setData(string $data): void
+    {
+        $this->data = $data;
+    }
+
+    /**
+     * @return int
+     *
+     * @Groups({"api_xml_object"})
+     */
+    public function getOrderId(): int
+    {
+        return $this->getOrder()->getId();
     }
 }
