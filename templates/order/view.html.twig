@@ -142,13 +142,13 @@
             <li class="list-group-item d-flex align-items-center">
                 <div class="w-50">Date de création</div>
 
-                <div class="w-50 ps-2 text-primary">{{ order.creationTime|date('d/m/Y à H:m') }}</div>
+                <div class="w-50 ps-2 text-primary">{{ order.creationTime|date('d/m/Y à H:i', "Europe/Paris") }}</div>
             </li>
 
             <li class="list-group-item d-flex align-items-center">
                 <div class="w-50">Date de dernière modification</div>
 
-                <div class="w-50 ps-2 text-primary">{{ order.lastUpdateTime|date('d/m/Y à H:m') }}</div>
+                <div class="w-50 ps-2 text-primary">{{ order.lastUpdateTime|date('d/m/Y à H:i', "Europe/Paris") }}</div>
             </li>
         </ul>
 
