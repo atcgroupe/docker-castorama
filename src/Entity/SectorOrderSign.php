@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\SectorOrderSignRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
@@ -95,5 +97,44 @@ class SectorOrderSign extends AbstractOrderSign
                 ->atPath('item2')
                 ->addViolation();
         }
+    }
+
+    /**
+     * @return string
+     *
+     * @Groups({"api_json_data"})
+     * @SerializedName("item1Label")
+     */
+    public function getItem1Label(): string
+    {
+        return $this->getItem1()->getLabel();
+    }
+
+    /**
+     * @return string
+     *
+     * @Groups({"api_json_data"})
+     * @SerializedName("item2Label")
+     */
+    public function getItem2Label(): string
+    {
+        return (null === $this->getItem2()) ? $this->getItem1Label() : $this->getItem2()->getLabel();
+    }
+
+    /**
+     * Returns Enfocus Switch template
+     *
+     * Pattern: baseTemplateName_colorRecto_colorVerso
+     *
+     * @return string
+     */
+    public function getSwitchTemplate(): string
+    {
+        return sprintf(
+            '%s_%s_%s',
+            $this->getSign()->getSwitchFlowTemplateFile(),
+            $this->getItem1()->getColor(),
+            (null === $this->getItem2()) ? $this->getItem1()->getColor() : $this->getItem2()->getColor()
+        );
     }
 }
