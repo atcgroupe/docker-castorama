@@ -111,17 +111,6 @@
                     </li>
                 {% endfor %}
             </ul>
-
-            <div class="text-small text-muted text-center mb-4">
-                Pour consulter le détail de votre commande,
-                <a href="{{ url('orders_view', {'id': order.id}) }}">
-                    cliquez ici
-                </a>.<br>
-                Pour gérer vos notifications par email,
-                <a href="{{ url('member_events', {'id': order.id}) }}">
-                    cliquez ici
-                </a>.<br>
-            </div>
         </div>
     </body>
 </html>
