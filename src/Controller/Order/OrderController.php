@@ -83,7 +83,7 @@ class OrderController extends AbstractAppController
         name: '_update',
         requirements: ['element' => 'status|delivery|info'],
     )]
-    public function update(int $id, string $element, Request $request): Response
+    public function update(int $id, string $element, Request $request, OrderHelper $orderHelper): Response
     {
         $order = $this->orderRepository->findOneWithRelations($id);
 
@@ -109,6 +109,10 @@ class OrderController extends AbstractAppController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if ($element === self::UPDATE_ELEMENT_INFO) {
+                $orderHelper->updateLastUpdateTime($order);
+            }
+
             $this->getDoctrine()->getManager()->flush();
 
             if ($element === self::UPDATE_ELEMENT_STATUS) {

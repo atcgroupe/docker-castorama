@@ -7,6 +7,7 @@ use App\Repository\OrderRepository;
 use App\Repository\SignRepository;
 use App\Service\Alert\Alert;
 use App\Service\Controller\AbstractAppController;
+use App\Service\Order\OrderHelper;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -19,6 +20,7 @@ class OrderSignController extends AbstractAppController
 {
     public function __construct(
         private SignRepository $signRepository,
+        private OrderHelper $orderHelper,
     ) {
     }
 
@@ -33,13 +35,16 @@ class OrderSignController extends AbstractAppController
     #[Route('/{orderId}/sign/{signType}/create', name: '_create')]
     public function create(int $orderId, string $signType, OrderRepository $orderRepository, Request $request): Response
     {
+        $order = $orderRepository->find($orderId);
         $orderSignClass = $this->signRepository->findOneBy(['type' => $signType])->getClass();
         $orderSign = new $orderSignClass();
-        $orderSign->setOrder($orderRepository->find($orderId));
+        $orderSign->setOrder($order);
         $form = $this->createForm(sprintf('App\Form\%sOrderSignType', ucfirst($signType)), $orderSign);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $this->orderHelper->updateLastUpdateTime($order);
+
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($orderSign);
             $manager->flush();
@@ -67,9 +72,9 @@ class OrderSignController extends AbstractAppController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $manager = $this->getDoctrine()->getManager();
-            $manager->persist($orderSign);
-            $manager->flush();
+            $this->orderHelper->updateLastUpdateTime($orderSign->getOrder());
+
+            $this->getDoctrine()->getManager()->flush();
 
             $this->dispatchAlert(Alert::SUCCESS, 'Les modifications sont enregistrées!');
 
@@ -90,6 +95,7 @@ class OrderSignController extends AbstractAppController
     {
         $orderSign = $this->getOrderSign($signType, $id);
         $orderSign->setQuantity($request->request->get('quantity'));
+        $this->orderHelper->updateLastUpdateTime($orderSign->getOrder());
 
         $this->getDoctrine()->getManager()->flush();
 
@@ -103,6 +109,7 @@ class OrderSignController extends AbstractAppController
         $orderId = $orderSign->getOrder()->getId();
 
         if ($request->isMethod('POST')) {
+            $this->orderHelper->updateLastUpdateTime($orderSign->getOrder());
             $manager = $this->getDoctrine()->getManager();
             $manager->remove($orderSign);
             $manager->flush();
