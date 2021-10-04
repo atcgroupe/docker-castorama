@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\OrderRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -17,28 +18,38 @@ class Order
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     *
+     * @Groups({"api"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=100)
      * @Assert\NotBlank
+     *
+     * @Groups({"api"})
      */
     private $title;
 
     /**
      * @ORM\Column(type="datetime")
+     *
+     * @Groups({"api"})
      */
     private $creationTime;
 
     /**
      * @ORM\Column(type="datetime")
+     *
+     * @Groups({"api"})
      */
     private $lastUpdateTime;
 
     /**
      * @ORM\Column(type="date", nullable=true)
      * @Assert\Date(groups={"update_admin"})
+     *
+     * @Groups({"api"})
      */
     private $deliveryDate;
 
@@ -48,6 +59,8 @@ class Order
      *     groups={"order_send"},
      *     message="Le numéro de commande Castorama est obligatoire pour valider une commande"
      * )
+     *
+     * @Groups({"api"})
      */
     private $customerReference;
 
@@ -65,6 +78,8 @@ class Order
     /**
      * @ORM\ManyToOne(targetEntity=OrderStatus::class)
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @Groups({"api"})
      */
     private $status;
 
