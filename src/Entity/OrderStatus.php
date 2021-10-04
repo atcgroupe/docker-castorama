@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\OrderStatusRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=OrderStatusRepository::class)
@@ -21,11 +22,15 @@ class OrderStatus
     /**
      * @ORM\Id
      * @ORM\Column(type="string")
+     *
+     * @Groups({"api"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=30)
+     *
+     * @Groups({"api"})
      */
     private $label;
 

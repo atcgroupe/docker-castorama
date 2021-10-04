@@ -16,4 +16,9 @@ class OrderHelper
     {
         $order->setStatus($this->statusRepository->find($statusId));
     }
+
+    public function updateLastUpdateTime(Order $order)
+    {
+        $order->setLastUpdateTime(new \DateTime('NOW'));
+    }
 }

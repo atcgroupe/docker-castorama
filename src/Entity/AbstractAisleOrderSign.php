@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -14,6 +16,7 @@ abstract class AbstractAisleOrderSign extends AbstractOrderSign
      * @ORM\Column(type="smallint")
      * @Assert\NotBlank
      * @Assert\Positive
+     * @Groups({"api_json_data"})
      */
     protected $aisleNumber;
 
@@ -149,6 +152,8 @@ abstract class AbstractAisleOrderSign extends AbstractOrderSign
 
     /**
      * @return string
+     * @Groups({"api_json_data"})
+     * @SerializedName("item1Label")
      */
     public function getItem1Label(): string
     {
@@ -157,6 +162,8 @@ abstract class AbstractAisleOrderSign extends AbstractOrderSign
 
     /**
      * @return string
+     * @Groups({"api_json_data"})
+     * @SerializedName("item2Label")
      */
     public function getItem2Label(): string
     {
@@ -165,6 +172,8 @@ abstract class AbstractAisleOrderSign extends AbstractOrderSign
 
     /**
      * @return string
+     * @Groups({"api_json_data"})
+     * @SerializedName("item3Label")
      */
     public function getItem3Label(): string
     {

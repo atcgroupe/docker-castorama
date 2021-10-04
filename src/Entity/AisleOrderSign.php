@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\AisleOrderSignRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -73,9 +75,17 @@ class AisleOrderSign extends AbstractAisleOrderSign
      */
     public function getItem1Image(): string
     {
-        $image = (null === $this->getItem1()) ? 'empty' : $this->getItem1()->getImage();
+        return sprintf('/build/images/sign/sign/aisle/picto/%s.svg', $this->getItem1ImageName());
+    }
 
-        return sprintf('/build/images/sign/sign/aisle/picto/%s.svg', $image);
+    /**
+     * @return string
+     * @Groups({"api_json_data"})
+     * @SerializedName("item1Image")
+     */
+    public function getItem1ImageName(): string
+    {
+        return (null === $this->getItem1()) ? 'empty' : $this->getItem1()->getImage();
     }
 
     /**
@@ -83,9 +93,17 @@ class AisleOrderSign extends AbstractAisleOrderSign
      */
     public function getItem2Image(): string
     {
-        $image = (null === $this->getItem2() || $this->getHideItem2Image()) ? 'empty' : $this->getItem2()->getImage();
+        return sprintf('/build/images/sign/sign/aisle/picto/%s.svg', $this->getItem2ImageName());
+    }
 
-        return sprintf('/build/images/sign/sign/aisle/picto/%s.svg', $image);
+    /**
+     * @return string
+     * @Groups({"api_json_data"})
+     * @SerializedName("item2Image")
+     */
+    public function getItem2ImageName(): string
+    {
+        return (null === $this->getItem2() || $this->getHideItem2Image()) ? 'empty' : $this->getItem2()->getImage();
     }
 
     /**
@@ -93,8 +111,16 @@ class AisleOrderSign extends AbstractAisleOrderSign
      */
     public function getItem3Image(): string
     {
-        $image = (null === $this->getItem3() || $this->getHideItem3Image()) ? 'empty' : $this->getItem3()->getImage();
+        return sprintf('/build/images/sign/sign/aisle/picto/%s.svg', $this->getItem3ImageName());
+    }
 
-        return sprintf('/build/images/sign/sign/aisle/picto/%s.svg', $image);
+    /**
+     * @return string
+     * @Groups({"api_json_data"})
+     * @SerializedName("item3Image")
+     */
+    public function getItem3ImageName(): string
+    {
+        return (null === $this->getItem3() || $this->getHideItem3Image()) ? 'empty' : $this->getItem3()->getImage();
     }
 }
