@@ -68,7 +68,7 @@ class MemberController extends AbstractAppController
             $this->memberSessionHandler->destroy();
             $this->memberSessionHandler->set($member);
 
-            return $this->redirectToRoute('member_events', ['id' => $member->getId()]);
+            return $this->redirectToRoute('orders_list_active');
         }
 
         return $this->render('member/create.html.twig', ['form' => $form->createView()]);
