@@ -28,18 +28,22 @@
     </div>
 
     <div class="my-5 d-print-none">
-        <h2 class="h3 ms-3">Références commande</h2>
+        <h2 class="h4 ms-3">Références de la commande</h2>
 
         <ul class="list-group shadow-sm">
             <li class="list-group-item d-flex align-items-center">
-                <div class="w-50">Ref. commande Imprimeur</div>
+                <div class="w-50">
+                    Identifiant unique de la commande<br>
+
+                    <small class="small text-muted">Référence imprimeur</small>
+                </div>
 
                 <div class="w-50 ps-2 text-primary">{{ order.id }}</div>
             </li>
 
             <li class="list-group-item d-flex align-items-center">
                 <div class="w-50">
-                    Ref. commande Castorama<br>
+                    Référence Castorama<br>
                     <small class="small text-muted">Numéro de commande DataMerch</small>
                 </div>
 
@@ -60,6 +64,7 @@
                 </li>
             {% endif %}
 
+            {#
             <li class="list-group-item d-flex align-items-center">
                 <div class="w-50">Intitulé de la commande</div>
 
@@ -76,6 +81,8 @@
                     {% endif %}
                 </div>
             </li>
+            #}
+
 
             {% if order.comment %}
                 <li class="list-group-item d-flex align-items-center">
@@ -86,7 +93,7 @@
             {% endif %}
         </ul>
 
-        <h2 class="h3 mt-4 ms-3 mt-4">Statut</h2>
+        <h2 class="h4 mt-4 ms-3 mt-4">Etat de la commande</h2>
 
         <ul class="list-group mt-2 shadow-sm">
             <li class="list-group-item d-flex align-items-center">
@@ -153,7 +160,7 @@
         </ul>
 
         {% if resume %}
-            <h2 class="h3 mt-4 ms-3 mt-4">Résumé</h2>
+            <h2 class="h4 mt-4 ms-3 mt-4">Résumé de la commande</h2>
 
             <ul class="list-group mt-2 shadow-sm">
                 <li class="list-group-item d-flex align-items-center">
