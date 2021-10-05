@@ -33,8 +33,8 @@ class AisleOrderSignType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('aisleNumber', TextType::class, ['label' => 'Numéro d\'allée'])
-            ->add('quantity', NumberType::class, ['label' => 'Quantité', 'attr' => ['autofocus' => true]])
+            ->add('aisleNumber', TextType::class, ['label' => 'Numéro d\'allée', 'attr' => ['autofocus' => true]])
+            ->add('quantity', NumberType::class, ['label' => 'Quantité'])
             ->add(
                 'hideItem2Image',
                 CheckboxType::class,
@@ -56,21 +56,21 @@ class AisleOrderSignType extends AbstractType
                     ],
                 ]
             )->add(
-                'save',
+                'saveAndNew',
                 SubmitType::class,
                 [
-                    'label' => 'Enregistrer',
+                    'label' => 'Valider le panneau et poursuivre la saisie',
                     'attr' => [
                         'class' => 'btn btn-lg btn-outline-primary w-100 my-2'
                     ]
                 ]
             )->add(
-                'saveAndNew',
+                'saveAndChoose',
                 SubmitType::class,
                 [
-                    'label' => 'Enregistrer & nouveau',
+                    'label' => 'Valider le panneau et poursuivre avec d\'autres formats de panneaux',
                     'attr' => [
-                        'class' => 'btn btn-lg btn-outline-primary w-100 mb-4'
+                        'class' => 'btn btn-lg btn-outline-primary w-100 my-2'
                     ]
                 ]
             )
