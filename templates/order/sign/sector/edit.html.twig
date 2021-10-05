@@ -7,10 +7,6 @@
                 <h3 class="text-primary mb-3">Panneau secteur</h3>
 
                 {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
-                    {{ form_row(form.quantity) }}
-
-                    <h4 class="mt-4 mb-3">Personnalisation</h4>
-
                     {{ form_widget(form.option) }}
 
                     {{ form_row(form.item1) }}
@@ -19,13 +15,17 @@
                         {{ form_row(form.item2) }}
                     </div>
 
-                    <div class="mt-5 mb-4">
-                        {{ form_widget(form.save) }}
+                    <div class="my-4">
+                        {{ form_row(form.quantity) }}
+                    </div>
 
+                    <div class="my-4">
                         {{ form_widget(form.saveAndNew) }}
 
-                        <a href="{{ path('orders_view', {'id': orderId}) }}" class="btn btn-outline-secondary w-100">
-                            Retour à la commande
+                        {{ form_widget(form.saveAndChoose) }}
+
+                        <a href="{{ path('orders_view', {'id': orderId}) }}" class="btn btn-outline-danger w-100 mt-2">
+                            Annuler
                         </a>
                     </div>
 

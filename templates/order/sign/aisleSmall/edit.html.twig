@@ -8,8 +8,6 @@
 
                 {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 
-                    {{ form_row(form.quantity)}}
-
                     <h4 class="mt-5 mb-3">Personnalisation</h4>
 
                     <div class="mb-4">
@@ -42,12 +40,16 @@
                     </div>
 
                     <div class="mb-4">
-                        {{ form_widget(form.save) }}
+                        {{ form_row(form.quantity)}}
+                    </div>
 
+                    <div class="mb-4">
                         {{ form_widget(form.saveAndNew) }}
 
-                        <a href="{{ path('orders_view', {'id': orderId}) }}" class="btn btn-outline-secondary w-100">
-                            Retour à la commande
+                        {{ form_widget(form.saveAndChoose) }}
+
+                        <a href="{{ path('orders_view', {'id': orderId}) }}" class="btn btn-outline-danger w-100">
+                            Annuler
                         </a>
                     </div>
 
