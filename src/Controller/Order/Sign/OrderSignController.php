@@ -131,9 +131,9 @@ class OrderSignController extends AbstractAppController
      */
     private function getRedirectRoute(FormInterface $form, $orderId, $signType): RedirectResponse
     {
-        return $form->get('save')->isClicked()
-            ? $this->redirectToRoute('orders_view', ['id' => $orderId])
-            : $this->redirectToRoute('order_sign_create', ['orderId' => $orderId, 'signType' => $signType]);
+        return $form->get('saveAndNew')->isClicked()
+            ? $this->redirectToRoute('order_sign_create', ['orderId' => $orderId, 'signType' => $signType])
+            : $this->redirectToRoute('order_sign_choose', ['orderId' => $orderId]);
     }
 
     /**
