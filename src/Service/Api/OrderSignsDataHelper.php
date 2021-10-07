@@ -19,7 +19,10 @@ class OrderSignsDataHelper
     ) {
     }
 
-    public function generateXmlZipFile(Order $order)
+    /**
+     * @param Order $order
+     */
+    public function generateXmlZipFile(Order $order): void
     {
         $this->setApiDir();
         $this->purgeApiDir();
@@ -74,7 +77,7 @@ class OrderSignsDataHelper
         return $this->publicDir . self::PUBLIC_API_DIR;
     }
 
-    private function purgeApiDir()
+    private function purgeApiDir(): void
     {
         if (is_readable($this->getZipName())) {
             unlink($this->getZipName());
