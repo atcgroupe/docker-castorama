@@ -52,21 +52,13 @@ class SectorOrderSignType extends AbstractType
                 EntityType::class,
                 $this->getItemSelectOption(self::SIDE_VERSO)
             )->add(
-                'saveAndNew',
-                SubmitType::class,
+                'save',
+                SignSaveType::class,
                 [
-                    'label' => 'Valider le panneau et poursuivre la saisie',
-                    'attr' => [
-                        'class' => 'btn btn-lg btn-outline-primary w-100 my-2'
-                    ]
-                ]
-            )->add(
-                'saveAndChoose',
-                SubmitType::class,
-                [
-                    'label' => 'Valider le panneau et poursuivre avec d\'autres formats de panneaux',
-                    'attr' => [
-                        'class' => 'btn btn-lg btn-outline-primary w-100 my-2'
+                    SignSaveType::ACTION_TYPE => $options[SignSaveType::ACTION_TYPE],
+                    'mapped' => false,
+                    'row_attr' => [
+                        'class' => 'mb-0'
                     ]
                 ]
             )
@@ -77,6 +69,7 @@ class SectorOrderSignType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => SectorOrderSign::class,
+            SignSaveType::ACTION_TYPE => SignSaveType::CREATE,
         ]);
     }
 
