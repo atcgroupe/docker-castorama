@@ -36,6 +36,19 @@ class AisleOrderSignType extends AbstractType
             ->add('aisleNumber', TextType::class, ['label' => 'Numéro d\'allée', 'attr' => ['autofocus' => true]])
             ->add('quantity', NumberType::class, ['label' => 'Quantité'])
             ->add(
+                'category',
+                EntityType::class,
+                [
+                    'class' => AisleSignItemCategory::class,
+                    'choice_label' => 'label',
+                    'placeholder' => 'Choisissez une catégorie',
+                    'label' => 'Catégorie',
+                    'attr' => [
+                        'class' => self::ITEM_CATEGORY_SELECT . ' mb-2',
+                        'data-route' => $this->urlGenerator->generate('order_sign_aisle_select_item'),
+                    ],
+                ]
+            )->add(
                 'hideItem2Image',
                 CheckboxType::class,
                 [
@@ -56,57 +69,29 @@ class AisleOrderSignType extends AbstractType
                     ],
                 ]
             )->add(
-                'saveAndNew',
-                SubmitType::class,
+                'save',
+                SignSaveType::class,
                 [
-                    'label' => 'Valider le panneau et poursuivre la saisie',
-                    'attr' => [
-                        'class' => 'btn btn-lg btn-outline-primary w-100 my-2'
-                    ]
-                ]
-            )->add(
-                'saveAndChoose',
-                SubmitType::class,
-                [
-                    'label' => 'Valider le panneau et poursuivre avec d\'autres formats de panneaux',
-                    'attr' => [
-                        'class' => 'btn btn-lg btn-outline-primary w-100 my-2'
+                    SignSaveType::ACTION_TYPE => $options[SignSaveType::ACTION_TYPE],
+                    'mapped' => false,
+                    'row_attr' => [
+                        'class' => 'mb-0'
                     ]
                 ]
             )
         ;
 
-        $this->formCategoryModifier($builder, 1);
-        $this->formCategoryModifier($builder, 2);
-        $this->formCategoryModifier($builder, 3);
-
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
             $form = $event->getForm();
             $sign = $event->getData();
 
-            $this->formItemModifier($form, 1, $sign->getCategory1());
-            $this->formItemModifier($form, 2, $sign->getCategory2());
-            $this->formItemModifier($form, 3, $sign->getCategory3());
+            $this->formItemsModifier($form, $sign->getCategory());
         });
 
-        $builder->get('category1')->addEventListener(
+        $builder->get('category')->addEventListener(
             FormEvents::POST_SUBMIT,
             function (FormEvent $event) {
-               $this->formItemModifier($event->getForm()->getParent(), 1, $event->getForm()->getData());
-            }
-        );
-
-        $builder->get('category2')->addEventListener(
-            FormEvents::POST_SUBMIT,
-            function (FormEvent $event) {
-                $this->formItemModifier($event->getForm()->getParent(), 2, $event->getForm()->getData());
-            }
-        );
-
-        $builder->get('category3')->addEventListener(
-            FormEvents::POST_SUBMIT,
-            function (FormEvent $event) {
-                $this->formItemModifier($event->getForm()->getParent(), 3, $event->getForm()->getData());
+               $this->formItemsModifier($event->getForm()->getParent(), $event->getForm()->getData());
             }
         );
     }
@@ -115,58 +100,46 @@ class AisleOrderSignType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => AisleOrderSign::class,
+            SignSaveType::ACTION_TYPE => SignSaveType::CREATE,
         ]);
     }
 
     /**
-     * @param FormBuilderInterface $builder
-     * @param int                  $categoryNumber
-     */
-    protected function formCategoryModifier(FormBuilderInterface $builder, int $categoryNumber)
-    {
-        $builder->add(
-            'category' . $categoryNumber,
-            EntityType::class,
-            [
-                'class' => AisleSignItemCategory::class,
-                'choice_label' => 'label',
-                'placeholder' => 'Choisissez une catégorie',
-                'attr' => [
-                    'class' => self::ITEM_CATEGORY_SELECT . ' mb-2',
-                    'data-route' => $this->urlGenerator->generate('order_sign_aisle_select_item'),
-                    'data-cible' => 'aisle_order_sign_item' . $categoryNumber,
-                ],
-            ]
-        );
-    }
-
-    /**
      * @param FormInterface $form
-     * @param int           $itemNumber
      * @param               $category
      */
-    protected function formItemModifier(FormInterface $form, int $itemNumber, $category)
+    protected function formItemsModifier(FormInterface $form, $category)
     {
-        $options = [
-            'class' => AisleSignItem::class,
-            'choice_label' => 'label',
-            'placeholder' => '',
-            'query_builder' => function (EntityRepository $repository) use ($category) {
-                return $repository->createQueryBuilder('s')
-                    ->andWhere('s.category = :category')
-                    ->setParameter('category', $category);
-            },
-            'attr' => [
-                'class' => self::ITEM_SELECT . ' mb-1',
-                'data-route' => $this->urlGenerator->generate('order_sign_aisle_item_info'),
-                'data-item' => $itemNumber,
-            ],
-        ];
+        for ($itemNumber = 1; $itemNumber < 4; $itemNumber ++) {
+            $options = [
+                'class' => AisleSignItem::class,
+                'choice_label' => 'label',
+                'placeholder' => '',
+                'label' => 'Produit n°' . $itemNumber,
+                'query_builder' => function (EntityRepository $repository) use ($category) {
+                    return $repository->createQueryBuilder('s')
+                        ->andWhere('s.category = :category')
+                        ->setParameter('category', $category);
+                },
+                'attr' => [
+                    'class' => self::ITEM_SELECT . ' mb-1',
+                    'data-route' => $this->urlGenerator->generate('order_sign_aisle_item_info'),
+                    'data-item' => $itemNumber,
+                ],
+                'row_attr' => [
+                    'class' => 'mb-1'
+                ],
+            ];
 
-        if ($itemNumber !== 1 && null === $category) {
-            $options['disabled'] = true;
+            if ($itemNumber !== 1 && null === $category) {
+                $options['disabled'] = true;
+            }
+
+            if ($itemNumber !== 1) {
+                $options['required'] = false;
+            }
+
+            $form->add('item' . $itemNumber, EntityType::class, $options);
         }
-
-        $form->add('item' . $itemNumber, EntityType::class, $options);
     }
 }
