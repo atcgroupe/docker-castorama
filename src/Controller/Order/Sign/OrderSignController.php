@@ -3,6 +3,7 @@
 namespace App\Controller\Order\Sign;
 
 use App\Entity\AbstractOrderSign;
+use App\Form\SignSaveType;
 use App\Repository\OrderRepository;
 use App\Repository\SignRepository;
 use App\Service\Alert\Alert;
@@ -58,6 +59,7 @@ class OrderSignController extends AbstractAppController
             sprintf('order/sign/%s/edit.html.twig', $signType),
             [
                 'orderId' => $orderId,
+                'update' => false,
                 'form' => $form->createView(),
             ]
         );
@@ -68,7 +70,13 @@ class OrderSignController extends AbstractAppController
     {
         $orderSign = $this->getOrderSign($signType, $id);
         $orderId = $orderSign->getOrder()->getId();
-        $form = $this->createForm(sprintf('App\Form\%sOrderSignType', ucfirst($signType)), $orderSign);
+        $form = $this->createForm(
+            sprintf('App\Form\%sOrderSignType', ucfirst($signType)),
+            $orderSign,
+            [
+                SignSaveType::ACTION_TYPE => SignSaveType::UPDATE
+            ]
+        );
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -85,6 +93,7 @@ class OrderSignController extends AbstractAppController
             sprintf('order/sign/%s/edit.html.twig', $signType),
             [
                 'orderId' => $orderId,
+                'update' => true,
                 'form' => $form->createView(),
             ]
         );
@@ -131,9 +140,20 @@ class OrderSignController extends AbstractAppController
      */
     private function getRedirectRoute(FormInterface $form, $orderId, $signType): RedirectResponse
     {
-        return $form->get('save')->isClicked()
-            ? $this->redirectToRoute('orders_view', ['id' => $orderId])
-            : $this->redirectToRoute('order_sign_create', ['orderId' => $orderId, 'signType' => $signType]);
+        $save = $form->get('save');
+
+        if ($save->has('saveAndNew') && $save->get('saveAndNew')->isClicked()) {
+            return $this->redirectToRoute(
+                'order_sign_create',
+                ['orderId' => $orderId, 'signType' => $signType]
+            );
+        }
+
+        if ($save->has('saveAndChoose') && $save->get('saveAndChoose')->isClicked()) {
+            return $this->redirectToRoute('order_sign_choose', ['orderId' => $orderId]);
+        }
+
+        return $this->redirectToRoute('orders_view', ['id' => $orderId]);
     }
 
     /**

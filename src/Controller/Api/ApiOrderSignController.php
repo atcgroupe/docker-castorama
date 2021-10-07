@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api;
 
+use App\Entity\OrderStatus;
 use App\Repository\OrderRepository;
 use App\Service\Order\OrderSignHelper;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -46,6 +47,10 @@ class ApiOrderSignController extends AbstractController
 
         if (null === $order) {
             return new JsonResponse(['error' => ['code' => 400, 'message' => "Order $id not found"]], 404);
+        }
+
+        if ($order->getStatus()->getId() !== OrderStatus::RECEIVED) {
+            return new JsonResponse(['error' => ['code' => 400, 'message' => "Order $id has not valid status"]], 400);
         }
 
         $signsByType = $signHelper->findOrderSigns($order);

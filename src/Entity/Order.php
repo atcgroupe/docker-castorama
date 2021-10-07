@@ -24,8 +24,7 @@ class Order
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=100)
-     * @Assert\NotBlank
+     * @ORM\Column(type="string", length=100, nullable=true)
      *
      * @Groups({"api"})
      */

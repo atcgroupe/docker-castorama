@@ -15,9 +15,9 @@ class OrderStatusFixtures extends Fixture implements DependentFixtureInterface
         $data = [
             [OrderStatus::CREATED, 'Création', null],
             [OrderStatus::SENT, 'Envoyée', OrderEvent::SENT],
-            [OrderStatus::RECEIVED, 'Reçue', OrderEvent::RECEIVED],
-            [OrderStatus::PROCESSING, 'En cours de traitement', OrderEvent::PROCESS],
-            [OrderStatus::PROCESSED, 'Traitée', OrderEvent::PROCESSED],
+            # [OrderStatus::RECEIVED, 'Reçue', OrderEvent::RECEIVED],
+            [OrderStatus::PROCESSING, 'En cours de traitement', null],
+            # [OrderStatus::PROCESSED, 'Traitée', OrderEvent::PROCESSED],
             [OrderStatus::DELIVERY, 'Expédiée', OrderEvent::SHIPPED],
             [OrderStatus::DELIVERED, 'Livrée', OrderEvent::DELIVERED],
         ];

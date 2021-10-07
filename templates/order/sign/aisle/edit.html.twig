@@ -8,52 +8,35 @@
 
                 {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 
-                    {{ form_row(form.quantity)}}
-
-                    <h4 class="mt-5 mb-3">Personnalisation</h4>
-
                     <div class="mb-4">
                         {{ form_row(form.aisleNumber) }}
                     </div>
 
                     <div class="mb-4">
-                        <h4>Ligne n°1<span class="text-danger">*</span></h4>
+                        {{ form_row(form.category) }}
+                    </div>
 
-                        {{ form_widget(form.category1) }}
-
-                        {{ form_widget(form.item1) }}
-                        {{ form_errors(form.item1) }}
+                    <div class="mb-4">
+                        {{ form_row(form.item1) }}
                     </div>
 
                     <div id="aisle-item2-container" class="item-container mb-4">
-                        <h4>Ligne n°2</h4>
-
-                        {{ form_widget(form.category2) }}
-
-                        {{ form_widget(form.item2) }}
+                        {{ form_row(form.item2) }}
 
                         {{ form_row(form.hideItem2Image) }}
                     </div>
 
                     <div id="aisle-item3-container" class="item-container mb-4">
-                        <h4>Ligne n°3</h4>
-
-                        {{ form_widget(form.category3) }}
-
-                        {{ form_widget(form.item3) }}
+                        {{ form_row(form.item3) }}
 
                         {{ form_row(form.hideItem3Image) }}
                     </div>
 
                     <div class="mb-4">
-                        {{ form_widget(form.save) }}
-
-                        {{ form_widget(form.saveAndNew) }}
-
-                        <a href="{{ path('orders_view', {'id': orderId}) }}" class="btn btn-outline-secondary w-100">
-                            Retour à la commande
-                        </a>
+                        {{ form_row(form.quantity)}}
                     </div>
+
+                    {% include 'order/sign/_edit_save.html.twig' %}
 
                 {{ form_end(form) }}
             </div>

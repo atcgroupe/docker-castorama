@@ -19,6 +19,7 @@ class EventFixtures extends Fixture
                 "Lorsque vous validez une commande",
                 "Merci pour votre commande!. Elle a été envoyée avec succès."
             ],
+            /*
             [
                 2,
                 OrderEvent::RECEIVED,
@@ -40,6 +41,7 @@ class EventFixtures extends Fixture
                 "Votre commande est fabriquée et est prêtre à vous être expédiée",
                 "Votre commande est prête!. Elle sera expédiée très prochainement."
             ],
+            */
             [
                 5,
                 OrderEvent::SHIPPED,

@@ -22,6 +22,7 @@ class AisleSmallOrderSignType extends AisleOrderSignType
     {
         $resolver->setDefaults([
             'data_class' => AisleSmallOrderSign::class,
+            SignSaveType::ACTION_TYPE => SignSaveType::CREATE,
         ]);
     }
 }

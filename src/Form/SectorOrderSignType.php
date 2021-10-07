@@ -30,7 +30,7 @@ class SectorOrderSignType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('quantity', NumberType::class, ['label' => 'Quantité', 'attr' => ['autofocus' => true]])
+            ->add('quantity', NumberType::class, ['label' => 'Quantité'])
             ->add(
                 'option',
                 ChoiceType::class,
@@ -40,7 +40,7 @@ class SectorOrderSignType extends AbstractType
                         'Recto/Verso différents' => 2,
                     ],
                     'attr' => [
-                        'class' => 'mb-5'
+                        'class' => 'mb-4'
                     ],
                 ]
             )->add(
@@ -53,20 +53,12 @@ class SectorOrderSignType extends AbstractType
                 $this->getItemSelectOption(self::SIDE_VERSO)
             )->add(
                 'save',
-                SubmitType::class,
+                SignSaveType::class,
                 [
-                    'label' => 'Enregistrer',
-                    'attr' => [
-                        'class' => 'btn btn-lg btn-outline-primary w-100 my-2'
-                    ]
-                ]
-            )->add(
-                'saveAndNew',
-                SubmitType::class,
-                [
-                    'label' => 'Enregistrer & nouveau',
-                    'attr' => [
-                        'class' => 'btn btn-lg btn-outline-primary w-100 mb-4'
+                    SignSaveType::ACTION_TYPE => $options[SignSaveType::ACTION_TYPE],
+                    'mapped' => false,
+                    'row_attr' => [
+                        'class' => 'mb-0'
                     ]
                 ]
             )
@@ -77,6 +69,7 @@ class SectorOrderSignType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => SectorOrderSign::class,
+            SignSaveType::ACTION_TYPE => SignSaveType::CREATE,
         ]);
     }
 
