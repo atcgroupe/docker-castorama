@@ -19,15 +19,7 @@
                         {{ form_row(form.quantity) }}
                     </div>
 
-                    <div class="my-4">
-                        {{ form_widget(form.saveAndNew) }}
-
-                        {{ form_widget(form.saveAndChoose) }}
-
-                        <a href="{{ path('orders_view', {'id': orderId}) }}" class="btn btn-outline-danger w-100 mt-2">
-                            Annuler
-                        </a>
-                    </div>
+                    {% include 'order/sign/_edit_save.html.twig' %}
 
                 {{ form_end(form) }}
             </div>
