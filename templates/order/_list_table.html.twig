@@ -2,11 +2,11 @@
     <table class="table table-hover table-bordered align-middle rounded">
         <thead>
             <tr class="bg-light text-primary align-middle">
-                <th scope="col" class="text-center sort" data-sort="number">N°</th>
+                <th scope="col" class="text-center sort" data-sort="number">N° unique</th>
 
                 <th scope="col" class="sort" data-sort="customerReference" style="width: 140px">Référence Castorama</th>
 
-                <th scope="col" class="sort" data-sort="title" style="min-width: 200px">Intitulé</th>
+                {# <th scope="col" class="sort" data-sort="title" style="min-width: 200px">Intitulé</th> #}
 
                 {% if not is_granted('ROLE_CUSTOMER_SHOP') and shopUserFilter == 'all' %}
                     <th scope="col" class="sort" data-sort="shop">Magasin</th>
@@ -33,7 +33,7 @@
                         {% endif %}
                     </td>
 
-                    <td class="title">{{ order.title }}</td>
+                    {# <td class="title">{{ order.title }}</td> #}
 
                     {% if not is_granted('ROLE_CUSTOMER_SHOP') and shopUserFilter == 'all' %}
                         <td class="shop">{{ order.user.userIdentifier }}</td>
