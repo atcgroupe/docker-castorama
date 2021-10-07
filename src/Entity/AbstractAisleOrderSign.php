@@ -37,11 +37,7 @@ abstract class AbstractAisleOrderSign extends AbstractOrderSign
      */
     protected $item3;
 
-    protected $category1;
-
-    protected $category2;
-
-    protected $category3;
+    protected $category;
 
     public function getAisleNumber(): ?int
     {
@@ -94,61 +90,26 @@ abstract class AbstractAisleOrderSign extends AbstractOrderSign
     /**
      * @ORM\PostLoad()
      */
-    public function initializeCategories()
+    public function initializeCategory()
     {
-        $this->setCategory1(($this->getItem1() !== null) ? $this->getItem1()->getCategory() : null);
-        $this->setCategory2(($this->getItem2() !== null) ? $this->getItem2()->getCategory() : null);
-        $this->setCategory3(($this->getItem3() !== null) ? $this->getItem3()->getCategory() : null);
+        $this->setCategory(($this->getItem1() !== null) ? $this->getItem1()->getCategory() : null);
     }
 
     /**
      * @return AisleSignItemCategory|null
      */
-    public function getCategory1(): ?AisleSignItemCategory
+    public function getCategory(): ?AisleSignItemCategory
     {
-        return $this->category1;
+        return $this->category;
     }
 
     /**
-     * @param AisleSignItemCategory|null $category1
+     * @param AisleSignItemCategory|null $category
      */
-    public function setCategory1(?AisleSignItemCategory $category1): void
+    public function setCategory(?AisleSignItemCategory $category): void
     {
-        $this->category1 = $category1;
+        $this->category = $category;
     }
-
-    /**
-     * @return AisleSignItemCategory|null
-     */
-    public function getCategory2(): ?AisleSignItemCategory
-    {
-        return $this->category2;
-    }
-
-    /**
-     * @param AisleSignItemCategory|null $category2
-     */
-    public function setCategory2(?AisleSignItemCategory $category2): void
-    {
-        $this->category2 = $category2;
-    }
-
-    /**
-     * @return AisleSignItemCategory|null
-     */
-    public function getCategory3(): ?AisleSignItemCategory
-    {
-        return $this->category3;
-    }
-
-    /**
-     * @param AisleSignItemCategory|null $category3
-     */
-    public function setCategory3(?AisleSignItemCategory $category3): void
-    {
-        $this->category3 = $category3;
-    }
-
 
     /**
      * @return string
