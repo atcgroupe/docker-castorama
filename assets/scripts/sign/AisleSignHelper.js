@@ -7,17 +7,16 @@ export class AisleSignHelper {
         this.isSmall = (formName.search('small') !== -1);
         this.maxAisleNumber = 199;
         this.aisleNumberInput = document.getElementById(`${formName}_aisleNumber`);
+        this.itemsCategory = document.getElementById(`${formName}_category`);
         this.previewAisleNumbers = document.getElementsByClassName('aisle-number-value');
-        this.itemSelects = document.getElementsByClassName('item_select');
         this.itemsText = document.getElementsByClassName('items_text');
-        this.itemCategoriesSelects = document.getElementsByClassName('item_category_select');
         this.itemsSelects = document.getElementsByClassName('item_select');
         this.itemsCheckboxes = document.getElementsByClassName('item_checkbox');
 
         this.refreshSignPreview();
 
         this.addAisleNumberListener();
-        this.addCategoryItemsListeners();
+        this.addCategoryListener();
         this.addItemsSelectsListeners();
         if (!this.isSmall) this.addCheckBoxesListeners();
     };
@@ -34,7 +33,7 @@ export class AisleSignHelper {
         let text = '';
         let i = 0;
 
-        Array.from(this.itemSelects).forEach((select) => {
+        Array.from(this.itemsSelects).forEach((select) => {
             let option = select.options[select.selectedIndex];
             if (!this.isOptionEmpty(select)) {
                 if (i > 0) text += '<br />';
@@ -78,11 +77,6 @@ export class AisleSignHelper {
         item.text = '';
     }
 
-    resetItemCategorySelect(itemCategory) {
-        itemCategory.setAttribute('disabled', 'disabled');
-        itemCategory.value = '';
-    }
-
     resetItemCheckbox(checkbox) {
         checkbox.setAttribute('disabled', 'disabled');
         $(checkbox).prop('checked', false);
@@ -95,17 +89,14 @@ export class AisleSignHelper {
     setItemsStatus() {
         for (let i = 1; i < 3; i++) {
             const dataItem = document.getElementById(`${this.formName}_item${i}`);
-            const targetItemCategory = document.getElementById(`${this.formName}_category${i + 1}`);
             const targetItem = document.getElementById(`${this.formName}_item${i + 1}`);
             const targetCheckbox = !this.isSmall ?
                 document.getElementById(`${this.formName}_hideItem${i + 1}Image`) : false;
 
             if (this.isOptionEmpty(dataItem)) {
-                this.resetItemCategorySelect(targetItemCategory);
                 this.resetItemSelect(targetItem);
                 if (targetCheckbox) this.resetItemCheckbox(targetCheckbox);
             } else {
-                this.enableElement(targetItemCategory);
                 this.enableElement(targetItem)
                 if (targetCheckbox) this.enableElement(targetCheckbox);
             }
@@ -125,11 +116,10 @@ export class AisleSignHelper {
         this.setPreviewText();
     }
 
-    setSelectItemsFromCategory(categorySelect) {
+    setSelectItemsFromCategory() {
         const self = this;
-        const value = categorySelect.value;
-        const itemSelect = document.getElementById(categorySelect.getAttribute('id').replace('category', 'item'));
-        const route = categorySelect.dataset.route;
+        const value = this.itemsCategory.value;
+        const route = this.itemsCategory.dataset.route;
         const form = new FormData();
         form.append('category', value);
 
@@ -139,7 +129,9 @@ export class AisleSignHelper {
         }).then(function (response){
             return response.json();
         }).then(function (data) {
-            FormHelper.setSelectOptions(itemSelect, data);
+            Array.from(self.itemsSelects).forEach((itemSelect) => {
+                FormHelper.setSelectOptions(itemSelect, data);
+            })
             self.refreshSignPreview();
         });
     }
@@ -148,10 +140,8 @@ export class AisleSignHelper {
         this.aisleNumberInput.addEventListener('change', () => this.setPreviewNumber());
     }
 
-    addCategoryItemsListeners() {
-        Array.from(this.itemCategoriesSelects).forEach((categorySelect) => {
-            categorySelect.addEventListener('change', () => this.setSelectItemsFromCategory(categorySelect));
-        });
+    addCategoryListener() {
+        this.itemsCategory.addEventListener('change', () => this.setSelectItemsFromCategory());
     }
 
     addItemsSelectsListeners() {
