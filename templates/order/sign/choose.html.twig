@@ -1,7 +1,9 @@
 {% extends 'core/core.html.twig' %}
 
 {% block content %}
-    <h1 class="h2 text-center text-primary fw-light my-5">Choisissez votre modèle...</h1>
+    <a href="{{ path('orders_view', {'id': orderId}) }}" class="btn btn-outline-secondary">Retour à la commande</a>
+
+    <h1 class="h2 text-center text-primary fw-light mt-4 mb-5">Choisissez votre modèle...</h1>
 
     <div class="row">
         {% for sign in signs %}
