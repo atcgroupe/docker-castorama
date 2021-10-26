@@ -23,7 +23,7 @@ class ShopFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $data = $this->csvReader->getData(
-            \dirname(__DIR__, 2) . '/resource/shop_listing.csv',
+            \dirname(__DIR__, 2) . '/resource/shop_listing_pw_encoded.csv',
             [
                 self::SHOP_NAME,
                 self::CITY,
