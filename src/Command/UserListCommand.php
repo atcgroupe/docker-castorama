@@ -13,7 +13,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 #[AsCommand(
-    name: 'app:set-users-list',
+    name: 'app:encode-users-passwords',
     description: 'Renames sign item image',
 )]
 class UserListCommand extends Command
@@ -104,7 +104,7 @@ class UserListCommand extends Command
             );
         }
 
-        $io->success('The images has been renamed successfully!');
+        $io->success('Users passwords has been encoded successfully!');
 
         return Command::SUCCESS;
     }
