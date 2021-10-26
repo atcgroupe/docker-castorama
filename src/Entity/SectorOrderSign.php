@@ -124,17 +124,10 @@ class SectorOrderSign extends AbstractOrderSign
     /**
      * Returns Enfocus Switch template
      *
-     * Pattern: baseTemplateName_colorRecto_colorVerso
-     *
      * @return string
      */
     public function getSwitchTemplate(): string
     {
-        return sprintf(
-            '%s_%s_%s',
-            $this->getSign()->getSwitchFlowTemplateFile(),
-            $this->getItem1()->getColor(),
-            (null === $this->getItem2()) ? $this->getItem1()->getColor() : $this->getItem2()->getColor()
-        );
+        return $this->getSign()->getSwitchFlowTemplateFile();
     }
 }
