@@ -9,11 +9,7 @@ use ZipArchive;
 
 class OrderSignsDataHelper
 {
-    private const ZIP_NAME = 'order.zip';
-    private const PUBLIC_API_DIR = '/api';
-
     public function __construct(
-        private string $publicDir,
         private OrderSignHelper $signHelper,
         private SerializerInterface $serializer,
     ) {
@@ -21,16 +17,16 @@ class OrderSignsDataHelper
 
     /**
      * @param Order $order
+     *
+     * @return string
      */
-    public function generateXmlZipFile(Order $order): void
+    public function generateXmlZipFile(Order $order): string
     {
-        $this->setApiDir();
-        $this->purgeApiDir();
-
         $signsByType = $this->signHelper->findOrderSigns($order);
 
         $zip = new ZipArchive();
-        $zip->open($this->getZipName(), ZipArchive::CREATE);
+        $file = tempnam(sys_get_temp_dir(), 'order_xml_zip');
+        $zip->open($file, ZipArchive::CREATE);
 
         foreach ($signsByType as $typeSigns) {
             foreach ($typeSigns as $sign) {
@@ -52,35 +48,7 @@ class OrderSignsDataHelper
         }
 
         $zip->close();
-    }
 
-    /**
-     * @return string
-     */
-    public function getZipName(): string
-    {
-        return $this->getApiDir() . '/' . self::ZIP_NAME;
-    }
-
-    private function setApiDir(): void
-    {
-        if (!is_dir($this->getApiDir())) {
-            mkdir($this->getApiDir());
-        }
-    }
-
-    /**
-     * @return string
-     */
-    private function getApiDir(): string
-    {
-        return $this->publicDir . self::PUBLIC_API_DIR;
-    }
-
-    private function purgeApiDir(): void
-    {
-        if (is_readable($this->getZipName())) {
-            unlink($this->getZipName());
-        }
+        return $file;
     }
 }

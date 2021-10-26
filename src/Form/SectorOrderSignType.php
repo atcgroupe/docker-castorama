@@ -57,6 +57,7 @@ class SectorOrderSignType extends AbstractType
                 [
                     SignSaveType::ACTION_TYPE => $options[SignSaveType::ACTION_TYPE],
                     'mapped' => false,
+                    'label' => false,
                     'row_attr' => [
                         'class' => 'mb-0'
                     ]

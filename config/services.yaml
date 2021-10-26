@@ -59,7 +59,3 @@ services:
         - name: doctrine.orm.entity_listener
           event: prePersist
           entity: App\Entity\Member
-
-    App\Service\Api\OrderSignsDataHelper:
-      arguments:
-        $publicDir: '%kernel.project_dir%/public'

@@ -12,11 +12,11 @@
     --sign-scale: 0.7;
   }
 
-  width: calc(var(--sign-scale) * 80mm);
+  width: calc(var(--sign-scale) * 90mm);
   height: calc(var(--sign-scale) * 30mm);
   position: relative;
   background-repeat: no-repeat;
-  background-size: calc(var(--sign-scale) * 80mm) calc(var(--sign-scale) * 30mm);
+  background-size: calc(var(--sign-scale) * 90mm) calc(var(--sign-scale) * 30mm);
 
   &.recto {
     background-image: url("../../images/sign/sign/aisleSmall/aisle-small-bg-recto.svg");
@@ -29,7 +29,7 @@
   .number {
     position: absolute;
     top: 0;
-    width: calc(var(--sign-scale) * 30mm);
+    width: calc(var(--sign-scale) * 33mm);
     height: calc(var(--sign-scale) * 30mm);
     display: flex;
     justify-content: center;
@@ -47,8 +47,8 @@
       text-align: center;
       font-family: Casto;
       font-weight: 800;
-      font-size: calc(var(--sign-scale) * 40pt);
-      line-height: calc(var(--sign-scale) * 40pt);
+      font-size: calc(var(--sign-scale) * 50pt);
+      margin-top: calc(var(--sign-scale) * 2.5mm);
       color: white;
     }
   }
@@ -57,18 +57,18 @@
     position: absolute;
     top: 0;
 
-    width: calc(var(--sign-scale) * 70mm);
+    width: calc(var(--sign-scale) * 90mm);
     height: calc(var(--sign-scale) * 30mm);
     display: flex;
     align-items: center;
 
     &.recto {
-      left: calc(var(--sign-scale) * 32mm);
+      left: calc(var(--sign-scale) * 35mm);
       justify-content: start;
     }
 
     &.verso {
-      right: calc(var(--sign-scale) * 32mm);
+      right: calc(var(--sign-scale) * 35mm);
       justify-content: end;
       text-align: end;
     }
@@ -76,9 +76,9 @@
     div {
       width: 100%;
       font-family: Casto;
-      font-size: calc(var(--sign-scale) * 8.5pt);
+      font-size: calc(var(--sign-scale) * 10pt);
       font-weight: 800;
-      line-height: calc(var(--sign-scale) * 16pt);
+      line-height: calc(var(--sign-scale) * 15pt);
       color: white;
     }
   }

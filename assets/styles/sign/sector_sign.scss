@@ -15,13 +15,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  border: 1px solid gray;
 
   &.grey {
-    background-image: url("../../images/sign/sign/sector/sector-bg-grey.svg");
+    color: #5B5A5E;
   }
 
   &.blue {
-    background-image: url("../../images/sign/sign/sector/sector-bg-blue.svg");
+    color: #005CB9;
   }
 
   .sector-text {
@@ -32,7 +33,6 @@
     margin-right: calc(var(--sign-scale) * 5mm);
     font-size: calc(var(--sign-scale) * 40pt);
     line-height: calc(var(--sign-scale) * 40pt);
-    color: white;
     text-align: center;
     vertical-align: baseline;
   }

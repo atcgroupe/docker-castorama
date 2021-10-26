@@ -50,8 +50,6 @@ class ApiOrderSignController extends AbstractController
             return new JsonResponse(['error' => ['code' => 400, 'message' => "Order $id has not valid status"]], 400);
         }
 
-        $signsDataHelper->generateXmlZipFile($order);
-
-        return new BinaryFileResponse($signsDataHelper->getZipName());
+        return new BinaryFileResponse($signsDataHelper->generateXmlZipFile($order));
     }
 }

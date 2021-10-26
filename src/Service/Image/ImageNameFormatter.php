@@ -33,24 +33,24 @@ class ImageNameFormatter
             ' -' => '_',
             ' ' => '_',
             '-' => '_',
-            'À' => 'A',
-            'Â' => 'A',
-            'Ä' => 'A',
-            'È' => 'E',
-            'É' => 'E',
-            'Ê' => 'E',
-            'Ë' => 'E',
-            'D\'' => '',
-            '&' => 'ET',
-            'L\'' => '',
+            'à' => 'a',
+            'â' => 'a',
+            'ä' => 'a',
+            'è' => 'e',
+            'é' => 'e',
+            'ê' => 'e',
+            'ë' => 'e',
+            'd\'' => '',
+            '&' => 'et',
+            'l\'' => '',
             '.' => '',
-            'Ç' => 'C',
-            'Î' => 'I',
-            'Ï' => 'I',
-            'Ô' => 'O',
-            'Ö' => 'O',
-            'Û' => 'U',
-            'Ü' => 'U',
+            'ç' => 'c',
+            'î' => 'i',
+            'ï' => 'i',
+            'ô' => 'o',
+            'ö' => 'o',
+            'û' => 'u',
+            'ü' => 'u',
         ];
 
         $searches = [];
@@ -61,6 +61,6 @@ class ImageNameFormatter
             $replaces[] = $value;
         }
 
-        return strtolower(str_replace($searches, $replaces, strtoupper($name)));
+        return str_replace($searches, $replaces, mb_strtolower( $name, "UTF-8"));
     }
 }

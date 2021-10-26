@@ -41,8 +41,8 @@ class AisleOrderSignType extends AbstractType
                 [
                     'class' => AisleSignItemCategory::class,
                     'choice_label' => 'label',
-                    'placeholder' => 'Choisissez une catégorie',
-                    'label' => 'Catégorie',
+                    'placeholder' => 'Choisissez un sous-secteur',
+                    'label' => 'Sous-secteur',
                     'attr' => [
                         'class' => self::ITEM_CATEGORY_SELECT . ' mb-2',
                         'data-route' => $this->urlGenerator->generate('order_sign_aisle_select_item'),
@@ -74,9 +74,10 @@ class AisleOrderSignType extends AbstractType
                 [
                     SignSaveType::ACTION_TYPE => $options[SignSaveType::ACTION_TYPE],
                     'mapped' => false,
+                    'label' => false,
                     'row_attr' => [
                         'class' => 'mb-0'
-                    ]
+                    ],
                 ]
             )
         ;
