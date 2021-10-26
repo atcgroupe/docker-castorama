@@ -45,7 +45,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
 
         // Other users
         $otherUsersData = [
-            [User::SIEGE, '$2y$13$2Ua2zF536TC.sXGzI4tl.e1XVdC9njoi1i1IEXs4sHyLn6u7bkS5G', User::ROLE_CUSTOMER_ADMIN],
+            [User::SIEGE, '$2y$13$.5t9jaL8UhipGpiiCL37uuc3LM41dww/fvoX1Bbqov.RkMkgsk0bW', User::ROLE_CUSTOMER_ADMIN],
             [User::ATC, '$2y$13$M10IrrBjgRspS8ktrDvj6e06coR0sAm0gQXWUnIdwwLsSp5mARiFa', User::ROLE_COMPANY_ADMIN],
             [User::API, '$2y$13$Aak6GQHVlv.q7bQxIU066.FbxWprK7/EpWUKdYI6Td72wfMOTEL5e', User::ROLE_API],
         ];
