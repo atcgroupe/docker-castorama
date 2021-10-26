@@ -43,11 +43,11 @@ class SignFixtures extends Fixture
                 self::TYPE => AisleSmallOrderSign::getType(),
                 self::IMAGE => 'aisle_small_order_sign.jpg',
                 self::TITLE => 'Panneau allée New',
-                self::DESCRIPTION => 'Format: 800x300mm<br>Impression: Recto/Verso<br>Finition: 2 Perfos hautes<br>Matière: PVC 5MM',
+                self::DESCRIPTION => 'Format: 900x300mm<br>Impression: Recto/Verso<br>Finition: 2 Perfos hautes<br>Matière: PVC 5MM',
                 self::WEIGHT => 0.40,
                 self::BUILDER => 'AisleSmallSignBuilder',
                 self::TEMPLATE => 'AisleSmallSignTemplate',
-                self::PRICE => 9.27,
+                self::PRICE => 10.23,
                 self::CUSTOMER_REF => '178737',
             ],
             [
