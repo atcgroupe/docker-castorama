@@ -114,11 +114,33 @@ class SectorOrderSign extends AbstractOrderSign
      * @return string
      *
      * @Groups({"api_json_data"})
+     * @SerializedName("item1Color")
+     */
+    public function getItem1Color(): string
+    {
+        return $this->getItem1()->getColor();
+    }
+
+    /**
+     * @return string
+     *
+     * @Groups({"api_json_data"})
      * @SerializedName("item2Label")
      */
     public function getItem2Label(): string
     {
         return (null === $this->getItem2()) ? $this->getItem1Label() : $this->getItem2()->getLabel();
+    }
+
+    /**
+     * @return string
+     *
+     * @Groups({"api_json_data"})
+     * @SerializedName("item2Color")
+     */
+    public function getItem2Color(): string
+    {
+        return (null === $this->getItem2()) ? $this->getItem1Color() : $this->getItem2()->getColor();
     }
 
     /**
