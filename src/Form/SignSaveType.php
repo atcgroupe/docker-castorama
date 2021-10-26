@@ -35,7 +35,7 @@ class SignSaveType extends AbstractType
                         'saveAndChoose',
                         SubmitType::class,
                         [
-                            'label' => 'Valider le panneau et poursuivre avec d\'autres formats de panneaux',
+                            'label' => 'Valider le panneau et poursuivre avec un autre modèle',
                             'attr' => [
                                 'class' => 'btn btn-lg btn-primary w-100'
                             ],
