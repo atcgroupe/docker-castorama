@@ -150,6 +150,11 @@ class SectorOrderSign extends AbstractOrderSign
      */
     public function getSwitchTemplate(): string
     {
-        return $this->getSign()->getSwitchFlowTemplateFile();
+        return sprintf(
+            '%s_%s_%s',
+            $this->getSign()->getSwitchFlowTemplateFile(),
+            $this->getItem1Color(),
+            $this->getItem2Color()
+        );
     }
 }
