@@ -101,7 +101,7 @@
                     <li class="list-group-item d-flex align-items-center">
                         <div class="w-50">Statut de la commande</div>
 
-                        <div class="w-50 ps-2 text-primary d-flex align-items-center">
+                        <div class="w-50 ps-2 text-primary d-flex justify-content-between align-items-center">
                             <div class="me-2">{{ order.status.label }}</div>
                             {% if is_granted('ROLE_COMPANY_ADMIN') %}
                                 <div>
