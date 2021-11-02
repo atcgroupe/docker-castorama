@@ -13,4 +13,9 @@ interface OrderSignRepositoryInterface
      * @return AbstractOrderSign[]
      */
     public function findByOrderWithRelations(Order $order): array;
+
+    /**
+     * @param Order $order
+     */
+    public function removeByOrder(Order $order): void;
 }
