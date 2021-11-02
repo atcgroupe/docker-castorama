@@ -196,6 +196,11 @@ class Order
         return $this->member;
     }
 
+    public function getMemberDisplayName(): string
+    {
+        return ($this->getMember() !== null) ? $this->getMember()->getDisplayName() : 'Membre supprimé';
+    }
+
     public function setMember(?Member $member): self
     {
         $this->member = $member;
