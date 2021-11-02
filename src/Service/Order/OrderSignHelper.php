@@ -32,6 +32,15 @@ class OrderSignHelper
         return $signs;
     }
 
+    public function deleteOrderSigns(Order $order): void
+    {
+        $signTypes = $this->getSignsTypes();
+
+        foreach ($signTypes as $type) {
+            $this->manager->getRepository($type->getClass())->removeByOrder($order);
+        }
+    }
+
     /**
      * @param Order $order
      *
