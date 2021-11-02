@@ -40,20 +40,35 @@ class OrderController extends AbstractAppController
     }
 
     #[Route('/create', name: '_create')]
-    public function create(): Response
+    public function create(Request $request): Response
     {
         $order = new Order();
+        $hasForm = $this->isGranted('ROLE_CUSTOMER_ADMIN');
 
-        $manager = $this->getDoctrine()->getManager();
-        $manager->persist($order);
-        $manager->flush();
+        if ($hasForm) {
+            $form = $this->createForm(OrderRegistrationType::class, $order);
+            $form->handleRequest($request);
+        }
 
-        $this->dispatchHtmlAlert(
-            Alert::INFO,
-            'Votre commande est créée. Vous pouvez maintenant ajouter des panneaux!'
-        );
+        if (
+            !$hasForm ||
+            (
+                $form->isSubmitted() && $form->isValid()
+            )
+        ) {
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($order);
+            $manager->flush();
 
-        return $this->redirectToRoute('orders_view', ['id' => $order->getId()]);
+            $this->dispatchHtmlAlert(
+                Alert::INFO,
+                'Votre commande est créée. Vous pouvez maintenant ajouter des panneaux!'
+            );
+
+            return $this->redirectToRoute('orders_view', ['id' => $order->getId()]);
+        }
+
+        return $this->render('order/create.html.twig', ['form' => $form->createView()]);
     }
 
     #[Route('/{id}/view', name: '_view')]
@@ -128,6 +143,7 @@ class OrderController extends AbstractAppController
         $this->denyAccessUnlessGranted(OrderVoter::DELETE, $order);
 
         if ($request->isMethod('POST')) {
+            $this->signHelper->deleteOrderSigns($order);
             $manager = $this->getDoctrine()->getManager();
             $manager->remove($order);
             $manager->flush();
