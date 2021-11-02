@@ -71,6 +71,7 @@ class Order
 
     /**
      * @ORM\ManyToOne(targetEntity=Member::class, inversedBy="orders")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $member;
 
@@ -193,6 +194,11 @@ class Order
     public function getMember(): ?Member
     {
         return $this->member;
+    }
+
+    public function getMemberDisplayName(): string
+    {
+        return ($this->getMember() !== null) ? $this->getMember()->getDisplayName() : 'Membre supprimé';
     }
 
     public function setMember(?Member $member): self

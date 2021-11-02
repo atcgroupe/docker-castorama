@@ -92,7 +92,7 @@ class OrderRepository extends ServiceEntityRepository
                 ->addSelect('shop')
             ->innerJoin('o.status', 'status')
                 ->addSelect('status')
-            ->innerJoin('o.member', 'm')
+            ->leftJoin('o.member', 'm')
                 ->addSelect('m')
         ;
     }
