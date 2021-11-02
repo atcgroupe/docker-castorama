@@ -71,6 +71,7 @@ class Order
 
     /**
      * @ORM\ManyToOne(targetEntity=Member::class, inversedBy="orders")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $member;
 
