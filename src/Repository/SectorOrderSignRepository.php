@@ -34,4 +34,17 @@ class SectorOrderSignRepository extends ServiceEntityRepository implements Order
             ->getResult()
         ;
     }
+
+    /**
+     * @param Order $order
+     */
+    public function removeByOrder(Order $order): void
+    {
+        $this->createQueryBuilder('s')
+            ->delete()
+            ->where('s.order = :order')
+            ->setParameter('order', $order)
+            ->getQuery()
+            ->getResult();
+    }
 }

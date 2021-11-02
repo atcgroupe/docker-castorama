@@ -41,4 +41,17 @@ class AisleSmallOrderSignRepository extends ServiceEntityRepository implements O
             ->getResult()
             ;
     }
+
+    /**
+     * @param Order $order
+     */
+    public function removeByOrder(Order $order): void
+    {
+        $this->createQueryBuilder('a')
+            ->delete()
+            ->where('a.order = :order')
+            ->setParameter('order', $order)
+            ->getQuery()
+            ->getResult();
+    }
 }
