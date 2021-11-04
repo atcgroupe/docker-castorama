@@ -121,7 +121,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return match ($this->getUserIdentifier()) {
             self::SIEGE => 'Siège Castorama',
-            self::ATC => 'ATC Groupe'
+            self::ATC => 'ATC Groupe',
         };
     }
 
