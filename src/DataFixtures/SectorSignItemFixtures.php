@@ -36,6 +36,7 @@ class SectorSignItemFixtures extends Fixture
                 'PLOMBERIE',
                 'OUTILLAGE',
                 'QUINCAILLERIE',
+                'PEINTURE',
             ],
             SectorSignItem::BLUE => [
                 'CAISSES',

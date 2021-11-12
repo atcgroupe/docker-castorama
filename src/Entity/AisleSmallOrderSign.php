@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\AisleSmallOrderSignRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=AisleSmallOrderSignRepository::class)
@@ -22,5 +23,19 @@ class AisleSmallOrderSign extends AbstractAisleOrderSign
     public static function getType(): string
     {
         return self::TYPE;
+    }
+
+    /**
+     * @return string
+     * @Groups({"api_json_data"})
+     */
+    public function getFileName(): string
+    {
+        return sprintf(
+            'COMMANDE %s PANNEAU ALLEE %s %sEX.xml',
+            $this->getOrderId(),
+            $this->getAisleNumber(),
+            $this->getQuantity()
+        );
     }
 }

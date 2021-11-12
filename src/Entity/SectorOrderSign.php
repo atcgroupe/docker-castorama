@@ -157,4 +157,18 @@ class SectorOrderSign extends AbstractOrderSign
             $this->getItem2Color()
         );
     }
+
+    /**
+     * @return string
+     * @Groups({"api_json_data"})
+     */
+    public function getFileName(): string
+    {
+        return sprintf(
+            'COMMANDE %s PANNEAU SECTEUR %s %sEX.xml',
+            $this->getOrderId(),
+            $this->getId(),
+            $this->getQuantity()
+        );
+    }
 }
