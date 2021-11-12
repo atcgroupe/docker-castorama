@@ -93,14 +93,6 @@ abstract class AbstractOrderSign implements OrderSignInterface, OrderSignApiInte
 
     /**
      * @return string
-     */
-    public function getFileName(): string
-    {
-        return sprintf('%s_%s_%s.xml', $this->getOrderId(), $this->getSign()->getType(), $this->getId());
-    }
-
-    /**
-     * @return string
      *
      * @Groups({"api_xml_object"})
      */
