@@ -123,4 +123,18 @@ class AisleOrderSign extends AbstractAisleOrderSign
     {
         return (null === $this->getItem3() || $this->getHideItem3Image()) ? 'empty' : $this->getItem3()->getImage();
     }
+
+    /**
+     * @return string
+     * @Groups({"api_json_data"})
+     */
+    public function getFileName(): string
+    {
+        return sprintf(
+            'COMMANDE %s PANNEAU ALLEE PICTO %s %sEX.xml',
+            $this->getOrderId(),
+            $this->getAisleNumber(),
+            $this->getQuantity()
+        );
+    }
 }
