@@ -14,6 +14,8 @@ class OrderStatusListener
 
     public function onOrderStatusChanged(OrderEvent $event)
     {
-        $this->orderNotificationDispatcher->send($event->getOrder()->getId());
+        if ($event->getOrder()->getStatus()->hasEvent()) {
+            $this->orderNotificationDispatcher->send($event->getOrder()->getId());
+        }
     }
 }
