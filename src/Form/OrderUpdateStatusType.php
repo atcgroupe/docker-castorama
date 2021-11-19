@@ -23,7 +23,7 @@ class OrderUpdateStatusType extends AbstractType
                 'choice_label' => 'label',
                 'query_builder' => function (EntityRepository $repository) {
                     return $repository->createQueryBuilder('o')
-                        ->innerJoin('o.event', 'event')
+                        ->leftJoin('o.event', 'event')
                         ->orderBy('event.displayOrder', 'ASC');
                 },
             ]

@@ -63,6 +63,14 @@ class OrderStatus
         return $this;
     }
 
+    /**
+     * @return bool
+     */
+    public function hasEvent(): bool
+    {
+        return $this->getEvent() !== null;
+    }
+
     public function getEvent(): ?Event
     {
         return $this->event;
