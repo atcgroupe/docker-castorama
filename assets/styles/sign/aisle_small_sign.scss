@@ -47,8 +47,15 @@
       text-align: center;
       font-family: Casto;
       font-weight: 800;
-      font-size: calc(var(--sign-scale) * 50pt);
       color: white;
+
+      &.standard {
+        font-size: calc(var(--sign-scale) * 50pt);
+      }
+
+      &.stretch {
+        font-size: calc(var(--sign-scale) * 46pt);
+      }
     }
   }
 
