@@ -120,7 +120,8 @@ class AisleOrderSignType extends AbstractType
                 'query_builder' => function (EntityRepository $repository) use ($category) {
                     return $repository->createQueryBuilder('s')
                         ->andWhere('s.category = :category')
-                        ->setParameter('category', $category);
+                        ->setParameter('category', $category)
+                        ->orderBy('s.label', 'ASC');
                 },
                 'attr' => [
                     'class' => self::ITEM_SELECT . ' mb-1',
