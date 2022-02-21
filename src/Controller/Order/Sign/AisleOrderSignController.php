@@ -16,7 +16,7 @@ class AisleOrderSignController extends AbstractAppController
     public function setSignItemsFromCategory(Request $request, AisleSignItemRepository $itemRepository): JsonResponse
     {
         $categoryId = $request->request->get('category');
-        $items = $itemRepository->findBy(['category' => $categoryId]);
+        $items = $itemRepository->findBy(['category' => $categoryId], ['label' => 'ASC']);
         $data = [];
         $data[] = ['value' => '', 'label' => ''];
 
