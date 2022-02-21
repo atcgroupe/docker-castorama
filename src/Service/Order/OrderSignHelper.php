@@ -74,7 +74,7 @@ class OrderSignHelper
         $resume = [
             'global' => [
                 'count' => $totalCount,
-                'price' => $totalPrice,
+                'price' => ($totalPrice > 30) ? $totalPrice : 30.00,
             ],
             'sign' => $signResume
         ];
