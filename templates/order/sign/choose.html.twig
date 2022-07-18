@@ -3,6 +3,10 @@
 {% block content %}
     <a href="{{ path('orders_view', {'id': orderId}) }}" class="btn btn-outline-secondary">Retour à la commande</a>
 
+    <a href="{{ path('order_sign_choose_category', {orderId: orderId}) }}" class="btn btn-outline-secondary">
+        Retour aux catégories
+    </a>
+
     <h1 class="h2 text-center text-primary fw-light mt-4 mb-5">Choisissez votre modèle...</h1>
 
     <div class="row">

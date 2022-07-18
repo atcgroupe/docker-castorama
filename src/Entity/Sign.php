@@ -4,12 +4,16 @@ namespace App\Entity;
 
 use App\Repository\SignRepository;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\Integer;
 
 /**
  * @ORM\Entity(repositoryClass=SignRepository::class)
  */
 class Sign
 {
+    public const CATEGORY_INDOOR = 1;
+    public const CATEGORY_OUTDOOR = 2;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -71,6 +75,11 @@ class Sign
      * @ORM\Column(type="string", length=30)
      */
     private $customerReference;
+
+    /**
+     * @ORM\Column(type="smallint")
+     */
+    private $category;
 
     public function getId(): ?int
     {
@@ -218,6 +227,18 @@ class Sign
     public function setCustomerReference(string $customerReference): self
     {
         $this->customerReference = $customerReference;
+
+        return $this;
+    }
+
+    public function getCategory(): ?int
+    {
+        return $this->category;
+    }
+
+    public function setCategory($category): self
+    {
+        $this->category = $category;
 
         return $this;
     }
