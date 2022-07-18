@@ -20,15 +20,21 @@ use Symfony\Component\Routing\Annotation\Route;
 class OrderSignController extends AbstractAppController
 {
     public function __construct(
-        private SignRepository $signRepository,
-        private OrderHelper $orderHelper,
+        private readonly SignRepository $signRepository,
+        private readonly OrderHelper    $orderHelper,
     ) {
     }
 
-    #[Route('/{orderId}/sign/choose', name: '_choose')]
-    public function choose(int $orderId, SignRepository $signRepository): Response
+    #[Route('/{orderId}/sign/choose-category', name: '_choose_category')]
+    public function chooseCategory(int $orderId): Response
     {
-        $signs = $signRepository->findBy(['isActive' => true]);
+        return $this->render('order/sign/choose_category.html.twig', ['orderId' => $orderId]);
+    }
+
+    #[Route('/{orderId}/sign/{category}/choose', name: '_choose')]
+    public function choose(int $orderId, int $category): Response
+    {
+        $signs = $this->signRepository->findBy(['isActive' => true, 'category' => $category]);
 
         return $this->render('order/sign/choose.html.twig', ['signs' => $signs, 'orderId' => $orderId]);
     }
