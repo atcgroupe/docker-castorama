@@ -7,6 +7,7 @@ use App\Entity\AisleSmallOrderSign;
 use App\Entity\SectorOrderSign;
 use App\Entity\Sign;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 use phpDocumentor\Reflection\Types\Self_;
 
@@ -22,6 +23,7 @@ class SignFixtures extends Fixture
     private const TYPE = 'type';
     private const PRICE = 'price';
     private const CUSTOMER_REF = 'customerRef';
+    private const CATEGORY = 'category';
 
     public function load(ObjectManager $manager)
     {
@@ -37,6 +39,7 @@ class SignFixtures extends Fixture
                 self::TEMPLATE => 'AisleSignTemplate',
                 self::PRICE => 14.50,
                 self::CUSTOMER_REF => '178738',
+                self::CATEGORY => Sign::CATEGORY_INDOOR,
             ],
             [
                 self::CLASS_NAME => AisleSmallOrderSign::class,
@@ -49,6 +52,7 @@ class SignFixtures extends Fixture
                 self::TEMPLATE => 'AisleSmallSignTemplate',
                 self::PRICE => 10.50,
                 self::CUSTOMER_REF => '178737',
+                self::CATEGORY => Sign::CATEGORY_INDOOR,
             ],
             [
                 self::CLASS_NAME => SectorOrderSign::class,
@@ -61,6 +65,7 @@ class SignFixtures extends Fixture
                 self::TEMPLATE => 'SectorSignTemplate',
                 self::PRICE => 39.00,
                 self::CUSTOMER_REF => '178736',
+                self::CATEGORY => Sign::CATEGORY_INDOOR,
             ]
         ];
 
@@ -78,6 +83,7 @@ class SignFixtures extends Fixture
             $sign->setIsActive(true);
             $sign->setPrice($entry[self::PRICE]);
             $sign->setCustomerReference($entry[self::CUSTOMER_REF]);
+            $sign->setCategory($entry[self::CATEGORY]);
 
             $manager->persist($sign);
 
