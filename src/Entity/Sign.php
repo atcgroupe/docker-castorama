@@ -11,6 +11,9 @@ use phpDocumentor\Reflection\Types\Integer;
  */
 class Sign
 {
+    public const CATEGORY_INDOOR = 1;
+    public const CATEGORY_OUTDOOR = 2;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -74,7 +77,7 @@ class Sign
     private $customerReference;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="smallint")
      */
     private $category;
 
