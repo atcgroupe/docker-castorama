@@ -1,14 +1,16 @@
 <?php
 
-namespace App\DataFixtures;
+namespace App\DataFixtures\V1;
 
 use App\Entity\OrderStatus;
 use App\Service\Event\OrderEvent;
+use App\Service\Fixtures\AppVersionFixturesGroup;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class OrderStatusFixtures extends Fixture implements DependentFixtureInterface
+class OrderStatusFixtures extends Fixture implements DependentFixtureInterface, FixtureGroupInterface
 {
     public function load(ObjectManager $manager)
     {
@@ -40,6 +42,13 @@ class OrderStatusFixtures extends Fixture implements DependentFixtureInterface
     {
         Return [
             EventFixtures::class,
+        ];
+    }
+
+    public static function getGroups(): array
+    {
+        return [
+            AppVersionFixturesGroup::V1,
         ];
     }
 }

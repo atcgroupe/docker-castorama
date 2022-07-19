@@ -1,15 +1,17 @@
 <?php
 
-namespace App\DataFixtures;
+namespace App\DataFixtures\V1;
 
 use App\Entity\AisleSignItem;
 use App\Service\Fixture\CsvReader;
+use App\Service\Fixtures\AppVersionFixturesGroup;
 use App\Service\Image\ImageNameFormatter;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class AisleSignItemFixtures extends Fixture implements DependentFixtureInterface
+class AisleSignItemFixtures extends Fixture implements DependentFixtureInterface, FixtureGroupInterface
 {
     private const CATEGORY = 'category';
     private const PRODUCT = 'product';
@@ -25,7 +27,7 @@ class AisleSignItemFixtures extends Fixture implements DependentFixtureInterface
     {
         // Aisle sign items
         $data = $this->csvReader->getData(
-            \dirname(__DIR__, 2) . '/resource/aisle_sign_items.csv',
+            \dirname(__DIR__, 3) . '/resource/aisle_sign_items.csv',
             [
                 self::CATEGORY,
                 self::PRODUCT,
@@ -51,6 +53,13 @@ class AisleSignItemFixtures extends Fixture implements DependentFixtureInterface
     {
         return [
             AisleSignItemCategoryFixtures::class,
+        ];
+    }
+
+    public static function getGroups(): array
+    {
+        return [
+            AppVersionFixturesGroup::V1,
         ];
     }
 }

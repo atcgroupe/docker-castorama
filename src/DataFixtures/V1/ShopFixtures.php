@@ -1,13 +1,15 @@
 <?php
 
-namespace App\DataFixtures;
+namespace App\DataFixtures\V1;
 
 use App\Entity\Shop;
 use App\Service\Fixture\CsvReader;
+use App\Service\Fixtures\AppVersionFixturesGroup;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class ShopFixtures extends Fixture
+class ShopFixtures extends Fixture implements FixtureGroupInterface
 {
     public const SHOP_NAME = 'shopName';
     private const ADDRESS = 'address';
@@ -23,7 +25,7 @@ class ShopFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $data = $this->csvReader->getData(
-            \dirname(__DIR__, 2) . '/resource/shop_listing_pw_encoded.csv',
+            \dirname(__DIR__, 3) . '/resource/shop_listing_pw_encoded.csv',
             [
                 self::SHOP_NAME,
                 self::CITY,
@@ -57,5 +59,12 @@ class ShopFixtures extends Fixture
     private function getFormattedPostCode(string $data): string
     {
         return (strlen($data) === 4 ) ? '0' . $data : $data;
+    }
+
+    public static function getGroups(): array
+    {
+        return [
+            AppVersionFixturesGroup::V1,
+        ];
     }
 }
