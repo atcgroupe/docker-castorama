@@ -26,7 +26,7 @@ class OrderSignHelper
         foreach ($this->getSignsTypes() as $type) {
             $elements = $this->manager->getRepository($type->getClass())->findByOrderWithRelations($order);
             if (!empty($elements)) {
-                $signs[$type->getCategoryLabel()] = $elements;
+                $signs[$type->getTypeLabel()] = $elements;
             }
         }
 
@@ -96,6 +96,7 @@ class OrderSignHelper
             $totalPrice += $countPrice;
             if ($count > 0) {
                 $signResume[$type->getTitle()] = [
+                    'category' => $type->getCategoryLabel(),
                     'customerReference' => $type->getCustomerReference(),
                     'count' => $count,
                     'countModels' => $countModels,
