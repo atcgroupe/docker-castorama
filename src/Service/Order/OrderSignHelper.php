@@ -3,6 +3,7 @@
 namespace App\Service\Order;
 
 use App\Entity\AbstractOrderSign;
+use App\Entity\MaterialSectorOrderSign;
 use App\Entity\Order;
 use App\Entity\Sign;
 use Doctrine\ORM\EntityManagerInterface;
@@ -25,11 +26,44 @@ class OrderSignHelper
         foreach ($this->getSignsTypes() as $type) {
             $elements = $this->manager->getRepository($type->getClass())->findByOrderWithRelations($order);
             if (!empty($elements)) {
-                $signs[$type->getTitle()] = $elements;
+                $signs[$type->getTypeLabel()] = $elements;
             }
         }
 
         return $signs;
+    }
+
+    /**
+     * Saves new sign in the database.
+     *
+     * This method has been added because
+     * if the sign entity is an instance of MaterialSectorOrderSign and alignment attribute is set to "all",
+     * The sign is duplicated and two entities are saved in the database:
+     * one with "left" alignment and one with "right" alignment
+     *
+     * @param AbstractOrderSign $sign
+     * @return void
+     */
+    public function createOrderSign(AbstractOrderSign $sign): void
+    {
+        if (
+            $sign::class === MaterialSectorOrderSign::class &&
+            $sign->getAlignment() === MaterialSectorOrderSign::ALIGN_ALL
+        ) {
+            $leftSign = $sign->setAlignment(MaterialSectorOrderSign::ALIGN_LEFT);
+            $rightSign = clone $leftSign;
+            $rightSign->setAlignment(MaterialSectorOrderSign::ALIGN_RIGHT);
+
+            $this->manager->persist($leftSign);
+            $this->manager->persist($rightSign);
+
+            $this->manager->flush();
+
+            return;
+        }
+
+        $this->manager->persist($sign);
+        $this->manager->flush();
     }
 
     public function deleteOrderSigns(Order $order): void
@@ -62,6 +96,7 @@ class OrderSignHelper
             $totalPrice += $countPrice;
             if ($count > 0) {
                 $signResume[$type->getTitle()] = [
+                    'category' => $type->getCategoryLabel(),
                     'customerReference' => $type->getCustomerReference(),
                     'count' => $count,
                     'countModels' => $countModels,

@@ -16,7 +16,6 @@ class Sign
 
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
     private $id;
@@ -84,6 +83,13 @@ class Sign
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getClass(): ?string
@@ -234,6 +240,25 @@ class Sign
     public function getCategory(): ?int
     {
         return $this->category;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTypeLabel(): string
+    {
+        return sprintf('%s - %s', $this->getCategoryLabel(), $this->getTitle());
+    }
+
+    /**
+     * @return string
+     */
+    public function getCategoryLabel(): string
+    {
+        return match ($this->getCategory()) {
+            Sign::CATEGORY_INDOOR => 'Signaletique interieure',
+            Sign::CATEGORY_OUTDOOR => 'Cour des matériaux',
+        };
     }
 
     public function setCategory($category): self

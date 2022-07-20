@@ -1,34 +1,24 @@
 <?php
 
-namespace App\DataFixtures;
+namespace App\DataFixtures\V1;
 
+use App\DataFixtures\AbstractSignFixtures;
 use App\Entity\AisleOrderSign;
 use App\Entity\AisleSmallOrderSign;
 use App\Entity\SectorOrderSign;
 use App\Entity\Sign;
-use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
-use Doctrine\Persistence\ObjectManager;
-use phpDocumentor\Reflection\Types\Self_;
+use App\Service\Fixtures\AppVersionFixturesGroup;
 
-class SignFixtures extends Fixture
+class SignFixtures extends AbstractSignFixtures
 {
-    private const CLASS_NAME = 'class';
-    private const IMAGE = 'image';
-    private const TITLE = 'title';
-    private const DESCRIPTION = 'description';
-    private const WEIGHT = 'weight';
-    private const BUILDER = 'builder';
-    private const TEMPLATE = 'template';
-    private const TYPE = 'type';
-    private const PRICE = 'price';
-    private const CUSTOMER_REF = 'customerRef';
-    private const CATEGORY = 'category';
-
-    public function load(ObjectManager $manager)
+    /**
+     * @return Sign[]
+     */
+    protected function getSignsData(): array
     {
-        $data = [
+        return [
             [
+                self::ID => 1,
                 self::CLASS_NAME => AisleOrderSign::class,
                 self::TYPE => AisleOrderSign::getType(),
                 self::IMAGE => 'aisle_order_sign.jpg',
@@ -42,6 +32,7 @@ class SignFixtures extends Fixture
                 self::CATEGORY => Sign::CATEGORY_INDOOR,
             ],
             [
+                self::ID => 2,
                 self::CLASS_NAME => AisleSmallOrderSign::class,
                 self::TYPE => AisleSmallOrderSign::getType(),
                 self::IMAGE => 'aisle_small_order_sign.jpg',
@@ -55,6 +46,7 @@ class SignFixtures extends Fixture
                 self::CATEGORY => Sign::CATEGORY_INDOOR,
             ],
             [
+                self::ID => 3,
                 self::CLASS_NAME => SectorOrderSign::class,
                 self::TYPE => SectorOrderSign::getType(),
                 self::IMAGE => 'sector_order_sign.jpg',
@@ -66,30 +58,14 @@ class SignFixtures extends Fixture
                 self::PRICE => 39.00,
                 self::CUSTOMER_REF => '178736',
                 self::CATEGORY => Sign::CATEGORY_INDOOR,
-            ]
+            ],
         ];
+    }
 
-        foreach ($data as $entry) {
-            $sign = new Sign();
-
-            $sign->setClass($entry[self::CLASS_NAME]);
-            $sign->setType($entry[self::TYPE]);
-            $sign->setImage($entry[self::IMAGE]);
-            $sign->setTitle($entry[self::TITLE]);
-            $sign->setDescription($entry[self::DESCRIPTION]);
-            $sign->setWeight($entry[self::WEIGHT]);
-            $sign->setSwitchFlowBuilder($entry[self::BUILDER]);
-            $sign->setSwitchFlowTemplateFile($entry[self::TEMPLATE]);
-            $sign->setIsActive(true);
-            $sign->setPrice($entry[self::PRICE]);
-            $sign->setCustomerReference($entry[self::CUSTOMER_REF]);
-            $sign->setCategory($entry[self::CATEGORY]);
-
-            $manager->persist($sign);
-
-            $this->setReference($entry[self::CLASS_NAME], $sign);
-        }
-
-        $manager->flush();
+    public static function getGroups(): array
+    {
+        return [
+            AppVersionFixturesGroup::V1,
+        ];
     }
 }

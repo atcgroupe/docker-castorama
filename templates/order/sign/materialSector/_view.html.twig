@@ -1,0 +1,13 @@
+{% include 'order/sign/materialSector/template.html.twig' with
+    {
+        'id': sign.id,
+        'class': 'me-2',
+        'scale': 'small',
+        'alignment': sign.alignment,
+        'number': sign.aisleNumber,
+        'sector': sign.sectorLabel,
+        'product_item_1': sign.item1Label,
+        'product_item_2': sign.item2Label,
+        'product_item_3': sign.item3Label
+    }
+%}

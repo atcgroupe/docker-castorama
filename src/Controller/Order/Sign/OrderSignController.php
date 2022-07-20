@@ -3,12 +3,14 @@
 namespace App\Controller\Order\Sign;
 
 use App\Entity\AbstractOrderSign;
+use App\Entity\Sign;
 use App\Form\SignSaveType;
 use App\Repository\OrderRepository;
 use App\Repository\SignRepository;
 use App\Service\Alert\Alert;
 use App\Service\Controller\AbstractAppController;
 use App\Service\Order\OrderHelper;
+use App\Service\Order\OrderSignHelper;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -40,10 +42,16 @@ class OrderSignController extends AbstractAppController
     }
 
     #[Route('/{orderId}/sign/{signType}/create', name: '_create')]
-    public function create(int $orderId, string $signType, OrderRepository $orderRepository, Request $request): Response
-    {
+    public function create(
+        int $orderId,
+        string $signType,
+        OrderRepository $orderRepository,
+        OrderSignHelper $orderSignHelper,
+        Request $request,
+    ): Response {
         $order = $orderRepository->find($orderId);
-        $orderSignClass = $this->signRepository->findOneBy(['type' => $signType])->getClass();
+        $sign = $this->signRepository->findOneBy(['type' => $signType]);
+        $orderSignClass = $sign->getClass();
         $orderSign = new $orderSignClass();
         $orderSign->setOrder($order);
         $form = $this->createForm(sprintf('App\Form\%sOrderSignType', ucfirst($signType)), $orderSign);
@@ -51,20 +59,18 @@ class OrderSignController extends AbstractAppController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->orderHelper->updateLastUpdateTime($order);
-
-            $manager = $this->getDoctrine()->getManager();
-            $manager->persist($orderSign);
-            $manager->flush();
+            $orderSignHelper->createOrderSign($orderSign);
 
             $this->dispatchAlert(Alert::SUCCESS, 'Le panneau est enregistré!');
 
-            return $this->getRedirectRoute($form, $orderId, $signType);
+            return $this->getRedirectRoute($form, $orderId, $sign);
         }
 
         return $this->render(
             sprintf('order/sign/%s/edit.html.twig', $signType),
             [
                 'orderId' => $orderId,
+                'signCategory' => $sign->getCategory(),
                 'update' => false,
                 'form' => $form->createView(),
             ]
@@ -92,13 +98,14 @@ class OrderSignController extends AbstractAppController
 
             $this->dispatchAlert(Alert::SUCCESS, 'Les modifications sont enregistrées!');
 
-            return $this->getRedirectRoute($form, $orderId, $signType);
+            return $this->getRedirectRoute($form, $orderId, $orderSign->getSign());
         }
 
         return $this->render(
             sprintf('order/sign/%s/edit.html.twig', $signType),
             [
                 'orderId' => $orderId,
+                'signCategory' => $orderSign->getSign()->getCategory(),
                 'update' => true,
                 'form' => $form->createView(),
             ]
@@ -139,24 +146,33 @@ class OrderSignController extends AbstractAppController
 
     /**
      * @param FormInterface $form
-     * @param               $orderId
-     * @param               $signType
+     * @param int $orderId
+     * @param Sign $sign
      *
      * @return RedirectResponse
      */
-    private function getRedirectRoute(FormInterface $form, $orderId, $signType): RedirectResponse
+    private function getRedirectRoute(FormInterface $form, int $orderId, Sign $sign): RedirectResponse
     {
         $save = $form->get('save');
 
         if ($save->has('saveAndNew') && $save->get('saveAndNew')->isClicked()) {
             return $this->redirectToRoute(
                 'order_sign_create',
-                ['orderId' => $orderId, 'signType' => $signType]
+                [
+                    'orderId' => $orderId,
+                    'signType' => $sign->getType()
+                ]
             );
         }
 
         if ($save->has('saveAndChoose') && $save->get('saveAndChoose')->isClicked()) {
-            return $this->redirectToRoute('order_sign_choose', ['orderId' => $orderId]);
+            return $this->redirectToRoute(
+                'order_sign_choose',
+                [
+                    'orderId' => $orderId,
+                    'category' => $sign->getCategory()
+                ]
+            );
         }
 
         return $this->redirectToRoute('orders_view', ['id' => $orderId]);

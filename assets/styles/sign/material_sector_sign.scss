@@ -1,0 +1,103 @@
+:root {
+  --sign-scale: 1;
+}
+
+.material-sector {
+  &.large {
+    --sign-scale: 1.4;
+  }
+
+  &.medium {
+    --sign-scale: 1;
+  }
+
+  &.small {
+    --sign-scale: 0.3;
+  }
+
+  width: calc(var(--sign-scale) * 105mm);
+  height: calc(var(--sign-scale) * 105mm);
+  position: relative;
+  background-repeat: no-repeat;
+  background-size: calc(var(--sign-scale) * 105mm) calc(var(--sign-scale) * 105mm);
+  background-image: url("../../images/sign/sign/materialSector/material-sector-bg.svg");
+
+  font-family: Casto;
+  font-weight: 900;
+
+  &.left {
+    .aisle-number-container {
+      text-align: left;
+      left: calc(var(--sign-scale) * 10mm);
+    }
+
+    .sector-container {
+      text-align: left;
+      left: calc(var(--sign-scale) * 10mm);
+    }
+
+    .products-container {
+      justify-content: start;
+    }
+  }
+
+  &.right {
+    .aisle-number-container {
+      text-align: right;
+      right: calc(var(--sign-scale) * 10mm);
+    }
+
+    .sector-container {
+      text-align: right;
+      right: calc(var(--sign-scale) * 10mm);
+    }
+
+    .products-container {
+      justify-content: end;
+      text-align: end;
+    }
+  }
+
+  .aisle-number-container {
+    position: absolute;
+    top: calc(var(--sign-scale) * 6.6mm);
+    width: calc(var(--sign-scale) * 85mm);
+    height: calc(var(--sign-scale) * 14mm);
+
+    .aisle-number-value {
+      font-size: calc(var(--sign-scale) * 75pt);
+      line-height: calc(var(--sign-scale) * 75pt);
+      color: #D9D8D6;
+    }
+  }
+
+  .sector-container {
+    position: absolute;
+    top: calc(var(--sign-scale) * 42mm);
+    width: calc(var(--sign-scale) * 85mm);
+    height: calc(var(--sign-scale) * 10mm);
+
+    .sector-value {
+      font-size: calc(var(--sign-scale) * 35pt);
+      line-height: calc(var(--sign-scale) * 35pt);
+      color: #000000;
+    }
+  }
+
+  .products-container {
+    position: absolute;
+    top: calc(var(--sign-scale) * 60mm);
+    left: calc(var(--sign-scale) * 10mm);
+    width: calc(var(--sign-scale) * 85mm);
+    height: calc(var(--sign-scale) * 45mm);
+    display: flex;
+    align-items: center;
+
+    .product-items {
+      width: 100%;
+      font-size: calc(var(--sign-scale) * 22pt);
+      line-height: calc(var(--sign-scale) * 28pt);
+      color: #000000;
+    }
+  }
+}

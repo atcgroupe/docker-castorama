@@ -1,15 +1,16 @@
 <?php
 
-namespace App\DataFixtures;
+namespace App\DataFixtures\V1;
 
 use App\Entity\User;
 use App\Service\Fixture\CsvReader;
+use App\Service\Fixtures\AppVersionFixturesGroup;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class UserFixtures extends Fixture implements DependentFixtureInterface
+class UserFixtures extends Fixture implements DependentFixtureInterface, FixtureGroupInterface
 {
     public const USERNAME = 'username';
     public const PASSWORD = 'password';
@@ -23,7 +24,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
     {
         // Shops users
         $shopUsersData = $this->csvReader->getData(
-            \dirname(__DIR__, 2) . '/resource/shop_listing_pw_encoded.csv',
+            \dirname(__DIR__, 3) . '/resource/shop_listing_pw_encoded.csv',
             [
                 ShopFixtures::SHOP_NAME,
                 self::USERNAME,
@@ -68,6 +69,13 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
     {
         return [
             ShopFixtures::class,
+        ];
+    }
+
+    public static function getGroups(): array
+    {
+        return [
+            AppVersionFixturesGroup::V1,
         ];
     }
 }

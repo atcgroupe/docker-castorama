@@ -1,12 +1,14 @@
 <?php
 
-namespace App\DataFixtures;
+namespace App\DataFixtures\V1;
 
 use App\Entity\AisleSignItemCategory;
+use App\Service\Fixtures\AppVersionFixturesGroup;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class AisleSignItemCategoryFixtures extends Fixture
+class AisleSignItemCategoryFixtures extends Fixture implements FixtureGroupInterface
 {
     public function load(ObjectManager $manager)
     {
@@ -38,5 +40,12 @@ class AisleSignItemCategoryFixtures extends Fixture
         }
 
         $manager->flush();
+    }
+
+    public static function getGroups(): array
+    {
+        return [
+            AppVersionFixturesGroup::V1,
+        ];
     }
 }
