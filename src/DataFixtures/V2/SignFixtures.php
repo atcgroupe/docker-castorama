@@ -20,7 +20,7 @@ class SignFixtures extends AbstractSignFixtures
                 self::CLASS_NAME => MaterialSectorOrderSign::class,
                 self::TYPE => MaterialSectorOrderSign::getType(),
                 self::IMAGE => 'material_sector_order_sign.jpg',
-                self::TITLE => 'Panneau d\'allée',
+                self::TITLE => 'Panneau allée',
                 self::DESCRIPTION => 'Format: 1050x1050mm<br>Impression: Recto<br>Matière: Dibond 3MM',
                 self::WEIGHT => 4.20,
                 self::BUILDER => 'MaterialSectorSignBuilder',
