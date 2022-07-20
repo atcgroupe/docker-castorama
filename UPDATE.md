@@ -19,7 +19,8 @@ yarn build
 Launch database migration.
 
 ### Data Fixtures
-Add V2 Data fixtures:  
+1. Copy `resource/material_sector_sign_items.csv` file in the production server
+2. Load data fixtures
 ```console
 symfony console doctrine:fixtures:load --append --group=v2
 ```
