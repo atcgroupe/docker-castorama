@@ -13,9 +13,9 @@ class MaterialSectorSignItemCategoryFixtures extends Fixture implements FixtureG
     public function load(ObjectManager $manager)
     {
         $categories = [
-            'CATEGORIE UNE',
-            'CATEGORIE DEUX',
-            'CATEGORIE TROIS',
+            'CATEGORIE 1',
+            'CATEGORIE 2',
+            'CATEGORIE 3',
         ];
 
         foreach ($categories as $label) {
