@@ -4,7 +4,7 @@
     {% if not update %}
         <a href="{{ path(
             'order_sign_choose',
-            {'orderId': orderId, category: constant('App\\Entity\\Sign::CATEGORY_INDOOR')}
+            { 'orderId': orderId, category: signCategory }
         ) }}" class="btn btn-outline-secondary w-100 mb-2">
             Retour aux modèles
         </a>
