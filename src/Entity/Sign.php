@@ -242,6 +242,19 @@ class Sign
         return $this->category;
     }
 
+    /**
+     * @return string
+     */
+    public function getCategoryLabel(): string
+    {
+        $categorylabel = match ($this->getCategory()) {
+            Sign::CATEGORY_INDOOR => 'Signaletique interieure',
+            Sign::CATEGORY_OUTDOOR => 'Cour des matériaux',
+        };
+
+        return sprintf('%s - %s', $categorylabel, $this->getTitle());
+    }
+
     public function setCategory($category): self
     {
         $this->category = $category;
