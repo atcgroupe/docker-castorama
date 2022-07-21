@@ -1,4 +1,4 @@
 import {AisleSignHelper} from './AisleSignHelper';
-import $ from 'jquery';
+const form = document.getElementsByTagName('form')[0];
 
-new AisleSignHelper($('form').attr('name'));
+new AisleSignHelper(form.name);
