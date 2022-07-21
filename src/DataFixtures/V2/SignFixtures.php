@@ -3,6 +3,7 @@
 namespace App\DataFixtures\V2;
 
 use App\DataFixtures\AbstractSignFixtures;
+use App\Entity\MaterialAlgecoOrderSign;
 use App\Entity\MaterialDirOrderSign;
 use App\Entity\MaterialSectorOrderSign;
 use App\Entity\Sign;
@@ -43,7 +44,21 @@ class SignFixtures extends AbstractSignFixtures
                 self::PRICE => 40.00,
                 self::CUSTOMER_REF => 'xxxxxx',
                 self::CATEGORY => Sign::CATEGORY_OUTDOOR,
-            ]
+            ],
+            [
+                self::ID => 6,
+                self::CLASS_NAME => MaterialAlgecoOrderSign::class,
+                self::TYPE => MaterialAlgecoOrderSign::getType(),
+                self::IMAGE => 'material_algeco_order_sign.jpg',
+                self::TITLE => 'Panneau entrée algeco',
+                self::DESCRIPTION => 'Format: 500x700mm<br>Impression: Recto<br>Matière: Dibond 3MM',
+                self::WEIGHT => 1.33,
+                self::BUILDER => 'MaterialAlgecoSignBuilder',
+                self::TEMPLATE => 'MaterialAlgecoSignTemplate',
+                self::PRICE => 40.00,
+                self::CUSTOMER_REF => 'xxxxxx',
+                self::CATEGORY => Sign::CATEGORY_OUTDOOR,
+            ],
         ];
     }
 
