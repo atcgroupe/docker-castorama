@@ -77,8 +77,9 @@ class MaterialDirOrderSign extends AbstractOrderSign
     public function getFileName(): string
     {
         return sprintf(
-            'COMMANDE %s PANNEAU DIRECTION EXTERIEUR %s %s %sEX.xml',
+            'COMMANDE %s PANNEAU DIRECTION EXTERIEUR ID%s %s %s %sEX.xml',
             $this->getOrderId(),
+            $this->getId(),
             $this->getTitleLabel(),
             $this->getDirectionLabel(),
             $this->getQuantity()
