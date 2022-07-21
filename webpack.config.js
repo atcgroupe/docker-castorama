@@ -27,6 +27,7 @@ Encore
     .addEntry('signQuantity', './assets/scripts/sign/sign_quantity.js')
     .addEntry('sectorSignEdit', './assets/scripts/sign/sector_sign.js')
     .addEntry('materialSectorSignEdit', './assets/scripts/sign/material_sector_sign.js')
+    .addEntry('materialDirSignEdit', './assets/scripts/sign/material_dir_sign.js')
     .addEntry('orderPrint', './assets/scripts/order/order_print.js')
 
     .copyFiles({
