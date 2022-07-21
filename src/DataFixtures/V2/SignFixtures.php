@@ -3,6 +3,7 @@
 namespace App\DataFixtures\V2;
 
 use App\DataFixtures\AbstractSignFixtures;
+use App\Entity\MaterialDirOrderSign;
 use App\Entity\MaterialSectorOrderSign;
 use App\Entity\Sign;
 use App\Service\Fixtures\AppVersionFixturesGroup;
@@ -25,6 +26,20 @@ class SignFixtures extends AbstractSignFixtures
                 self::WEIGHT => 4.20,
                 self::BUILDER => 'MaterialSectorSignBuilder',
                 self::TEMPLATE => 'MaterialSectorSignTemplate',
+                self::PRICE => 40.00,
+                self::CUSTOMER_REF => 'xxxxxx',
+                self::CATEGORY => Sign::CATEGORY_OUTDOOR,
+            ],
+            [
+                self::ID => 5,
+                self::CLASS_NAME => MaterialDirOrderSign::class,
+                self::TYPE => MaterialDirOrderSign::getType(),
+                self::IMAGE => 'material_dir_order_sign.jpg',
+                self::TITLE => 'Panneau directionnel',
+                self::DESCRIPTION => 'Format: 1050x1050mm<br>Impression: Recto<br>Matière: Dibond 3MM',
+                self::WEIGHT => 4.20,
+                self::BUILDER => 'MaterialDirSignBuilder',
+                self::TEMPLATE => 'MaterialDirSignTemplate',
                 self::PRICE => 40.00,
                 self::CUSTOMER_REF => 'xxxxxx',
                 self::CATEGORY => Sign::CATEGORY_OUTDOOR,
