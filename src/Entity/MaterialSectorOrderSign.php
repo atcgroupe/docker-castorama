@@ -156,9 +156,10 @@ class MaterialSectorOrderSign extends AbstractOrderSign
     public function getFileName(): string
     {
         return sprintf(
-            'COMMANDE %s PANNEAU ALLEE EXTERIEUR %s %sEX.xml',
+            'COMMANDE %s PANNEAU ALLEE EXTERIEUR %s %s %sEX.xml',
             $this->getOrderId(),
             $this->getAisleNumber(),
+            $this->getAlignmentLabel(),
             $this->getQuantity()
         );
     }
@@ -201,5 +202,14 @@ class MaterialSectorOrderSign extends AbstractOrderSign
     public function getItem3Label(): string
     {
         return (null === $this->getItem3()) ? '' : $this->getItem3()->getLabel();
+    }
+
+    private function getAlignmentLabel(): string
+    {
+        return match ($this->getAlignment()) {
+            self::ALIGN_LEFT => 'GAUCHE',
+            self::ALIGN_RIGHT => 'DROITE',
+            default => ''
+        };
     }
 }
