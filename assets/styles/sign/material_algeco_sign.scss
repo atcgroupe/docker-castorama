@@ -1,0 +1,31 @@
+:root {
+  --sign-scale: 2.4;
+}
+
+.material-algeco {
+  &.medium {
+    --sign-scale: 2.4;
+  }
+
+  &.small {
+    --sign-scale: 0.7;
+  }
+
+  width: calc(var(--sign-scale) * 50mm);
+  height: calc(var(--sign-scale) * 70mm);
+  position: relative;
+  background-repeat: no-repeat;
+  background-size: calc(var(--sign-scale) * 50mm) calc(var(--sign-scale) * 70mm);
+  background-image: url("../../images/sign/sign/materialAlgeco/material-algeco-bg.svg");
+
+  .text-container {
+    position: absolute;
+    top: calc(var(--sign-scale) * 42mm);
+    left: calc(var(--sign-scale) * 4mm);
+    font-family: Casto;
+    font-weight: 900;
+    color: #000000;
+    font-size: calc(var(--sign-scale) * 15.4pt);
+    line-height: calc(var(--sign-scale) * 16pt);
+  }
+}
