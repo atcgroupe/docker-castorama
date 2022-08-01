@@ -15,7 +15,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/admin/shops', name: 'admin_shop')]
-class UserShopAdminController extends AbstractAppController
+class UserShopController extends AbstractAppController
 {
     public function __construct(
         private UserPasswordManager $userPasswordManager,
@@ -27,7 +27,7 @@ class UserShopAdminController extends AbstractAppController
     {
         $shops = $userRepository->findShopsUsers();
 
-        return $this->render('admin/shop_list.html.twig', ['shops' => $shops]);
+        return $this->render('admin/user_shop/shop_list.html.twig', ['shops' => $shops]);
     }
 
     #[Route('/{id}/switch', name: '_switch')]
@@ -75,7 +75,7 @@ class UserShopAdminController extends AbstractAppController
         }
 
         return $this->render(
-            'admin/shop_edit.html.twig',
+            'admin/user_shop/shop_edit.html.twig',
             [
                 'action' => 'create',
                 'form' => $form->createView(),
@@ -109,7 +109,7 @@ class UserShopAdminController extends AbstractAppController
         }
 
         return $this->render(
-            'admin/shop_edit.html.twig',
+            'admin/user_shop/shop_edit.html.twig',
             [
                 'action' => 'update',
                 'form' => $form->createView(),
