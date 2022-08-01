@@ -23,6 +23,7 @@ yarn-error.log
 
 ###> resources ###
 /resource/
+/public/resource/
 ###< resources ###
 
 ###> os ###
