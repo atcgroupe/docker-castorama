@@ -11,6 +11,16 @@ use Doctrine\ORM\Mapping as ORM;
 class Sign extends AbstractSign
 {
     /**
+     * @ORM\Column(type="string", length=60)
+     */
+    private $image;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $description;
+
+    /**
      * @ORM\Column(type="string", length=150)
      */
     private $class;
@@ -29,6 +39,30 @@ class Sign extends AbstractSign
      * @ORM\Column(type="string", length=30)
      */
     private $type;
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(string $image): self
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
 
     public function getClass(): ?string
     {
@@ -76,6 +110,14 @@ class Sign extends AbstractSign
         $this->type = $type;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getChooseImagePath(): string
+    {
+        return 'build/images/sign/choose/' . $this->getImage();
     }
 
     public function getCreateRoute(): string
