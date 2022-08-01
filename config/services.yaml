@@ -59,3 +59,7 @@ services:
         - name: doctrine.orm.entity_listener
           event: prePersist
           entity: App\Entity\Member
+
+    App\Service\Sign\FixedSignFileManager:
+      arguments:
+          $projectDir: '%kernel.project_dir%'
