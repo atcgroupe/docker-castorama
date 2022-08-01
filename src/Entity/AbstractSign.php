@@ -3,11 +3,12 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\MappedSuperclass()
  */
-abstract class AbstractSign
+abstract class AbstractSign implements SignInterface
 {
     public const CATEGORY_INDOOR = 1;
     public const CATEGORY_OUTDOOR = 2;
@@ -21,21 +22,14 @@ abstract class AbstractSign
 
     /**
      * @ORM\Column(type="string", length=60)
-     */
-    private $image;
-
-    /**
-     * @ORM\Column(type="string", length=60)
+     * @Assert\NotBlank(groups={"create", "update"})
      */
     private $title;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $description;
-
-    /**
      * @ORM\Column(type="decimal", precision=4, scale=2)
+     * @Assert\NotBlank(groups={"create", "update"})
+     * @Assert\Positive(groups={"create", "update"})
      */
     private $weight;
 
@@ -46,6 +40,8 @@ abstract class AbstractSign
 
     /**
      * @ORM\Column(type="decimal", precision=5, scale=2)
+     * @Assert\NotBlank(groups={"create", "update"})
+     * @Assert\Positive(groups={"create", "update"})
      */
     private $price;
 
@@ -71,46 +67,14 @@ abstract class AbstractSign
         return $this;
     }
 
-    public function getImage(): ?string
-    {
-        return $this->image;
-    }
-
-    /**
-     * @return string
-     */
-    public function getImagePath(): string
-    {
-        return 'build/images/sign/category/' . $this->getImage();
-    }
-
-    public function setImage(string $image): self
-    {
-        $this->image = $image;
-
-        return $this;
-    }
-
     public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    public function setTitle(string $title): self
+    public function setTitle(?string $title): self
     {
         $this->title = $title;
-
-        return $this;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(string $description): self
-    {
-        $this->description = $description;
 
         return $this;
     }
@@ -120,7 +84,7 @@ abstract class AbstractSign
         return $this->weight;
     }
 
-    public function setWeight(string $weight): self
+    public function setWeight(?string $weight): self
     {
         $this->weight = $weight;
 
@@ -144,7 +108,7 @@ abstract class AbstractSign
         return $this->price;
     }
 
-    public function setPrice(float $price): self
+    public function setPrice(?float $price): self
     {
         $this->price = $price;
 
@@ -156,7 +120,7 @@ abstract class AbstractSign
         return $this->customerReference;
     }
 
-    public function setCustomerReference(string $customerReference): self
+    public function setCustomerReference(?string $customerReference): self
     {
         $this->customerReference = $customerReference;
 
