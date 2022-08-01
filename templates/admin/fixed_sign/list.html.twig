@@ -1,0 +1,43 @@
+{% extends 'core/core.html.twig' %}
+
+{% block content %}
+    <div class="container container-sm">
+        <h1 class="h2 text-center text-primary fw-light my-5">Panneaux fixes</h1>
+
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <a href="{{ path('admin_home') }}" class="btn btn-outline-secondary">Retour aux catégories</a>
+            </div>
+
+            <div>
+                <a href="{{ path('admin_fixed_signs_create') }}" class="btn btn-primary">Ajouter un nouveau panneau</a>
+            </div>
+        </div>
+
+        <div class="row justify-content-lg-center">
+            <div class="col-12 col-lg-6">
+                <h1 class="fw-light text-center h2 my-5">Liste des panneaux</h1>
+                    <ul class="list app-card-datalist" style="padding: 0">
+                        {% for sign in signs %}
+                            <li class="card my-3">
+                                <a href="{{ path('admin_fixed_signs_view', { id: sign.id }) }}" class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <div class="card-body">
+                                            <h5>{{ sign.title }}</h5>
+                                            <p class="text-muted my-0">{{ sign.material }}</p>
+                                            <p class="text-muted my-0">{{ sign.width ~ 'x' ~ sign.height ~ 'mm'}}</p>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <img src="{{ asset(sign.chooseImagePath) }}" alt="{{ sign.title }}" width="100" height="100">
+                                    </div>
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
