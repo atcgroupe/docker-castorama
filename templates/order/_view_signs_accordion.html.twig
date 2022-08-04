@@ -1,0 +1,35 @@
+<div class="accordion-item">
+    <h2 class="accordion-header d-print-none" id="heading{{ itemIndex }}">
+        <button
+                class="accordion-button"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapse{{ itemIndex }}"
+                aria-expanded="true"
+                aria-controls="collapseOne">
+            {{ categoryLabel }}
+        </button>
+    </h2>
+
+    <div id="collapse{{ itemIndex }}" class="accordion-collapse collapse" aria-labelledby="heading{{ itemIndex }}">
+        <div class="accordion-body">
+            {% if type == 'variable' %}
+                {% for sign in signs %}
+                    {{  include('order/_view_signs_accordion_item.html.twig', {
+                        sign: sign,
+                        signUpdateQuantityPath: path('order_sign_update_quantity', {'id': sign.id, 'signType': sign.type}),
+                        signUpdatePath: path('order_sign_update', {'id': sign.id, 'signType': sign.type}),
+                        signDeletePath: path('order_sign_delete', {'id': sign.id, 'signType': sign.type})
+                    }) }}
+                {% endfor %}
+            {% elseif type == 'fixed' %}
+                {{  include('order/_view_signs_accordion_item.html.twig', {
+                    sign: sign,
+                    signUpdateQuantityPath: path('fixed_order_sign_update_quantity', {'id': sign.id}),
+                    signUpdatePath: path('fixed_order_sign_update', {'id': sign.id}),
+                    signDeletePath: path('fixed_order_sign_delete', {'id': sign.id})
+                }) }}
+            {% endif %}
+        </div>
+    </div>
+</div>

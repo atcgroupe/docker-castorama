@@ -1,0 +1,159 @@
+{% extends 'core/core.html.twig' %}
+
+{% set tableNameClass = 'fw-bold bg-light text-uppercase text-secondary' %}
+
+{% block content %}
+    <div class="row justify-content-lg-center">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <a href="{{ path('admin_fixed_signs_list') }}" class="btn btn-outline-secondary">Retour</a>
+            </div>
+
+            <div>
+                <a href="{{ path('admin_fixed_signs_update', { id: sign.id }) }}" class="btn btn-primary">
+                    Modifier les informations
+                </a>
+
+                <a
+                        href="{{ path('admin_fixed_signs_change_status', { id: sign.id }) }}"
+                        class="btn ms-1
+                    {% if sign.isActive == true %}
+                        btn-outline-danger">Désactiver
+                    {% else %}
+                        btn-outline-success">Activer
+                    {% endif %}
+                </a>
+
+                {% if isRemovable == true %}
+                    <a href="{{ path('admin_fixed_signs_delete', { id: sign.id }) }}" class="btn btn-outline-danger ms-1">
+                        Supprimer
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-7 mt-5">
+            <h1 class="text-center mb-4">{{ sign.title }}</h1>
+
+            <table class="table table-bordered w-100">
+                <tbody>
+                    <tr>
+                        <td colspan="2" class="text-center text-primary fs-5">Informations générales</td>
+                    </tr>
+
+                    <tr>
+                        <td class="{{ tableNameClass }}">Id</td>
+                        <td>{{ sign.id }}</td>
+                    </tr>
+
+                    <tr>
+                        <td class="{{ tableNameClass }}">Nom</td>
+                        <td>{{ sign.name }}</td>
+                    </tr>
+
+                    <tr>
+                        <td class="{{ tableNameClass }}">Titre</td>
+                        <td>{{ sign.title }}</td>
+                    </tr>
+
+                    <tr>
+                        <td class="{{ tableNameClass }}">Format</td>
+                        <td>{{ sign.width ~ 'x' ~ sign.height }} MM</td>
+                    </tr>
+
+                    <tr>
+                        <td class="{{ tableNameClass }}">Poids</td>
+                        <td>{{ sign.weight }} Kg</td>
+                    </tr>
+
+                    <tr>
+                        <td class="{{ tableNameClass }}">Prix</td>
+                        <td>{{ sign.price }} €</td>
+                    </tr>
+
+                    <tr>
+                        <td class="{{ tableNameClass }}">Code DataMerch</td>
+                        <td>{{ sign.customerReference }}</td>
+                    </tr>
+
+                    <tr>
+                        <td class="{{ tableNameClass }}">Catégorie</td>
+                        <td>{{ sign.categoryLabel }}</td>
+                    </tr>
+
+                    <tr>
+                        <td class="{{ tableNameClass }}">Faces imprimées</td>
+                        <td>{{ sign.printFaces }}</td>
+                    </tr>
+
+                    {% if sign.finish is not empty %}
+                        <tr>
+                            <td class="{{ tableNameClass }}">Finition</td>
+                            <td>{{ sign.finish }}</td>
+                        </tr>
+                    {% endif %}
+
+                    <tr>
+                        <td class="{{ tableNameClass }}">Statut</td>
+                        <td>{% if sign.isActive %}Actif{% else %}Désactivé{% endif %}</td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="2" class="text-center text-primary fs-5">Images</td>
+                    </tr>
+
+                    <tr>
+                        <td class="{{ tableNameClass }}">Image choix</td>
+                        <td>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>choose/{{ chooseFilename }}</div>
+
+                                <div>
+                                    <a
+                                        href="{{ path('admin_fixed_signs_update_image', { id: sign.id, type: chooseType }) }}"
+                                        class="btn btn-sm btn-outline-primary">
+                                        Modifier
+                                    </a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="{{ tableNameClass }}">Image prévisu</td>
+                        <td>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>preview/{{ previewFilename }}</div>
+
+                                <div>
+                                    <a
+                                        href="{{ path('admin_fixed_signs_update_image', { id: sign.id, type: previewType }) }}"
+                                        class="btn btn-sm btn-outline-primary">
+                                        Modifier
+                                    </a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="{{ tableNameClass }}">Image production</td>
+                        <td>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>production/{{ prodFilename }}</div>
+
+                                <div>
+                                    <a
+                                        href="{{ path('admin_fixed_signs_update_image', { id: sign.id, type: productionType }) }}"
+                                        class="btn btn-sm btn-outline-primary">
+                                        Modifier
+                                    </a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

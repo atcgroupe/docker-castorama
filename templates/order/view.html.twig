@@ -64,26 +64,6 @@
                 </li>
             {% endif %}
 
-            {#
-            <li class="list-group-item d-flex align-items-center">
-                <div class="w-50">Intitulé de la commande</div>
-
-                <div class="w-50 ps-2 text-primary d-flex justify-content-between align-items-center">
-                    <div class="me-3">{{ order.title }}</div>
-                    {% if is_granted('UPDATE_INFO', order) %}
-                        <div>
-                            <a
-                                    href="{{ path('orders_update', {'element': 'info', 'id': order.id}) }}"
-                                    class="btn btn-sm btn-outline-primary">
-                                Modifier
-                            </a>
-                        </div>
-                    {% endif %}
-                </div>
-            </li>
-            #}
-
-
             {% if order.comment %}
                 <li class="list-group-item d-flex align-items-center">
                     <div class="w-50">Commentaire à l'attention de l'imprimeur</div>
@@ -172,31 +152,31 @@
                             <div class="w-50">Prix total de la commande</div>
 
                             <div class="w-50 ps-2 text-primary">
-                                {{ resume['global']['price']|format_number({fraction_digit: 2}) }}€
+                                {{ resume.totalPrice|format_number({fraction_digit: 2}) }}€
                             </div>
                         </li>
 
                         <li class="list-group-item d-flex align-items-center">
                             <div class="w-50">Nombre total de panneaux</div>
 
-                            <div class="w-50 ps-2 text-primary">{{ resume['global']['count'] }} Exemplaires</div>
+                            <div class="w-50 ps-2 text-primary">{{ resume.totalSignsCount }} Exemplaires</div>
                         </li>
 
-                        {% for title, data in resume['sign'] %}
+                        {% for signResume in resume.signsResume %}
                             <li class="list-group-item d-flex align-items-center">
                                 <div class="w-50">
-                                    {{ title }}<br>
+                                    {{ signResume.title }}<br>
                                     <span class="small text-muted">
-                                        {{ data['category'] }}<br>
+                                        {{ signResume.category }}<br>
                                     </span>
                                     <span class="small text-muted fst-italic">
-                                        Code DataMerch: {{ data['customerReference'] }}
+                                        Code DataMerch: {{ signResume.customerReference }}
                                     </span>
                                 </div>
 
                                 <div class="w-50 ps-2 text-primary">
-                                    {{ data['count'] }} Exemplaires
-                                    ( {{ data['countPrice']|format_number({fraction_digit: 2}) }}€ )
+                                    {{ signResume.signsCount }} Exemplaires
+                                    ( {{ signResume.totalPrice|format_number({fraction_digit: 2}) }}€ )
                                 </div>
                             </li>
                         {% endfor %}
@@ -219,16 +199,8 @@
         </div>
     </div>
 
+    {{ include('order/_view_signs.html.twig') }}
 
-
-
-    {% if orderSigns is not empty %}
-        {{ include('order/_view_signs.html.twig') }}
-    {% else %}
-        <div class="alert alert-info lead text-center my-5" role="alert">
-            Cette commande ne contient aucun panneau pour l'instant.
-        </div>
-    {% endif %}
 {% endblock %}
 
 {% block javascripts %}

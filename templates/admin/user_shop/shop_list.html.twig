@@ -1,6 +1,10 @@
 {% extends 'core/core.html.twig' %}
 
 {% block content %}
+    <a href="{{ path('admin_home') }}" class="btn btn-outline-secondary">
+        Retour aux catégories
+    </a>
+
     <div class="text-end my-4">
         <a href="{{ path('admin_shop_create') }}" class="btn btn-primary">Créer un nouveau magasin</a>
     </div>

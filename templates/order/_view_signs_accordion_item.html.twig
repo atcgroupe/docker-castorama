@@ -1,0 +1,49 @@
+<div class="row mb-3 align-items-center">
+    <div class="col d-flex justify-content-center">
+        {% include 'order/sign/' ~ sign.type ~ '/_view.html.twig' with {'sign': sign} %}
+    </div>
+
+    <div class="col">
+        <div class="row">
+            <div class="col">
+                <div class="row align-items-center d-print-none">
+                    <div class="col col-4 text-end">
+                        <label for="sign-quantity-{{ sign.id }}">Quantité</label>
+                    </div>
+
+                    <div class="col col-8">
+                        <input
+                            id="sign-quantity-{{ sign.id }}"
+                            type="number"
+                            min="1"
+                            class="form-control sign-quantity"
+                            name="quantity"
+                            data-route="{{ signUpdateQuantityPath }}"
+                            value="{{ sign.quantity }}"
+                            {% if not is_granted('UPDATE_SIGN', order) %}disabled{% endif %}/>
+                    </div>
+                </div>
+
+                <div class="d-none d-print-block">
+                    {{ sign.quantity }} Ex.
+                </div>
+            </div>
+
+            <div class="col text-end d-print-none">
+                {% if is_granted('UPDATE_SIGN', order) %}
+                    <a
+                        href="{{ signUpdatePath }}"
+                        class="btn btn-outline-primary">
+                        Modifier
+                    </a>
+
+                    <a
+                        href="{{ signDeletePath }}"
+                        class="btn btn-outline-danger">
+                        Supprimer
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

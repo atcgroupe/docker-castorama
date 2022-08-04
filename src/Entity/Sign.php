@@ -4,37 +4,16 @@ namespace App\Entity;
 
 use App\Repository\SignRepository;
 use Doctrine\ORM\Mapping as ORM;
-use phpDocumentor\Reflection\Types\Integer;
 
 /**
  * @ORM\Entity(repositoryClass=SignRepository::class)
  */
-class Sign
+class Sign extends AbstractSign
 {
-    public const CATEGORY_INDOOR = 1;
-    public const CATEGORY_OUTDOOR = 2;
-
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
-
-    /**
-     * @ORM\Column(type="string", length=150)
-     */
-    private $class;
-
     /**
      * @ORM\Column(type="string", length=60)
      */
     private $image;
-
-    /**
-     * @ORM\Column(type="string", length=60)
-     */
-    private $title;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -42,9 +21,9 @@ class Sign
     private $description;
 
     /**
-     * @ORM\Column(type="decimal", precision=4, scale=2)
+     * @ORM\Column(type="string", length=150)
      */
-    private $weight;
+    private $class;
 
     /**
      * @ORM\Column(type="string", length=30)
@@ -57,82 +36,18 @@ class Sign
     private $SwitchFlowTemplateFile;
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    private $isActive;
-
-    /**
      * @ORM\Column(type="string", length=30)
      */
     private $type;
-
-    /**
-     * @ORM\Column(type="decimal", precision=5, scale=2)
-     */
-    private $price;
-
-    /**
-     * @ORM\Column(type="string", length=30)
-     */
-    private $customerReference;
-
-    /**
-     * @ORM\Column(type="smallint")
-     */
-    private $category;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function setId(int $id): self
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-
-    public function getClass(): ?string
-    {
-        return $this->class;
-    }
-
-    public function setClass(string $class): self
-    {
-        $this->class = $class;
-
-        return $this;
-    }
 
     public function getImage(): ?string
     {
         return $this->image;
     }
 
-    /**
-     * @return string
-     */
-    public function getImagePath(): string
-    {
-        return 'build/images/sign/category/' . $this->getImage();
-    }
-
     public function setImage(string $image): self
     {
         $this->image = $image;
-
-        return $this;
-    }
-
-    public function getTitle(): ?string
-    {
-        return $this->title;
-    }
-
-    public function setTitle(string $title): self
-    {
-        $this->title = $title;
 
         return $this;
     }
@@ -149,14 +64,14 @@ class Sign
         return $this;
     }
 
-    public function getWeight(): ?string
+    public function getClass(): ?string
     {
-        return $this->weight;
+        return $this->class;
     }
 
-    public function setWeight(string $weight): self
+    public function setClass(string $class): self
     {
-        $this->weight = $weight;
+        $this->class = $class;
 
         return $this;
     }
@@ -185,18 +100,6 @@ class Sign
         return $this;
     }
 
-    public function getIsActive(): ?bool
-    {
-        return $this->isActive;
-    }
-
-    public function setIsActive(bool $isActive): self
-    {
-        $this->isActive = $isActive;
-
-        return $this;
-    }
-
     public function getType(): ?string
     {
         return $this->type;
@@ -209,63 +112,16 @@ class Sign
         return $this;
     }
 
+    /**
+     * @return string
+     */
+    public function getChooseImagePath(): string
+    {
+        return 'build/images/sign/choose/' . $this->getImage();
+    }
+
     public function getCreateRoute(): string
     {
         return sprintf('order_sign_%s_create', $this->type);
-    }
-
-    public function getPrice(): ?float
-    {
-        return $this->price;
-    }
-
-    public function setPrice(float $price): self
-    {
-        $this->price = $price;
-
-        return $this;
-    }
-
-    public function getCustomerReference(): ?string
-    {
-        return $this->customerReference;
-    }
-
-    public function setCustomerReference(string $customerReference): self
-    {
-        $this->customerReference = $customerReference;
-
-        return $this;
-    }
-
-    public function getCategory(): ?int
-    {
-        return $this->category;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTypeLabel(): string
-    {
-        return sprintf('%s - %s', $this->getCategoryLabel(), $this->getTitle());
-    }
-
-    /**
-     * @return string
-     */
-    public function getCategoryLabel(): string
-    {
-        return match ($this->getCategory()) {
-            Sign::CATEGORY_INDOOR => 'Signaletique interieure',
-            Sign::CATEGORY_OUTDOOR => 'Cour des matériaux',
-        };
-    }
-
-    public function setCategory($category): self
-    {
-        $this->category = $category;
-
-        return $this;
     }
 }

@@ -3,6 +3,7 @@
 namespace App\EventListener;
 
 use App\Entity\AbstractOrderSign;
+use App\Entity\AbstractVariableOrderSign;
 use App\Repository\SignRepository;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 
@@ -17,7 +18,7 @@ class OrderSignListener
     {
         $entity = $args->getObject();
 
-        if (!$entity instanceof AbstractOrderSign) {
+        if (!$entity instanceof AbstractVariableOrderSign) {
             return;
         }
 
