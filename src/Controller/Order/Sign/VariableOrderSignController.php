@@ -5,6 +5,7 @@ namespace App\Controller\Order\Sign;
 use App\Entity\AbstractOrderSign;
 use App\Entity\Sign;
 use App\Form\SignSaveType;
+use App\Repository\FixedSignRepository;
 use App\Repository\OrderRepository;
 use App\Repository\SignRepository;
 use App\Service\Alert\Alert;
@@ -23,6 +24,7 @@ class OrderSignController extends AbstractAppController
 {
     public function __construct(
         private readonly SignRepository $signRepository,
+        private readonly FixedSignRepository $fixedSignRepository,
         private readonly OrderHelper    $orderHelper,
     ) {
     }
@@ -36,7 +38,9 @@ class OrderSignController extends AbstractAppController
     #[Route('/{orderId}/sign/{category}/choose', name: '_choose')]
     public function choose(int $orderId, int $category): Response
     {
-        $signs = $this->signRepository->findBy(['isActive' => true, 'category' => $category]);
+        $variableSigns = $this->signRepository->findBy(['isActive' => true, 'category' => $category]);
+        $fixedSigns = $this->fixedSignRepository->findBy(['isActive' => true, 'category' => $category]);
+        $signs = array_merge($variableSigns, $fixedSigns);
 
         return $this->render('order/sign/choose.html.twig', ['signs' => $signs, 'orderId' => $orderId]);
     }
