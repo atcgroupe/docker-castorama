@@ -12,6 +12,7 @@ use App\Service\Alert\Alert;
 use App\Service\Controller\AbstractAppController;
 use App\Service\Order\OrderHelper;
 use App\Service\Order\OrderSignHelper;
+use App\Service\Order\VariableOrderSignHelper;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -20,29 +21,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/order', name: 'order_sign')]
-class OrderSignController extends AbstractAppController
+class VariableOrderSignController extends AbstractAppController
 {
     public function __construct(
         private readonly SignRepository $signRepository,
-        private readonly FixedSignRepository $fixedSignRepository,
         private readonly OrderHelper    $orderHelper,
     ) {
-    }
-
-    #[Route('/{orderId}/sign/choose-category', name: '_choose_category')]
-    public function chooseCategory(int $orderId): Response
-    {
-        return $this->render('order/sign/choose_category.html.twig', ['orderId' => $orderId]);
-    }
-
-    #[Route('/{orderId}/sign/{category}/choose', name: '_choose')]
-    public function choose(int $orderId, int $category): Response
-    {
-        $variableSigns = $this->signRepository->findBy(['isActive' => true, 'category' => $category]);
-        $fixedSigns = $this->fixedSignRepository->findBy(['isActive' => true, 'category' => $category]);
-        $signs = array_merge($variableSigns, $fixedSigns);
-
-        return $this->render('order/sign/choose.html.twig', ['signs' => $signs, 'orderId' => $orderId]);
     }
 
     #[Route('/{orderId}/sign/{signType}/create', name: '_create')]
@@ -50,7 +34,7 @@ class OrderSignController extends AbstractAppController
         int $orderId,
         string $signType,
         OrderRepository $orderRepository,
-        OrderSignHelper $orderSignHelper,
+        VariableOrderSignHelper $orderSignHelper,
         Request $request,
     ): Response {
         $order = $orderRepository->find($orderId);
@@ -63,7 +47,7 @@ class OrderSignController extends AbstractAppController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->orderHelper->updateLastUpdateTime($order);
-            $orderSignHelper->createOrderSign($orderSign);
+            $orderSignHelper->createOne($orderSign);
 
             $this->dispatchAlert(Alert::SUCCESS, 'Le panneau est enregistré!');
 
@@ -145,7 +129,7 @@ class OrderSignController extends AbstractAppController
             return $this->redirectToRoute('orders_view', ['id' => $orderId]);
         }
 
-        return $this->render('order/sign/delete.html.twig', ['sign' => $orderSign]);
+        return $this->render('order/sign/delete.html.twig', ['sign' => $orderSign,]);
     }
 
     /**

@@ -149,4 +149,12 @@ abstract class AbstractSign implements SignInterface
 
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function getTypeLabel(): string
+    {
+        return sprintf('%s - %s', $this->getCategoryLabel(), $this->getTitle());
+    }
 }

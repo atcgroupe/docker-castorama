@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\MappedSuperclass()
  */
-abstract class AbstractOrderSign implements OrderSignInterface, OrderSignApiInterface
+abstract class AbstractOrderSign implements OrderSignInterface
 {
     /**
      * @ORM\Id

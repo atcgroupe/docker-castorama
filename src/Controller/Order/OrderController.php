@@ -3,7 +3,6 @@
 namespace App\Controller\Order;
 
 use App\Entity\Order;
-use App\Entity\OrderStatus;
 use App\Entity\User;
 use App\Form\OrderSendType;
 use App\Form\OrderUpdateDeliveryType;
@@ -15,8 +14,10 @@ use App\Security\Voter\OrderVoter;
 use App\Service\Alert\Alert;
 use App\Service\Controller\AbstractAppController;
 use App\Service\Event\OrderEvent;
+use App\Service\Order\FixedOrderSignHelper;
 use App\Service\Order\OrderHelper;
 use App\Service\Order\OrderSignHelper;
+use App\Service\Order\VariableOrderSignHelper;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,10 +33,12 @@ class OrderController extends AbstractAppController
     private const UPDATE_ELEMENT_INFO = 'info';
 
     public function __construct(
-        private RequestStack $requestStack,
-        private OrderRepository $orderRepository,
-        private OrderSignHelper $signHelper,
-        private EventDispatcherInterface $eventDispatcher,
+        private readonly RequestStack $requestStack,
+        private readonly OrderRepository $orderRepository,
+        private readonly OrderSignHelper $signHelper,
+        private readonly VariableOrderSignHelper $variableOrderSignHelper,
+        private readonly FixedOrderSignHelper $fixedOrderSignHelper,
+        private readonly EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -75,15 +78,24 @@ class OrderController extends AbstractAppController
     public function view(int $id, Request $request): Response
     {
         $order = $this->orderRepository->findOneWithRelations($id);
-        $resume = $this->signHelper->getOrderSignsResume($order);
-        $signs = $this->signHelper->findOrderSigns($order);
+        $resume = $this->signHelper->getResume($order);
+        $variableOrderSigns = $this->variableOrderSignHelper->getCollections($order);
+        $fixedOrderSigns = $this->fixedOrderSignHelper->findAll($order);
 
         $referer = $request->headers->get('referer');
         if (str_contains($referer, '/orders/list')) {
             $this->requestStack->getSession()->set('referer', $referer);
         }
 
-        return $this->render('order/view.html.twig', ['order' => $order, 'orderSigns' => $signs, 'resume' => $resume]);
+        return $this->render(
+            'order/view.html.twig',
+            [
+                'order' => $order,
+                'variableOrderSigns' => $variableOrderSigns,
+                'fixedOrderSigns' => $fixedOrderSigns,
+                'resume' => $resume
+            ]
+        );
     }
 
     #[Route(
@@ -111,7 +123,7 @@ class OrderController extends AbstractAppController
             default:
                 $this->dispatchAlert(Alert::WARNING, 'Un problème est survenu lors de la modification');
 
-                $this->redirectToRoute('orders_view', ['id' => $id]);
+                return $this->redirectToRoute('orders_view', ['id' => $id]);
         }
 
         $form->handleRequest($request);
@@ -143,7 +155,7 @@ class OrderController extends AbstractAppController
         $this->denyAccessUnlessGranted(OrderVoter::DELETE, $order);
 
         if ($request->isMethod('POST')) {
-            $this->signHelper->deleteOrderSigns($order);
+            $this->signHelper->removeAll($order);
             $manager = $this->getDoctrine()->getManager();
             $manager->remove($order);
             $manager->flush();
@@ -163,7 +175,7 @@ class OrderController extends AbstractAppController
     public function send(int $id, Request $request): Response
     {
         $order = $this->orderRepository->findOneWithRelations($id);
-        $resume = $this->signHelper->getOrderSignsResume($order);
+        $resume = $this->signHelper->getResume($order);
         $form = $this->createForm(OrderSendType::class, $order);
         $form->handleRequest($request);
 

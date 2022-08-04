@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\FixedSignFileType;
 use App\Repository\FixedOrderSignRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -9,9 +10,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass=FixedOrderSignRepository::class)
  */
-class FixedOrderSign extends AbstractOrderSign
+class FixedOrderSign extends AbstractOrderSign implements FixedOrderSignApiInterface
 {
     private const SIGN_TYPE = 'FIXED';
+    private const TYPE = 'fixed';
 
     /**
      * @ORM\ManyToOne(targetEntity=FixedSign::class)
@@ -19,6 +21,9 @@ class FixedOrderSign extends AbstractOrderSign
      */
     private $fixedSign;
 
+    /**
+     * @return FixedSign|null
+     */
     public function getFixedSign(): ?FixedSign
     {
         return $this->fixedSign;
@@ -54,5 +59,23 @@ class FixedOrderSign extends AbstractOrderSign
     public function getSwitchSignType(): string
     {
         return self::SIGN_TYPE;
+    }
+
+    /**
+     * @return string
+     *
+     * @Groups({"api_xml_object"})
+     */
+    public function getProductionFilename(): string
+    {
+        return $this->getFixedSign()->getFilename(FixedSignFileType::Production);
+    }
+
+    /**
+     * @return string
+     */
+    public static function getType(): string
+    {
+        return self::TYPE;
     }
 }

@@ -158,8 +158,23 @@ class FixedSign extends AbstractSign
 
     public function getDescription(): ?string
     {
-        // Todo: add getDescription content
-        return '';
+        $description = sprintf(
+            'Format: %sx%s<br>Impression: %s<br>Matière: %s',
+            $this->getWidth(),
+            $this->getHeight(),
+            $this->getPrintFaces(),
+            $this->getMaterial(),
+        );
+
+        if ($this->getFinish()) {
+            $description = sprintf(
+                '%s<br>Finition: %s',
+                $description,
+                $this->getFinish()
+            );
+        }
+
+        return $description;
     }
 
     public function getPrintFaces(): ?string
@@ -264,6 +279,18 @@ class FixedSign extends AbstractSign
             '%s/%s',
             FixedSignFileManager::getPublicFileDir(FixedSignFileType::Choose),
             $this->getFilename(FixedSignFileType::Choose)
+        );
+    }
+
+    /**
+     * @return string
+     */
+    public function getPreviewImagePath(): string
+    {
+        return sprintf(
+            '%s/%s',
+            FixedSignFileManager::getPublicFileDir(FixedSignFileType::Preview),
+            $this->getFilename(FixedSignFileType::Preview)
         );
     }
 

@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\FixedOrderSign;
+use App\Entity\Order;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -12,39 +13,40 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method FixedOrderSign[]    findAll()
  * @method FixedOrderSign[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class FixedOrderSignRepository extends ServiceEntityRepository
+class FixedOrderSignRepository extends ServiceEntityRepository implements OrderSignRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, FixedOrderSign::class);
     }
 
-    // /**
-    //  * @return FixedOrderSign[] Returns an array of FixedOrderSign objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @param Order $order
+     *
+     * @return FixedOrderSign[]
+     */
+    public function findByOrderWithRelations(Order $order): array
     {
-        return $this->createQueryBuilder('f')
-            ->andWhere('f.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('f.id', 'ASC')
-            ->setMaxResults(10)
+        return $this->createQueryBuilder('a')
+            ->innerJoin('a.fixedSign', 'fixedSign')
+                ->addSelect('fixedSign')
+            ->andWhere('a.order = :order')
+                ->setParameter('order', $order)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?FixedOrderSign
+    /**
+     * @param Order $order
+     */
+    public function removeByOrder(Order $order): void
     {
-        return $this->createQueryBuilder('f')
-            ->andWhere('f.exampleField = :val')
-            ->setParameter('val', $value)
+        $this->createQueryBuilder('a')
+            ->delete()
+            ->where('a.order = :order')
+                ->setParameter('order', $order)
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getResult();
     }
-    */
 }

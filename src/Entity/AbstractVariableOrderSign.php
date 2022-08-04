@@ -8,7 +8,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\MappedSuperclass
  */
-abstract class AbstractVariableOrderSign extends AbstractOrderSign implements VariableOrderSignInterface, VariableOrderSignApiInterface
+abstract class AbstractVariableOrderSign extends AbstractOrderSign implements VariableOrderSignApiInterface
 {
     private const SIGN_TYPE = 'VARIABLE';
 

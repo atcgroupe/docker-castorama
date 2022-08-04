@@ -40,7 +40,7 @@ class SignFixtures extends AbstractSignFixtures
                 self::TITLE => 'Panneau directionnel',
                 self::DESCRIPTION => 'Format: 1050x1050mm<br>Impression: Recto<br>Matière: Dibond 3MM',
                 self::WEIGHT => 4.20,
-                self::BUILDER => 'MaterialDirSignBuilder',
+                self::BUILDER => 'none', // No builder used to apply variable data on the sign in Switch flow.
                 self::TEMPLATE => 'MaterialDirSignTemplate',
                 self::PRICE => 40.00,
                 self::CUSTOMER_REF => 'xxxxxx',

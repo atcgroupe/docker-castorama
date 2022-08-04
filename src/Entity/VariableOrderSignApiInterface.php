@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-interface VariableOrderSignApiInterface
+interface VariableOrderSignApiInterface extends OrderSignApiInterface
 {
     /**
      * Returns the Callas builder name that is used to apply content on pdf file.

@@ -124,12 +124,4 @@ class Sign extends AbstractSign
     {
         return sprintf('order_sign_%s_create', $this->type);
     }
-
-    /**
-     * @return string
-     */
-    public function getTypeLabel(): string
-    {
-        return sprintf('%s - %s', $this->getCategoryLabel(), $this->getTitle());
-    }
 }

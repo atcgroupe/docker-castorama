@@ -25,7 +25,7 @@ class OrderNotificationDispatcher
     public function send(int $orderId)
     {
         $order = $this->orderRepository->findOneWithRelations($orderId);
-        $resume = $this->orderSignHelper->getOrderSignsResume($order);
+        $resume = $this->orderSignHelper->getResume($order);
         $addresses = $this->getMembersAddresses($order->getStatus()->getEvent(), $order->getUser());
         $content = $this->twig->render('email/order_notification.html.twig', ['order' => $order, 'resume' => $resume]);
 

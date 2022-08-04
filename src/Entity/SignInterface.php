@@ -17,4 +17,11 @@ interface SignInterface
      * @return string
      */
     public function getChooseImagePath(): string;
+
+    /**
+     * Returns the sign display type (category + title)
+     *
+     * @return string
+     */
+    public function getTypeLabel(): string;
 }

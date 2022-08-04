@@ -9,29 +9,17 @@
 
     <h1 class="h2 text-center text-primary fw-light mt-4 mb-5">Choisissez votre modèle...</h1>
 
-    <div class="row">
-        {% for sign in signs %}
-            <div class="col-12 col-md-4 col-lg-3">
-                <div class="card">
-                    <img src="{{ asset(sign.chooseImagePath) }}" class="card-img-top" alt="{{ sign.title }}">
+    <div class="row g-4">
+        {% for sign in variableSigns %}
+            {{ include('order/sign/_choose_item.html.twig', {
+                path: path('order_sign_create', {'orderId': orderId, 'signType': sign.type})
+            }) }}
+        {% endfor %}
 
-                    <div class="card-body">
-                        <h5 class="card-title mt-0">{{ sign.title }}</h5>
-
-                        <p class="card-text">
-                            {{ sign.description|raw }}<br>
-                            <hr />
-                            Ref Castorama: {{ sign.customerReference }}<br>
-                            Prix: {{ sign.price|format_number({fraction_digit: 2}) }}€
-                            <hr />
-                        </p>
-
-                        <a href="{{ path('order_sign_create', {'orderId': orderId, 'signType': sign.type}) }}" class="btn btn-primary">
-                            Sélectionner
-                        </a>
-                    </div>
-                </div>
-            </div>
+        {% for sign in fixedSigns %}
+            {{ include('order/sign/_choose_item.html.twig', {
+                path: path('fixed_order_sign_create', { orderId: orderId, signId: sign.id })
+            }) }}
         {% endfor %}
     </div>
 {% endblock %}

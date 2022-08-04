@@ -88,25 +88,25 @@
             <ul class="bg-light">
                 <li>
                     <div>Prix total de la commande</div>
-                    <div>{{ resume['global']['price']|format_number({fraction_digit: 2}) }}€</div>
+                    <div>{{ resume.totalPrice|format_number({fraction_digit: 2}) }}€</div>
                 </li>
 
                 <li>
                     <div>Nombre total de panneaux</div>
-                    <div>{{ resume['global']['count'] }} Exemplaires</div>
+                    <div>{{ resume.totalSignsCount }} Exemplaires</div>
                 </li>
             </ul>
 
             <h2 class="h4 fw-light mt-4 mb-3">Détail des éléments</h2>
 
             <ul class="bg-light mb-5">
-                {% for title, data in resume['sign'] %}
+                {% for signResume in resume.signsResume %}
                     <li>
-                        <div>{{ title }}</div>
+                        <div>{{ signResume.title }}</div>
                         <div>
-                            {{ data['countModels'] }} Modèles différents<br/>
-                            {{ data['count'] }} Exemplaires au total<br/>
-                            {{ data['countPrice']|format_number({fraction_digit: 2}) }}€
+                            {{ signResume.modelsCount }} {% if signResume.modelsCount > 1 %}Modèles différents{% else %}Modèle{% endif %}<br/>
+                            {{ signResume.signsCount }} Exemplaires au total<br/>
+                            {{ signResume.totalPrice|format_number({fraction_digit: 2}) }}€
                         </div>
                     </li>
                 {% endfor %}
