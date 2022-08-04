@@ -6,10 +6,12 @@ use App\Entity\FixedSign;
 use App\Enum\FixedSignFileType;
 use App\Form\FixedSignCreateType;
 use App\Form\FixedSignUpdateType;
+use App\Repository\FixedOrderSignRepository;
 use App\Repository\FixedSignRepository;
 use App\Service\Alert\Alert;
 use App\Service\Controller\AbstractAppController;
 use App\Service\Sign\FixedSignFileManager;
+use App\Service\Sign\FixedSignHelper;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,6 +23,7 @@ class FixedSignController extends AbstractAppController
     public function __construct(
         private readonly FixedSignRepository  $signRepository,
         private readonly FixedSignFileManager $fileManager,
+        private readonly FixedSignHelper $signHelper,
     ) {
     }
 
@@ -47,6 +50,7 @@ class FixedSignController extends AbstractAppController
                 'chooseType' => FixedSignFileType::Choose->getName(),
                 'previewType' => FixedSignFileType::Preview->getName(),
                 'productionType' => FixedSignFileType::Production->getName(),
+                'isRemovable' => $this->signHelper->isRemovable($sign)
             ]
         );
     }
@@ -177,5 +181,39 @@ class FixedSignController extends AbstractAppController
         $this->getDoctrine()->getManager()->flush();
 
         return $this->redirectToRoute('admin_fixed_signs_view', ['id' => $sign->getId()]);
+    }
+
+    #[Route('/{id}/delete', name: '_delete')]
+    public function delete(int $id, Request $request): Response
+    {
+        $sign = $this->signRepository->find($id);
+        if (!$this->signHelper->isRemovable($sign)) {
+            $this->dispatchHtmlAlert(
+                Alert::DANGER,
+                'Impossible de supprimer ce panneau. Il est utilisé dans une commande.<br>'
+                . 'dans ce cas, le panneau ne sera plus selectionnable pour les prochaines commandes'
+            );
+
+            return $this->redirectToRoute('admin_fixed_signs_view', ['id' => $id]);
+        }
+
+        if ($request->isMethod('POST')) {
+            $this->fileManager->removeAll($sign);
+            $manager = $this->getDoctrine()->getManager();
+            $manager->remove($sign);
+            $manager->flush();
+
+            $this->dispatchAlert(Alert::SUCCESS, 'Le panneau a été supprimé');
+
+            return $this->redirectToRoute('admin_fixed_signs_list');
+        }
+
+
+        return $this->render(
+            'admin/fixed_sign/delete.html.twig',
+            [
+                'sign' => $sign
+            ]
+        );
     }
 }

@@ -10,9 +10,13 @@
             </div>
 
             <div>
+                <a href="{{ path('admin_fixed_signs_update', { id: sign.id }) }}" class="btn btn-primary">
+                    Modifier les informations
+                </a>
+
                 <a
-                    href="{{ path('admin_fixed_signs_change_status', { id: sign.id }) }}"
-                    class="btn
+                        href="{{ path('admin_fixed_signs_change_status', { id: sign.id }) }}"
+                        class="btn ms-1
                     {% if sign.isActive == true %}
                         btn-outline-danger">Désactiver
                     {% else %}
@@ -20,9 +24,11 @@
                     {% endif %}
                 </a>
 
-                <a href="{{ path('admin_fixed_signs_update', { id: sign.id }) }}" class="btn btn-primary ms-1">
-                    Modifier les informations
-                </a>
+                {% if isRemovable == true %}
+                    <a href="{{ path('admin_fixed_signs_delete', { id: sign.id }) }}" class="btn btn-outline-danger ms-1">
+                        Supprimer
+                    </a>
+                {% endif %}
             </div>
         </div>
 
