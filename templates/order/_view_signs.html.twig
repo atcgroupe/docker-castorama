@@ -1,25 +1,66 @@
-{% if variableOrderSigns is empty and fixedOrderSigns is empty %}
+{%
+    if variableOutdoorOrderSigns is empty
+    and fixedOutdoorOrderSigns is empty
+    and variableIndoorOrderSigns is empty
+    and fixedIndoorOrderSigns is empty
+%}
     <div class="alert alert-info lead text-center my-5" role="alert">
         Cette commande ne contient aucun panneau pour l'instant.
     </div>
 {% else %}
-    <div class="accordion mb-5" id="aisleAccordion">
-        {% for collection in variableOrderSigns %}
-            {{ include('order/_view_signs_accordion.html.twig', {
-                type: 'variable',
-                itemIndex: 'variable' ~ collection.sign.id,
-                categoryLabel: collection.sign.typeLabel,
-                signs: collection.items
-            }) }}
-        {% endfor %}
+    {% if variableOutdoorOrderSigns or fixedOutdoorOrderSigns %}
+        <h3 class="h4 ms-3">Cour des matériaux</h3>
 
-        {% for fixedOrderSign in fixedOrderSigns %}
-            {{ include('order/_view_signs_accordion.html.twig', {
-                type: 'fixed',
-                itemIndex: 'fixed' ~ fixedOrderSign.fixedSign.id,
-                categoryLabel: fixedOrderSign.fixedSign.typeLabel,
-                sign: fixedOrderSign
-            }) }}
-        {% endfor %}
-    </div>
+        <div class="accordion mb-5" id="aisleAccordion">
+            {% if variableOutdoorOrderSigns %}
+                {% for collection in variableOutdoorOrderSigns %}
+                    {{ include('order/_view_signs_accordion.html.twig', {
+                        type: 'variable',
+                        itemIndex: 'variable' ~ collection.sign.id,
+                        categoryLabel: collection.sign.title,
+                        signs: collection.items
+                    }) }}
+                {% endfor %}
+            {% endif %}
+
+            {% if fixedOutdoorOrderSigns %}
+                {% for fixedOrderSign in fixedOutdoorOrderSigns %}
+                    {{ include('order/_view_signs_accordion.html.twig', {
+                        type: 'fixed',
+                        itemIndex: 'fixed' ~ fixedOrderSign.fixedSign.id,
+                        categoryLabel: fixedOrderSign.fixedSign.title,
+                        sign: fixedOrderSign
+                    }) }}
+                {% endfor %}
+            {% endif %}
+        </div>
+    {% endif %}
+
+    {% if variableIndoorOrderSigns or fixedIndoorOrderSigns %}
+        <h3 class="h4 ms-3">Signalétique interieure</h3>
+
+        <div class="accordion mb-5" id="aisleAccordion">
+            {% if variableIndoorOrderSigns %}
+                {% for collection in variableIndoorOrderSigns %}
+                    {{ include('order/_view_signs_accordion.html.twig', {
+                        type: 'variable',
+                        itemIndex: 'variable' ~ collection.sign.id,
+                        categoryLabel: collection.sign.title,
+                        signs: collection.items
+                    }) }}
+                {% endfor %}
+            {% endif %}
+
+            {% if fixedIndoorOrderSigns %}
+                {% for fixedOrderSign in fixedIndoorOrderSigns %}
+                    {{ include('order/_view_signs_accordion.html.twig', {
+                        type: 'fixed',
+                        itemIndex: 'fixed' ~ fixedOrderSign.fixedSign.id,
+                        categoryLabel: fixedOrderSign.fixedSign.title,
+                        sign: fixedOrderSign
+                    }) }}
+                {% endfor %}
+            {% endif %}
+        </div>
+    {% endif %}
 {% endif %}

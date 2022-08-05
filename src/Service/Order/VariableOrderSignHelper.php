@@ -18,13 +18,13 @@ class VariableOrderSignHelper
 
     /**
      * @param Order $order
-     *
+     * @param int|null $category
      * @return VariableOrderSignCollection[]
      */
-    public function getCollections(Order $order): array
+    public function getCollections(Order $order, ?int $category = null): array
     {
         $collections = [];
-        foreach ($this->getSigns() as $sign) {
+        foreach ($this->getSigns($category) as $sign) {
             $items = $this->manager->getRepository($sign->getClass())->findByOrderWithRelations($order);
             if (!empty($items)) {
                 $collections[] = new VariableOrderSignCollection($sign, $items);
@@ -128,9 +128,11 @@ class VariableOrderSignHelper
     /**
      * @return Sign[]
      */
-    private function getSigns(): array
+    private function getSigns(?int $category = null): array
     {
-        return $this->manager->getRepository(Sign::class)->findAll();
+        return $category ?
+            $this->manager->getRepository(Sign::class)->findBy(['category' => $category]) :
+            $this->manager->getRepository(Sign::class)->findAll();
     }
 
     /**

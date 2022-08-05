@@ -16,7 +16,7 @@ yarn build
 ## Second step: database
 
 ### Migrations
-Launch database migration.
+Launch database migrations.
 
 ### Data Fixtures
 1. Copy `resource/material_sector_sign_items.csv` file in the production server

@@ -2,7 +2,9 @@
 
 namespace App\Controller\Order;
 
+use App\Entity\AbstractSign;
 use App\Entity\Order;
+use App\Entity\Sign;
 use App\Entity\User;
 use App\Form\OrderSendType;
 use App\Form\OrderUpdateDeliveryType;
@@ -79,8 +81,10 @@ class OrderController extends AbstractAppController
     {
         $order = $this->orderRepository->findOneWithRelations($id);
         $resume = $this->signHelper->getResume($order);
-        $variableOrderSigns = $this->variableOrderSignHelper->getCollections($order);
-        $fixedOrderSigns = $this->fixedOrderSignHelper->findAll($order);
+        $variableIndoorOrderSigns = $this->variableOrderSignHelper->getCollections($order, AbstractSign::CATEGORY_INDOOR);
+        $variableOutdoorOrderSigns = $this->variableOrderSignHelper->getCollections($order, AbstractSign::CATEGORY_OUTDOOR);
+        $fixedIndoorOrderSigns = $this->fixedOrderSignHelper->findAll($order, AbstractSign::CATEGORY_INDOOR);
+        $fixedOutdoorOrderSigns = $this->fixedOrderSignHelper->findAll($order, AbstractSign::CATEGORY_OUTDOOR);
 
         $referer = $request->headers->get('referer');
         if (str_contains($referer, '/orders/list')) {
@@ -91,8 +95,10 @@ class OrderController extends AbstractAppController
             'order/view.html.twig',
             [
                 'order' => $order,
-                'variableOrderSigns' => $variableOrderSigns,
-                'fixedOrderSigns' => $fixedOrderSigns,
+                'variableIndoorOrderSigns' => $variableIndoorOrderSigns,
+                'variableOutdoorOrderSigns' => $variableOutdoorOrderSigns,
+                'fixedIndoorOrderSigns' => $fixedIndoorOrderSigns,
+                'fixedOutdoorOrderSigns' => $fixedOutdoorOrderSigns,
                 'resume' => $resume
             ]
         );

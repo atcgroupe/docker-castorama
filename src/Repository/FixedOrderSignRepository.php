@@ -39,6 +39,25 @@ class FixedOrderSignRepository extends ServiceEntityRepository implements OrderS
 
     /**
      * @param Order $order
+     * @param int $category
+     * @return FixedOrderSign[]
+     */
+    public function findByOrderAndCategoryWithRelations(Order $order, int $category): array
+    {
+        return $this->createQueryBuilder('a')
+            ->innerJoin('a.fixedSign', 'fixedSign')
+                ->addSelect('fixedSign')
+            ->andWhere('a.order = :order')
+                ->setParameter('order', $order)
+            ->andWhere('fixedSign.category = :category')
+                ->setParameter('category', $category)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * @param Order $order
      */
     public function removeByOrder(Order $order): void
     {

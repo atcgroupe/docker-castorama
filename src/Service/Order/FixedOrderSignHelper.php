@@ -14,11 +14,14 @@ class FixedOrderSignHelper
 
     /**
      * @param Order $order
+     * @param int|null $category
      * @return FixedOrderSign[]
      */
-    public function findAll(Order $order): array
+    public function findAll(Order $order, ?int $category = null): array
     {
-        return $this->signRepository->findByOrderWithRelations($order);
+        return $category ?
+            $this->signRepository->findByOrderAndCategoryWithRelations($order, $category) :
+            $this->signRepository->findByOrderWithRelations($order);
     }
 
     /**
