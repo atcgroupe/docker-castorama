@@ -13,18 +13,27 @@ class MaterialSectorSignItemCategoryFixtures extends Fixture implements FixtureG
     public function load(ObjectManager $manager)
     {
         $categories = [
-            'CATEGORIE 1',
-            'CATEGORIE 2',
-            'CATEGORIE 3',
+            1 => 'aménagement',
+            2 => 'cloison et plafond',
+            3 => 'clôture',
+            4 => 'entretien jardin',
+            5 => 'evacuation',
+            6 => 'isolation',
+            7 => 'matériau',
+            8 => 'matériel',
+            9 => 'portail',
+            10 => 'poudre',
+            11 => 'sol exterieur',
+            12 => 'toiture',
         ];
 
-        foreach ($categories as $label) {
+        foreach ($categories as $key => $label) {
             $category = new MaterialSectorSignItemCategory();
             $category->setLabel($label);
             $category->setIsActive(true);
 
             $manager->persist($category);
-            $this->setReference($label, $category);
+            $this->setReference($key, $category);
         }
 
         $manager->flush();
