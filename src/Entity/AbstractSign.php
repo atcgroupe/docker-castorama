@@ -47,6 +47,7 @@ abstract class AbstractSign implements SignInterface
 
     /**
      * @ORM\Column(type="string", length=30)
+     * @Assert\NotBlank(groups={"create", "update"})
      */
     private $customerReference;
 

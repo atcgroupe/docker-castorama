@@ -5,10 +5,16 @@ namespace App\Entity;
 use App\Enum\FixedSignFileType;
 use App\Repository\FixedOrderSignRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=FixedOrderSignRepository::class)
+ * @UniqueEntity(
+ *     fields={"order", "fixedSign"},
+ *     errorPath="quantity",
+ *     message="Un panneau identique existe déjà dans cette commande"
+ * )
  */
 class FixedOrderSign extends AbstractOrderSign implements FixedOrderSignApiInterface
 {
