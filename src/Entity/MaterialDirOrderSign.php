@@ -4,11 +4,17 @@ namespace App\Entity;
 
 use App\Repository\MaterialDirOrderSignRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
 /**
  * @ORM\Entity(repositoryClass=MaterialDirOrderSignRepository::class)
+ * @UniqueEntity(
+ *     fields={"order", "title", "direction"},
+ *     errorPath="direction",
+ *     message="Un panneau identique existe déjà dans cette commande"
+ * )
  */
 class MaterialDirOrderSign extends AbstractVariableOrderSign
 {

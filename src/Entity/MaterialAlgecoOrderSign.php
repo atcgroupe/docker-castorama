@@ -4,11 +4,17 @@ namespace App\Entity;
 
 use App\Repository\MaterialAlgecoOrderSignRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
 /**
  * @ORM\Entity(repositoryClass=MaterialAlgecoOrderSignRepository::class)
+ * @UniqueEntity(
+ *     fields={"order", "item1", "item2", "item3", "item4"},
+ *     errorPath="item4",
+ *     message="Un panneau identique existe déjà dans cette commande"
+ * )
  */
 class MaterialAlgecoOrderSign extends AbstractVariableOrderSign
 {
