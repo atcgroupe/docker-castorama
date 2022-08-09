@@ -5,6 +5,7 @@ namespace App\Controller\Api;
 use App\Repository\OrderRepository;
 use App\Repository\OrderStatusRepository;
 use App\Service\Order\OrderHelper;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,6 +25,7 @@ class ApiOrderController extends AbstractController
         SerializerInterface $serializer,
         OrderStatusRepository $orderStatusRepository,
         UrlGeneratorInterface $urlGenerator,
+        ManagerRegistry $doctrine,
     ): JsonResponse {
         $order = $orderRepository->find($id);
         $statusId = $request->request->get('statusId');
@@ -53,7 +55,7 @@ class ApiOrderController extends AbstractController
         }
 
         $orderHelper->setOrderStatus($order, $statusId);
-        $this->getDoctrine()->getManager()->flush();
+        $doctrine->getManager()->flush();
 
         return new JsonResponse(
             $serializer->serialize($order, 'json', ['groups' => 'api']),
