@@ -46,6 +46,7 @@ class ApiOrderSignController extends AbstractController
             return new JsonResponse(['error' => ['code' => 400, 'message' => "Order $id not found"]], 404);
         }
 
+        # Signs can be downloaded only if the Order has SENT status.
         if ($order->getStatus()->getId() !== OrderStatus::SENT) {
             return new JsonResponse(['error' => ['code' => 400, 'message' => "Order $id has not valid status"]], 400);
         }
