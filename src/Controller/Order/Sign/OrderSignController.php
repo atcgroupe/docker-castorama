@@ -12,6 +12,8 @@ use App\Service\Alert\Alert;
 use App\Service\Controller\AbstractAppController;
 use App\Service\Order\OrderHelper;
 use App\Service\Order\OrderSignHelper;
+use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -22,11 +24,18 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/order', name: 'order_sign')]
 class OrderSignController extends AbstractAppController
 {
+    /**
+     * @var ObjectManager
+     */
+    private ObjectManager $manager;
+
     public function __construct(
         private readonly SignRepository $signRepository,
         private readonly OrderHelper $orderHelper,
         private readonly SignCategoryRepository $categoryRepository,
+        ManagerRegistry $doctrine
     ) {
+        $this->manager = $doctrine->getManager();
     }
 
     #[Route('/{orderId}/sign/choose-category', name: '_choose_category')]
@@ -42,7 +51,7 @@ class OrderSignController extends AbstractAppController
     }
 
     #[Route('/{orderId}/sign/{categoryId}/choose', name: '_choose')]
-    public function choose(int $orderId, int $categoryId): Response
+    public function chooseSign(int $orderId, int $categoryId): Response
     {
         $category = $this->categoryRepository->find($categoryId);
         $signs = $this->signRepository->findBy(['isActive' => true, 'category' => $category]);
@@ -109,7 +118,7 @@ class OrderSignController extends AbstractAppController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->orderHelper->updateLastUpdateTime($orderSign->getOrder());
 
-            $this->getDoctrine()->getManager()->flush();
+            $this->manager->flush();
 
             $this->dispatchAlert(Alert::SUCCESS, 'Les modifications sont enregistrées!');
 
@@ -134,7 +143,7 @@ class OrderSignController extends AbstractAppController
         $orderSign->setQuantity($request->request->get('quantity'));
         $this->orderHelper->updateLastUpdateTime($orderSign->getOrder());
 
-        $this->getDoctrine()->getManager()->flush();
+        $this->manager->flush();
 
         return new JsonResponse(['status' => 'ok']);
     }
@@ -147,16 +156,20 @@ class OrderSignController extends AbstractAppController
 
         if ($request->isMethod('POST')) {
             $this->orderHelper->updateLastUpdateTime($orderSign->getOrder());
-            $manager = $this->getDoctrine()->getManager();
-            $manager->remove($orderSign);
-            $manager->flush();
+            $this->manager->remove($orderSign);
+            $this->manager->flush();
 
             $this->dispatchAlert(Alert::SUCCESS, 'Le panneau a été supprimé!');
 
             return $this->redirectToRoute('orders_view', ['id' => $orderId]);
         }
 
-        return $this->render('order/sign/delete.html.twig', ['sign' => $orderSign,]);
+        return $this->render(
+            'order/sign/delete.html.twig',
+            [
+                'sign' => $orderSign,
+            ]
+        );
     }
 
     /**
@@ -209,9 +222,8 @@ class OrderSignController extends AbstractAppController
      */
     private function getOrderSign(string $signName, int $id): AbstractOrderSign
     {
-        $manager = $this->getDoctrine()->getManager();
         $sign = $this->signRepository->findOneBy(['name' => $signName]);
 
-        return $manager->getRepository($sign->getClass())->find($id);
+        return $this->manager->getRepository($sign->getClass())->find($id);
     }
 }
