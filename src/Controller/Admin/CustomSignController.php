@@ -12,6 +12,8 @@ use App\Service\Alert\Alert;
 use App\Service\Controller\AbstractAppController;
 use App\Service\Sign\CustomSignFileManager;
 use App\Service\Sign\CustomSignHelper;
+use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,11 +22,14 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/admin/custom-signs', name: 'admin_custom_signs')]
 class CustomSignController extends AbstractAppController
 {
+    private ObjectManager $manager;
     public function __construct(
         private readonly SignRepository        $signRepository,
         private readonly CustomSignFileManager $fileManager,
         private readonly CustomSignHelper      $signHelper,
+        private readonly ManagerRegistry       $managerRegistry,
     ) {
+        $this->manager = $this->managerRegistry->getManager();
     }
 
     #[Route('', name: '_list')]
@@ -44,9 +49,6 @@ class CustomSignController extends AbstractAppController
             'admin/custom_sign/view.html.twig',
             [
                 'sign' => $sign,
-                'chooseFilename' => $sign->getFilename(CustomSignFileType::Choose),
-                'previewFilename' => $sign->getFilename(CustomSignFileType::Preview),
-                'prodFilename' => $sign->getFilename(CustomSignFileType::Production),
                 'isRemovable' => $this->signHelper->isRemovable($sign)
             ]
         );
@@ -55,10 +57,8 @@ class CustomSignController extends AbstractAppController
     #[Route('/create', name: '_create')]
     public function create(Request $request): Response
     {
-        $sign = new Sign();
+        $sign = new Sign(false);
         $sign->setClass(CustomOrderSign::class);
-        $sign->setIsVariable(false);
-        $sign->setIsActive(true);
         $form = $this->createForm(CustomSignCreateType::class, $sign);
         $form->handleRequest($request);
 
@@ -68,14 +68,12 @@ class CustomSignController extends AbstractAppController
             if (!$result) {
                 $this->dispatchAlert(
                     Alert::INFO,
-                    'Une erreur est survenue lors de l\'enregistrement des fichiers.'
-                    . 'Merci de reessayer.'
+                    'Une erreur est survenue lors de l\'enregistrement des fichiers. Merci de reessayer.'
                 );
             }
 
-            $manager = $this->getDoctrine()->getManager();
-            $manager->persist($sign);
-            $manager->flush();
+            $this->manager->persist($sign);
+            $this->manager->flush();
 
             $this->dispatchHtmlAlert(
                 Alert::INFO,
@@ -101,27 +99,22 @@ class CustomSignController extends AbstractAppController
     {
         $sign = $this->signRepository->find($id);
         $oldSign = clone $sign;
-        $form = $this->createForm(
-            CustomSignUpdateType::class,
-            $sign,
-            [
-                'validation_groups' => ['update']
-            ]
-        );
+        $form = $this->createForm(CustomSignUpdateType::class, $sign, ['validation_groups' => ['update_info']]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            # Rename file if sign name has changed
             if ($sign->getName() !== $oldSign->getName()) {
                 $result = $this->fileManager->renameAll($oldSign, $sign);
 
                 if (!$result) {
-                    $this->dispatchAlert(Alert::DANGER, 'Un problème est survenu, merci de re-essayer');
+                    $this->dispatchAlert(Alert::DANGER, 'Un problème est survenu lors du renommage, merci de re-essayer');
 
                     return $this->redirectToRoute('admin_custom_signs_view', ['id' => $id]);
                 }
             }
 
-            $this->getDoctrine()->getManager()->flush();
+            $this->manager->flush();
             $this->dispatchAlert(Alert::INFO, 'Les informations ont été mises à jour.');
 
             return $this->redirectToRoute('admin_custom_signs_view', ['id' => $id]);
@@ -142,6 +135,7 @@ class CustomSignController extends AbstractAppController
     {
         $type = CustomSignFileType::from($type);
         $sign = $this->signRepository->find($id);
+        #The CustomSignUpdateType is customized with the type of the image (choose|preview|production)
         $form = $this->createForm(
             CustomSignUpdateType::class,
             $sign,
@@ -178,7 +172,7 @@ class CustomSignController extends AbstractAppController
         $sign = $this->signRepository->find($id);
         $sign->setIsActive(!$sign->getIsActive());
 
-        $this->getDoctrine()->getManager()->flush();
+        $this->manager->flush();
 
         return $this->redirectToRoute('admin_custom_signs_view', ['id' => $sign->getId()]);
     }
@@ -187,6 +181,7 @@ class CustomSignController extends AbstractAppController
     public function delete(int $id, Request $request): Response
     {
         $sign = $this->signRepository->find($id);
+        # If a custom Sign is used in a order, it cant be removed.
         if (!$this->signHelper->isRemovable($sign)) {
             $this->dispatchHtmlAlert(
                 Alert::DANGER,
@@ -199,15 +194,13 @@ class CustomSignController extends AbstractAppController
 
         if ($request->isMethod('POST')) {
             $this->fileManager->removeAll($sign);
-            $manager = $this->getDoctrine()->getManager();
-            $manager->remove($sign);
-            $manager->flush();
+            $this->manager->remove($sign);
+            $this->manager->flush();
 
             $this->dispatchAlert(Alert::SUCCESS, 'Le panneau a été supprimé');
 
             return $this->redirectToRoute('admin_custom_signs_list');
         }
-
 
         return $this->render(
             'admin/custom_sign/delete.html.twig',
