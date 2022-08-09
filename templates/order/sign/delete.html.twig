@@ -1,21 +1,13 @@
 {% extends 'core/core.html.twig' %}
 
-{% if sign.switchSignType == 'FIXED' %}
-    {% set title = 'panneau ' ~ sign.fixedSign.title %}
-    {% set action = path('fixed_order_sign_delete', {'id': sign.id}) %}
-{% elseif sign.switchSignType == 'VARIABLE' %}
-    {% set title = 'panneau ' ~ sign.sign.title %}
-    {% set action = path('order_sign_delete', {'id': sign.id, 'signType': sign.type}) %}
-{% endif %}
-
 {% block content %}
     <div class="row justify-content-md-center">
         <div class="col-lg-6">
             <h1 class="fw-light text-danger my-5 h2 text-center">
-                Êtes vous sure<br>de vouloir supprimer ce {{ title|lower }} ?
+                Êtes vous sure<br>de vouloir supprimer ce panneau {{ sign.sign.title }} ?
             </h1>
 
-            <form method="post" action="{{ action }}" class="mt-5">
+            <form method="post" action="{{ path('order_sign_delete', {'id': sign.id, 'name': sign.sign.name}) }}" class="mt-5">
                 <button type="submit" class="btn btn-lg btn-outline-danger w-100 my-3">
                     Supprimer le panneau
                 </button>

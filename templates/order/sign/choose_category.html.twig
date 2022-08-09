@@ -6,40 +6,24 @@
     <h1 class="h2 text-center text-primary fw-light mt-4 mb-5">Quel type de panneau souhaitez-vous ajouter?</h1>
 
     <div class="d-flex justify-content-center align-content-center">
-        <div class="card me-4" style="width: 18rem;">
-            <img src="{{ asset('build/images/sign/category/outdoor.webp') }}" alt="Illustration cour des matériaux">
+        {% for category in categories %}
+            <div class="card me-4" style="width: 18rem;">
+                <img src="{{ asset(category.chooseFilePath) }}" alt="Illustration {{ category.label }}">
 
-            <div class="card-body text-center">
-                <h3 class="card-title text-secondary">Signalétique cour des matériaux</h3>
+                <div class="card-body text-center">
+                    <h3 class="card-title text-secondary">{{ category.label }}</h3>
 
-                <a
-                    href="{{ path(
-                        'order_sign_choose',
-                        { orderId: orderId, category:  constant('App\\Entity\\Sign::CATEGORY_OUTDOOR')}
-                    ) }}"
-                    class="btn btn-lg btn-primary my-3"
-                >
-                    Sélectionner
-                </a>
+                    <a
+                        href="{{ path(
+                            'order_sign_choose',
+                            { orderId: orderId, categoryId: category.id }
+                        ) }}"
+                        class="btn btn-lg btn-primary my-3"
+                    >
+                        Sélectionner
+                    </a>
+                </div>
             </div>
-        </div>
-
-        <div class="card" style="width: 18rem;">
-            <img src="{{ asset('build/images/sign/category/indoor.webp') }}" alt="Illustration signalétique interieure">
-
-            <div class="card-body text-center">
-                <h3 class="card-title text-secondary">Signalétique intérieure</h3>
-
-                <a
-                    href="{{ path(
-                        'order_sign_choose',
-                        { orderId: orderId, category:  constant('App\\Entity\\Sign::CATEGORY_INDOOR')}
-                    ) }}"
-                    class="btn btn-lg btn-primary my-3"
-                >
-                    Sélectionner
-                </a>
-            </div>
-        </div>
+        {% endfor %}
     </div>
 {% endblock %}

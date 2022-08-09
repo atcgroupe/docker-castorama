@@ -14,10 +14,6 @@
 
                 {{ form_row(form.title) }}
 
-                {{ form_row(form.weight) }}
-
-                {{ form_row(form.price) }}
-
                 {{ form_row(form.width) }}
 
                 {{ form_row(form.height) }}
@@ -28,7 +24,11 @@
 
                 {{ form_row(form.finish) }}
 
+                {{ form_row(form.weight) }}
+
                 {{ form_row(form.customerReference) }}
+
+                {{ form_row(form.price) }}
 
                 {{ form_row(form.category) }}
 
@@ -47,7 +47,7 @@
                     <button type="submit" class="btn btn-lg btn-outline-primary w-100">Enregistrer</button>
                 </div>
 
-                <a href="{{ path('admin_fixed_signs_list') }}" class="btn btn-outline-secondary w-100 my-3">
+                <a href="{{ path('admin_custom_signs_list') }}" class="btn btn-outline-secondary w-100 my-3">
                     Annuler
                 </a>
             </div>

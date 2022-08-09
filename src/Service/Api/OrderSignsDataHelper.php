@@ -35,7 +35,7 @@ class OrderSignsDataHelper
             }
 
             $zip->addFromString(
-                $sign->getFileName(),
+                $sign->getXmlFilename(),
                 $this->serializer->serialize(
                     $sign,
                     'xml',
@@ -43,7 +43,7 @@ class OrderSignsDataHelper
                         'groups' => 'api_xml_object',
                         'xml_format_output' => true,
                         'xml_encoding' => 'utf-8',
-                        'xml_root_node_name' => 'sign'
+                        'xml_root_node_name' => 'orderSign'
                     ]
                 )
             );

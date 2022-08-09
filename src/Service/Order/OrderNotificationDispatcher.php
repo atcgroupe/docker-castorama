@@ -6,26 +6,38 @@ use App\Entity\Event;
 use App\Entity\User;
 use App\Repository\MemberRepository;
 use App\Repository\OrderRepository;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class OrderNotificationDispatcher
 {
     public function __construct(
-        private OrderRepository $orderRepository,
-        private OrderSignHelper $orderSignHelper,
-        private MemberRepository $memberRepository,
-        private Environment $twig,
-        private MailerInterface $mailer,
+        private readonly OrderRepository       $orderRepository,
+        private readonly OrderSignResumeHelper $orderSignResumeHelper,
+        private readonly MemberRepository      $memberRepository,
+        private readonly Environment           $twig,
+        private readonly MailerInterface       $mailer,
     ) {
     }
 
-    public function send(int $orderId)
+    /**
+     * @param int $orderId
+     * @return void
+     * @throws TransportExceptionInterface
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
+    public function send(int $orderId): void
     {
         $order = $this->orderRepository->findOneWithRelations($orderId);
-        $resume = $this->orderSignHelper->getResume($order);
+        $resume = $this->orderSignResumeHelper->getResume($order);
         $addresses = $this->getMembersAddresses($order->getStatus()->getEvent(), $order->getUser());
         $content = $this->twig->render('email/order_notification.html.twig', ['order' => $order, 'resume' => $resume]);
 

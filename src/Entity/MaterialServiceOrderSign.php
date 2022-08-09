@@ -6,6 +6,7 @@ use App\Repository\MaterialServiceOrderSignRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 /**
  * @ORM\Entity(repositoryClass=MaterialServiceOrderSignRepository::class)
@@ -15,10 +16,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     message="Un panneau identique existe déjà dans cette commande"
  * )
  */
-class MaterialServiceOrderSign extends AbstractVariableOrderSign
+class MaterialServiceOrderSign extends AbstractOrderSign
 {
-    private const TYPE = 'materialService';
-
     /**
      * @ORM\ManyToOne(targetEntity=MaterialServiceSignItem::class)
      * @ORM\JoinColumn(nullable=false)
@@ -60,16 +59,23 @@ class MaterialServiceOrderSign extends AbstractVariableOrderSign
         return $this;
     }
 
-    public static function getType(): string
+    /**
+     * @return string
+     */
+    public function getSwitchTemplateFilename(): string
     {
-        return self::TYPE;
+        return sprintf(
+            '%s_%s_%s',
+            $this->getSignName(),
+            $this->getItem1()->getId(),
+            $this->getItem2()->getId()
+        );
     }
 
     /**
      * @return string
-     * @Groups({"api_json_data"})
      */
-    public function getFileName(): string
+    public function getXmlFilename(): string
     {
         return sprintf(
             'COMMANDE %s - COUR DES MATERIAUX - PANNEAU SERVICE ID%s %sEX.xml',

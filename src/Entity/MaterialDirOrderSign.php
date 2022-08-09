@@ -16,9 +16,8 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
  *     message="Un panneau identique existe déjà dans cette commande"
  * )
  */
-class MaterialDirOrderSign extends AbstractVariableOrderSign
+class MaterialDirOrderSign extends AbstractOrderSign
 {
-    private const TYPE = 'materialDir';
     public const TITLE_CAISSE = 'c';
     public const TITLE_SORTIE = 's';
     public const TITLE_CAISSE_SORTIE = 'cs';
@@ -60,27 +59,22 @@ class MaterialDirOrderSign extends AbstractVariableOrderSign
         return $this;
     }
 
-    public static function getType(): string
-    {
-        return self::TYPE;
-    }
-
     /**
      * @return string
      *
      * @Groups({"api_xml_object"})
      */
-    public function getSwitchTemplate(): string
+    public function getSwitchTemplateFilename(): string
     {
         return sprintf(
             '%s_%s_%s',
-            $this->getSign()->getSwitchFlowTemplateFile(),
+            $this->getSign()->getName(),
             $this->getTitle(),
             $this->getDirection()
         );
     }
 
-    public function getFileName(): string
+    public function getXmlFilename(): string
     {
         return sprintf(
             'COMMANDE %s PANNEAU DIRECTION EXTERIEUR ID%s %s %s %sEX.xml',

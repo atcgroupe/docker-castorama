@@ -33,7 +33,7 @@ class AisleOrderSignType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('aisleNumber', TextType::class, ['label' => 'Numéro d\'allée', 'attr' => ['autofocus' => true]])
+            ->add('aisleNumber', NumberType::class, ['label' => 'Numéro d\'allée', 'attr' => ['autofocus' => true]])
             ->add('quantity', NumberType::class, ['label' => 'Quantité'])
             ->add(
                 'category',

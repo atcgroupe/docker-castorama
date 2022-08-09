@@ -2,8 +2,9 @@
 
 namespace App\Form;
 
-use App\Entity\AbstractSign;
-use App\Entity\FixedSign;
+use App\Entity\Sign;
+use App\Entity\SignCategory;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -12,7 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class FixedSignCreateType extends AbstractType
+class CustomSignCreateType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -67,8 +68,8 @@ class FixedSignCreateType extends AbstractType
                 [
                     'label' => 'Faces imprimées',
                     'choices' => [
-                        'RECTO' => 'RECTO',
-                        'RECTO/VERSO' => 'RECTO/VERSO'
+                        'RECTO' => 1,
+                        'RECTO/VERSO' => 2
                     ],
                 ]
             )->add(
@@ -94,13 +95,11 @@ class FixedSignCreateType extends AbstractType
             )->add('customerReference', TextType::class, ['label' => 'Référence DataMerch'])
             ->add(
                 'category',
-                ChoiceType::class,
+                EntityType::class,
                 [
+                    'class' => SignCategory::class,
                     'label' => 'Catégorie',
-                    'choices' => [
-                        'Signalétique interieure' => AbstractSign::CATEGORY_INDOOR,
-                        'Cour des matériaux' => AbstractSign::CATEGORY_OUTDOOR,
-                    ]
+                    'choice_label' => 'label'
                 ]
             )->add(
                 'chooseFile',
@@ -148,7 +147,7 @@ class FixedSignCreateType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => FixedSign::class,
+            'data_class' => Sign::class,
             'validation_groups' => ['create']
         ]);
     }

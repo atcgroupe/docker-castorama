@@ -18,8 +18,6 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
  */
 class MaterialAlgecoOrderSign extends AbstractVariableOrderSign
 {
-    private const TYPE = 'materialAlgeco';
-
     /**
      * @ORM\ManyToOne(targetEntity=MaterialAlgecoSignItem::class)
      * @ORM\JoinColumn(nullable=false)
@@ -94,16 +92,10 @@ class MaterialAlgecoOrderSign extends AbstractVariableOrderSign
         return $this;
     }
 
-    public static function getType(): string
-    {
-        return self::TYPE;
-    }
-
     /**
      * @return string
-     * @Groups({"api_json_data"})
      */
-    public function getFileName(): string
+    public function getXmlFilename(): string
     {
         return sprintf(
             'COMMANDE %s PANNEAU ENTREE ALGECO ID%s %sEX.xml',

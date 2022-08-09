@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\MappedSuperclass()
  */
-abstract class AbstractOrderSign implements OrderSignInterface
+abstract class AbstractOrderSign implements OrderSignInterface, OrderSignApiInterface
 {
     /**
      * @ORM\Id
@@ -36,6 +36,18 @@ abstract class AbstractOrderSign implements OrderSignInterface
      * @ORM\JoinColumn(nullable=false)
      */
     protected $order;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Sign::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    protected $sign;
+
+    public function __construct(Order $order, Sign $sign)
+    {
+        $this->order = $order;
+        $this->sign = $sign;
+    }
 
     /**
      * Used for API json data
@@ -73,6 +85,18 @@ abstract class AbstractOrderSign implements OrderSignInterface
         return $this;
     }
 
+    public function getSign(): ?Sign
+    {
+        return $this->sign;
+    }
+
+    public function setSign(?Sign $sign): self
+    {
+        $this->sign = $sign;
+
+        return $this;
+    }
+
     /**
      * @return int
      *
@@ -81,5 +105,35 @@ abstract class AbstractOrderSign implements OrderSignInterface
     public function getOrderId(): int
     {
         return $this->getOrder()->getId();
+    }
+
+    /**
+     * @return string
+     *
+     * @Groups({"api_xml_object"})
+     */
+    public function getSwitchTemplateFilename(): string
+    {
+        return $this->getSign()->getName();
+    }
+
+    /**
+     * @return string
+     *
+     * @Groups({"api_xml_object"})
+     */
+    public function isSignVariable(): string
+    {
+        return $this->getSign()->getIsVariable() ? 'true' : 'false';
+    }
+
+    /**
+     * @return string
+     *
+     * @Groups({"api_xml_object"})
+     */
+    public function getSignName(): string
+    {
+        return $this->getSign()->getName();
     }
 }

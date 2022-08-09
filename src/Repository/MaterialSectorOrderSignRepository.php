@@ -13,7 +13,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method MaterialSectorOrderSign[]    findAll()
  * @method MaterialSectorOrderSign[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class MaterialSectorOrderSignRepository extends ServiceEntityRepository implements OrderSignRepositoryInterface
+class MaterialSectorOrderSignRepository extends ServiceEntityRepository implements VariableOrderSignRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {

@@ -3,16 +3,16 @@
 namespace App\Service\Order;
 
 use App\Entity\AbstractOrderSign;
-use App\Entity\AbstractSign;
+use App\Entity\Sign;
 
-class VariableOrderSignCollection
+class OrderSignCollection
 {
     /**
-     * @param AbstractSign $sign
+     * @param Sign $sign
      * @param AbstractOrderSign[] $items
      */
     public function __construct(
-        public readonly AbstractSign $sign,
+        public readonly Sign $sign,
         public readonly array $items
     ) {
     }

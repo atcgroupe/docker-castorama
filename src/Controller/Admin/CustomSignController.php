@@ -2,37 +2,37 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\FixedSign;
-use App\Enum\FixedSignFileType;
-use App\Form\FixedSignCreateType;
-use App\Form\FixedSignUpdateType;
-use App\Repository\FixedOrderSignRepository;
-use App\Repository\FixedSignRepository;
+use App\Entity\CustomOrderSign;
+use App\Entity\Sign;
+use App\Enum\CustomSignFileType;
+use App\Form\CustomSignCreateType;
+use App\Form\CustomSignUpdateType;
+use App\Repository\SignRepository;
 use App\Service\Alert\Alert;
 use App\Service\Controller\AbstractAppController;
-use App\Service\Sign\FixedSignFileManager;
-use App\Service\Sign\FixedSignHelper;
+use App\Service\Sign\CustomSignFileManager;
+use App\Service\Sign\CustomSignHelper;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/admin/fixed-signs', name: 'admin_fixed_signs')]
-class FixedSignController extends AbstractAppController
+#[Route('/admin/custom-signs', name: 'admin_custom_signs')]
+class CustomSignController extends AbstractAppController
 {
     public function __construct(
-        private readonly FixedSignRepository  $signRepository,
-        private readonly FixedSignFileManager $fileManager,
-        private readonly FixedSignHelper $signHelper,
+        private readonly SignRepository        $signRepository,
+        private readonly CustomSignFileManager $fileManager,
+        private readonly CustomSignHelper      $signHelper,
     ) {
     }
 
     #[Route('', name: '_list')]
     public function list(): Response
     {
-        $signs = $this->signRepository->findAll();
+        $signs = $this->signRepository->findBy(['class' => CustomOrderSign::class]);
 
-        return $this->render('admin/fixed_sign/list.html.twig', ['signs' => $signs]);
+        return $this->render('admin/custom_sign/list.html.twig', ['signs' => $signs]);
     }
 
     #[Route('/{id}/view', name: '_view')]
@@ -41,15 +41,12 @@ class FixedSignController extends AbstractAppController
         $sign = $this->signRepository->find($id);
 
         return $this->render(
-            'admin/fixed_sign/view.html.twig',
+            'admin/custom_sign/view.html.twig',
             [
                 'sign' => $sign,
-                'chooseFilename' => $sign->getFilename(FixedSignFileType::Choose),
-                'previewFilename' => $sign->getFilename(FixedSignFileType::Preview),
-                'prodFilename' => $sign->getFilename(FixedSignFileType::Production),
-                'chooseType' => FixedSignFileType::Choose->getName(),
-                'previewType' => FixedSignFileType::Preview->getName(),
-                'productionType' => FixedSignFileType::Production->getName(),
+                'chooseFilename' => $sign->getFilename(CustomSignFileType::Choose),
+                'previewFilename' => $sign->getFilename(CustomSignFileType::Preview),
+                'prodFilename' => $sign->getFilename(CustomSignFileType::Production),
                 'isRemovable' => $this->signHelper->isRemovable($sign)
             ]
         );
@@ -58,8 +55,11 @@ class FixedSignController extends AbstractAppController
     #[Route('/create', name: '_create')]
     public function create(Request $request): Response
     {
-        $sign = new FixedSign();
-        $form = $this->createForm(FixedSignCreateType::class, $sign);
+        $sign = new Sign();
+        $sign->setClass(CustomOrderSign::class);
+        $sign->setIsVariable(false);
+        $sign->setIsActive(true);
+        $form = $this->createForm(CustomSignCreateType::class, $sign);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -68,7 +68,7 @@ class FixedSignController extends AbstractAppController
             if (!$result) {
                 $this->dispatchAlert(
                     Alert::INFO,
-                    'Une erreur est survenue lors de l\'enregistrement des fichiers de production.'
+                    'Une erreur est survenue lors de l\'enregistrement des fichiers.'
                     . 'Merci de reessayer.'
                 );
             }
@@ -85,11 +85,11 @@ class FixedSignController extends AbstractAppController
                 )
             );
 
-            return $this->redirectToRoute('admin_fixed_signs_list');
+            return $this->redirectToRoute('admin_custom_signs_list');
         }
 
         return $this->render(
-            'admin/fixed_sign/create.html.twig',
+            'admin/custom_sign/create.html.twig',
             [
                 'form' => $form->createView(),
             ]
@@ -102,7 +102,7 @@ class FixedSignController extends AbstractAppController
         $sign = $this->signRepository->find($id);
         $oldSign = clone $sign;
         $form = $this->createForm(
-            FixedSignUpdateType::class,
+            CustomSignUpdateType::class,
             $sign,
             [
                 'validation_groups' => ['update']
@@ -117,18 +117,18 @@ class FixedSignController extends AbstractAppController
                 if (!$result) {
                     $this->dispatchAlert(Alert::DANGER, 'Un problème est survenu, merci de re-essayer');
 
-                    return $this->redirectToRoute('admin_fixed_signs_view', ['id' => $id]);
+                    return $this->redirectToRoute('admin_custom_signs_view', ['id' => $id]);
                 }
             }
 
             $this->getDoctrine()->getManager()->flush();
             $this->dispatchAlert(Alert::INFO, 'Les informations ont été mises à jour.');
 
-            return $this->redirectToRoute('admin_fixed_signs_view', ['id' => $id]);
+            return $this->redirectToRoute('admin_custom_signs_view', ['id' => $id]);
         }
 
         return $this->render(
-            'admin/fixed_sign/update.html.twig',
+            'admin/custom_sign/update.html.twig',
             [
                 'sign' => $sign,
                 'form' => $form->createView(),
@@ -140,13 +140,13 @@ class FixedSignController extends AbstractAppController
     #[Route('/{id}/update-image/{type}', name: '_update_image')]
     public function updateImage(int $id, string $type, Request $request): Response
     {
-        $type = FixedSignFileType::from($type);
+        $type = CustomSignFileType::from($type);
         $sign = $this->signRepository->find($id);
         $form = $this->createForm(
-            FixedSignUpdateType::class,
+            CustomSignUpdateType::class,
             $sign,
             [
-                FixedSignUpdateType::UPDATE_TYPE => $type,
+                CustomSignUpdateType::UPDATE_TYPE => $type,
                 'validation_groups' => [$type->getName()]
             ]
         );
@@ -159,11 +159,11 @@ class FixedSignController extends AbstractAppController
                 $this->dispatchAlert(Alert::SUCCESS, 'l\'image a été mise à jour.') :
                 $this->dispatchAlert(Alert::DANGER, 'Un problème est survenu lors de l\'enregistrement.');
 
-            return $this->redirectToRoute('admin_fixed_signs_view', ['id' => $id]);
+            return $this->redirectToRoute('admin_custom_signs_view', ['id' => $id]);
         }
 
         return $this->render(
-            'admin/fixed_sign/update.html.twig',
+            'admin/custom_sign/update.html.twig',
             [
                 'sign' => $sign,
                 'form' => $form->createView(),
@@ -180,7 +180,7 @@ class FixedSignController extends AbstractAppController
 
         $this->getDoctrine()->getManager()->flush();
 
-        return $this->redirectToRoute('admin_fixed_signs_view', ['id' => $sign->getId()]);
+        return $this->redirectToRoute('admin_custom_signs_view', ['id' => $sign->getId()]);
     }
 
     #[Route('/{id}/delete', name: '_delete')]
@@ -194,7 +194,7 @@ class FixedSignController extends AbstractAppController
                 . 'dans ce cas, le panneau ne sera plus selectionnable pour les prochaines commandes'
             );
 
-            return $this->redirectToRoute('admin_fixed_signs_view', ['id' => $id]);
+            return $this->redirectToRoute('admin_custom_signs_view', ['id' => $id]);
         }
 
         if ($request->isMethod('POST')) {
@@ -205,12 +205,12 @@ class FixedSignController extends AbstractAppController
 
             $this->dispatchAlert(Alert::SUCCESS, 'Le panneau a été supprimé');
 
-            return $this->redirectToRoute('admin_fixed_signs_list');
+            return $this->redirectToRoute('admin_custom_signs_list');
         }
 
 
         return $this->render(
-            'admin/fixed_sign/delete.html.twig',
+            'admin/custom_sign/delete.html.twig',
             [
                 'sign' => $sign
             ]
