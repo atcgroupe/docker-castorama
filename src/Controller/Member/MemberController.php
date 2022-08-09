@@ -8,6 +8,8 @@ use App\Repository\MemberRepository;
 use App\Service\Controller\AbstractAppController;
 use App\Service\Alert\Alert;
 use App\Service\Member\MemberSessionHandler;
+use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,9 +20,16 @@ class MemberController extends AbstractAppController
 {
     public const MEMBER_SELECT_ROUTE_PREFIX = '/members/select/';
 
+    /**
+     * @var ObjectManager
+     */
+    private ObjectManager $manager;
+
     public function __construct(
-        private MemberSessionHandler $memberSessionHandler,
+        private readonly MemberSessionHandler $memberSessionHandler,
+        ManagerRegistry $doctrine,
     ) {
+        $this->manager = $doctrine->getManager();
     }
 
     #[Route('/choose', name: '_choose')]
@@ -29,7 +38,12 @@ class MemberController extends AbstractAppController
         $this->memberSessionHandler->destroy();
         $members = $memberRepository->findBy(['user' => $this->getUser()], ['name' => 'ASC']);
 
-        return $this->render('member/choose.html.twig', ['members' => $members]);
+        return $this->render(
+            'member/choose.html.twig',
+            [
+                'members' => $members
+            ]
+        );
     }
 
     #[Route('/select/{id}', name: '_select')]
@@ -56,9 +70,8 @@ class MemberController extends AbstractAppController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $manager = $this->getDoctrine()->getManager();
-            $manager->persist($member);
-            $manager->flush();
+            $this->manager->persist($member);
+            $this->manager->flush();
 
             $this->dispatchHtmlAlert(
                 Alert::INFO,
@@ -71,7 +84,12 @@ class MemberController extends AbstractAppController
             return $this->redirectToRoute('orders_list_active');
         }
 
-        return $this->render('member/create.html.twig', ['form' => $form->createView()]);
+        return $this->render(
+            'member/create.html.twig',
+            [
+                'form' => $form->createView()
+            ]
+        );
     }
 
     #[Route('/{id}/update', name: '_update')]
@@ -82,8 +100,7 @@ class MemberController extends AbstractAppController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
+            $this->manager->flush();
             $this->memberSessionHandler->set($member);
 
             $this->dispatchAlert(Alert::INFO, 'Vos données ont été mises à jour avec succès.');
@@ -91,7 +108,12 @@ class MemberController extends AbstractAppController
             return $this->redirectToRoute('home');
         }
 
-        return $this->render('member/update.html.twig', ['form' => $form->createView()]);
+        return $this->render(
+            'member/update.html.twig',
+            [
+                'form' => $form->createView()
+            ]
+        );
     }
 
     #[Route('/{id}/delete', name: '_delete')]
@@ -100,9 +122,8 @@ class MemberController extends AbstractAppController
         if ($request->isMethod('POST')) {
             $member = $memberRepository->find($id);
 
-            $manager = $this->getDoctrine()->getManager();
-            $manager->remove($member);
-            $manager->flush();
+            $this->manager->remove($member);
+            $this->manager->flush();
 
             $this->memberSessionHandler->destroy();
 
