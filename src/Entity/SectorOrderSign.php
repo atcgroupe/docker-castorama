@@ -15,8 +15,6 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  */
 class SectorOrderSign extends AbstractVariableOrderSign
 {
-    private const TYPE = 'sector';
-
     private $option;
 
     /**
@@ -80,14 +78,6 @@ class SectorOrderSign extends AbstractVariableOrderSign
     }
 
     /**
-     * @return string
-     */
-    public static function getType(): string
-    {
-        return self::TYPE;
-    }
-
-    /**
      * @Assert\Callback
      */
     public function validate(ExecutionContextInterface $context, $payload)
@@ -148,11 +138,11 @@ class SectorOrderSign extends AbstractVariableOrderSign
      *
      * @return string
      */
-    public function getSwitchTemplate(): string
+    public function getSwitchTemplateFilename(): string
     {
         return sprintf(
             '%s_%s_%s',
-            $this->getSign()->getSwitchFlowTemplateFile(),
+            $this->getSign()->getName(),
             $this->getItem1Color(),
             $this->getItem2Color()
         );
@@ -160,9 +150,8 @@ class SectorOrderSign extends AbstractVariableOrderSign
 
     /**
      * @return string
-     * @Groups({"api_json_data"})
      */
-    public function getFileName(): string
+    public function getXmlFilename(): string
     {
         return sprintf(
             'COMMANDE %s PANNEAU SECTEUR %s %sEX.xml',

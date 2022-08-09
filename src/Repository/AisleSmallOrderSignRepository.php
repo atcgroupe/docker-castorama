@@ -13,7 +13,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method AisleSmallOrderSign[]    findAll()
  * @method AisleSmallOrderSign[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class AisleSmallOrderSignRepository extends ServiceEntityRepository implements OrderSignRepositoryInterface
+class AisleSmallOrderSignRepository extends ServiceEntityRepository implements VariableOrderSignRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {

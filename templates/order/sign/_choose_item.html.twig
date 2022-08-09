@@ -6,14 +6,17 @@
             <h5 class="card-title mt-0">{{ sign.title }}</h5>
 
             <p class="card-text">
-                {{ sign.description|raw }}<br>
+                Format: {{ sign.width }}x{{ sign.height }}<br>
+                Impression: {{ sign.displayPrintFace }}<br>
+                {% if sign.finish %}Finition: {{ sign.finish }}<br>{% endif %}
+                Matière: {{ sign.material }}
                 <hr />
                 Ref Castorama: {{ sign.customerReference }}<br>
                 Prix: {{ sign.price|format_number({fraction_digit: 2}) }}€
                 <hr />
             </p>
 
-            <a href="{{ path }}" class="btn btn-primary">
+            <a href="{{ path('order_sign_create', {'orderId': orderId, 'name': sign.name}) }}" class="btn btn-primary">
                 Sélectionner
             </a>
         </div>

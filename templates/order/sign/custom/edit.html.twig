@@ -22,7 +22,7 @@
                         {% if orderSign is defined %}
                             href="{{ path('orders_view', { id: orderId }) }}"
                         {% else %}
-                            href="{{ path('order_sign_choose', { orderId: orderId, category: sign.category }) }}"
+                            href="{{ path('order_sign_choose', { orderId: orderId, categoryId: sign.category.id }) }}"
                         {% endif %}
                         class="btn btn-outline-secondary w-100 my-3">
                         Annuler

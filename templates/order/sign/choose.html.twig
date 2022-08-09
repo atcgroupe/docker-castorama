@@ -10,16 +10,8 @@
     <h1 class="h2 text-center text-primary fw-light mt-4 mb-5">Choisissez votre modèle...</h1>
 
     <div class="row g-4">
-        {% for sign in variableSigns %}
-            {{ include('order/sign/_choose_item.html.twig', {
-                path: path('order_sign_create', {'orderId': orderId, 'signType': sign.type})
-            }) }}
-        {% endfor %}
-
-        {% for sign in fixedSigns %}
-            {{ include('order/sign/_choose_item.html.twig', {
-                path: path('fixed_order_sign_create', { orderId: orderId, signId: sign.id })
-            }) }}
+        {% for sign in signs %}
+            {{ include('order/sign/_choose_item.html.twig') }}
         {% endfor %}
     </div>
 {% endblock %}

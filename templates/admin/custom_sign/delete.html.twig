@@ -7,12 +7,12 @@
                 Êtes vous sure<br>de vouloir supprimer le panneau {{ sign.title }} ?
             </h1>
 
-            <form method="post" action="{{ path('admin_fixed_signs_delete', {'id': sign.id}) }}" class="mt-5">
+            <form method="post" action="{{ path('admin_custom_signs_delete', {'id': sign.id}) }}" class="mt-5">
                 <button type="submit" class="btn btn-lg btn-outline-danger w-100 my-3">
                     Supprimer le panneau
                 </button>
 
-                <a href="{{ path('admin_fixed_signs_view', {'id': sign.id}) }}" class="btn btn-outline-secondary w-100">
+                <a href="{{ path('admin_custom_signs_view', {'id': sign.id}) }}" class="btn btn-outline-secondary w-100">
                     Annuler
                 </a>
             </form>

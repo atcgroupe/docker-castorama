@@ -72,6 +72,11 @@ class MaterialSectorOrderSign extends AbstractVariableOrderSign
         return $this;
     }
 
+    /**
+     * @return string|null
+     * @Groups({"api_json_data"})
+     * @SerializedName("alignment")
+     */
     public function getAlignment(): ?string
     {
         return $this->alignment;
@@ -151,9 +156,8 @@ class MaterialSectorOrderSign extends AbstractVariableOrderSign
 
     /**
      * @return string
-     * @Groups({"api_json_data"})
      */
-    public function getFileName(): string
+    public function getXmlFilename(): string
     {
         return sprintf(
             'COMMANDE %s PANNEAU ALLEE EXTERIEUR %s %s %sEX.xml',

@@ -2,9 +2,7 @@
 
 namespace App\Controller\Order;
 
-use App\Entity\AbstractSign;
 use App\Entity\Order;
-use App\Entity\Sign;
 use App\Entity\User;
 use App\Form\OrderSendType;
 use App\Form\OrderUpdateDeliveryType;
@@ -16,10 +14,10 @@ use App\Security\Voter\OrderVoter;
 use App\Service\Alert\Alert;
 use App\Service\Controller\AbstractAppController;
 use App\Service\Event\OrderEvent;
-use App\Service\Order\FixedOrderSignHelper;
 use App\Service\Order\OrderHelper;
+use App\Service\Order\OrderSignCollectionHelper;
 use App\Service\Order\OrderSignHelper;
-use App\Service\Order\VariableOrderSignHelper;
+use App\Service\Order\OrderSignResumeHelper;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,9 +35,8 @@ class OrderController extends AbstractAppController
     public function __construct(
         private readonly RequestStack $requestStack,
         private readonly OrderRepository $orderRepository,
+        private readonly OrderSignResumeHelper $resumeHelper,
         private readonly OrderSignHelper $signHelper,
-        private readonly VariableOrderSignHelper $variableOrderSignHelper,
-        private readonly FixedOrderSignHelper $fixedOrderSignHelper,
         private readonly EventDispatcherInterface $eventDispatcher,
     ) {
     }
@@ -77,14 +74,11 @@ class OrderController extends AbstractAppController
     }
 
     #[Route('/{id}/view', name: '_view')]
-    public function view(int $id, Request $request): Response
+    public function view(int $id, OrderSignCollectionHelper $collectionHelper, Request $request): Response
     {
         $order = $this->orderRepository->findOneWithRelations($id);
-        $resume = $this->signHelper->getResume($order);
-        $variableIndoorOrderSigns = $this->variableOrderSignHelper->getCollections($order, AbstractSign::CATEGORY_INDOOR);
-        $variableOutdoorOrderSigns = $this->variableOrderSignHelper->getCollections($order, AbstractSign::CATEGORY_OUTDOOR);
-        $fixedIndoorOrderSigns = $this->fixedOrderSignHelper->findAll($order, AbstractSign::CATEGORY_INDOOR);
-        $fixedOutdoorOrderSigns = $this->fixedOrderSignHelper->findAll($order, AbstractSign::CATEGORY_OUTDOOR);
+        $resume = $this->resumeHelper->getResume($order);
+        $signs = $collectionHelper->getCollections($order);
 
         $referer = $request->headers->get('referer');
         if (str_contains($referer, '/orders/list')) {
@@ -95,10 +89,7 @@ class OrderController extends AbstractAppController
             'order/view.html.twig',
             [
                 'order' => $order,
-                'variableIndoorOrderSigns' => $variableIndoorOrderSigns,
-                'variableOutdoorOrderSigns' => $variableOutdoorOrderSigns,
-                'fixedIndoorOrderSigns' => $fixedIndoorOrderSigns,
-                'fixedOutdoorOrderSigns' => $fixedOutdoorOrderSigns,
+                'signs' => $signs,
                 'resume' => $resume
             ]
         );
@@ -181,7 +172,7 @@ class OrderController extends AbstractAppController
     public function send(int $id, Request $request): Response
     {
         $order = $this->orderRepository->findOneWithRelations($id);
-        $resume = $this->signHelper->getResume($order);
+        $resume = $this->resumeHelper->getResume($order);
         $form = $this->createForm(OrderSendType::class, $order);
         $form->handleRequest($request);
 

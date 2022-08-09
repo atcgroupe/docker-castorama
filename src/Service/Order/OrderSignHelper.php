@@ -3,7 +3,6 @@
 namespace App\Service\Order;
 
 use App\Entity\AbstractOrderSign;
-use App\Entity\AbstractVariableOrderSign;
 use App\Entity\MaterialSectorOrderSign;
 use App\Entity\Order;
 use App\Entity\Sign;
@@ -12,44 +11,78 @@ use Doctrine\ORM\EntityManagerInterface;
 class OrderSignHelper
 {
     public function __construct(
-        private readonly VariableOrderSignHelper $variableOrderSignHelper,
-        private readonly FixedOrderSignHelper $fixedOrderSignHelper,
+        private readonly EntityManagerInterface $manager,
     ) {
     }
 
     /**
      * @param Order $order
-     *
      * @return array
      */
     public function findAll(Order $order): array
     {
-        $fixedSigns = $this->fixedOrderSignHelper->findAll($order);
-        $variableSigns = $this->variableOrderSignHelper->findAll($order);
+        $allSigns = [];
+        foreach ($this->getSigns() as $sign) {
+            $signs = $this->manager->getRepository($sign->getClass())->findBy(['order' => $order]);
+            if (!empty($signs)) {
+                $allSigns = array_merge($allSigns, $signs);
+            }
+        }
 
-        return array_merge($fixedSigns, $variableSigns);
-    }
-
-    public function removeAll(Order $order): void
-    {
-        $this->fixedOrderSignHelper->removeAll($order);
-        $this->variableOrderSignHelper->removeAll($order);
+        return $allSigns;
     }
 
     /**
      * @param Order $order
-     *
-     * @return array|null
+     * @return void
      */
-    public function getResume(Order $order): ?OrderSignsResume
+    public function removeAll(Order $order): void
     {
-        $variableSignsResume = $this->variableOrderSignHelper->getResume($order);
-        $fixedSignsResume = $this->fixedOrderSignHelper->getResume($order);
+        $signs = $this->getSigns();
 
-        if (empty($variableSignsResume) && empty($fixedSignsResume)) {
-            return null;
+        foreach ($signs as $sign) {
+            $this->manager->getRepository($sign->getClass())->removeByOrder($order);
+        }
+    }
+
+    /**
+     * Saves new sign in the database.
+     *
+     * This method has been added because
+     * if the sign entity is an instance of MaterialSectorOrderSign and alignment attribute is set to "all",
+     * The sign is duplicated and two entities are saved in the database:
+     * one with "left" alignment and one with "right" alignment
+     *
+     * @param AbstractOrderSign $sign
+     * @return void
+     */
+    public function createOne(AbstractOrderSign $sign): void
+    {
+        if (
+            $sign::class === MaterialSectorOrderSign::class &&
+            $sign->getAlignment() === MaterialSectorOrderSign::ALIGN_ALL
+        ) {
+            $leftSign = $sign->setAlignment(MaterialSectorOrderSign::ALIGN_LEFT);
+            $rightSign = clone $leftSign;
+            $rightSign->setAlignment(MaterialSectorOrderSign::ALIGN_RIGHT);
+
+            $this->manager->persist($leftSign);
+            $this->manager->persist($rightSign);
+
+            $this->manager->flush();
+
+            return;
         }
 
-        return new OrderSignsResume(array_merge($variableSignsResume, $fixedSignsResume));
+        $this->manager->persist($sign);
+        $this->manager->flush();
+    }
+
+    /**
+     * @return Sign[]
+     */
+    private function getSigns(): array
+    {
+        return $this->manager->getRepository(Sign::class)->findAll();
     }
 }

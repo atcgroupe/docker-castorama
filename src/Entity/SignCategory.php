@@ -80,4 +80,15 @@ class SignCategory
 
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function getChooseFilePath(): string
+    {
+        return sprintf(
+            'build/images/sign/category/%s.webp',
+            $this->getId()
+        );
+    }
 }

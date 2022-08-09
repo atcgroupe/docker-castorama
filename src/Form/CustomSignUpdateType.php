@@ -2,14 +2,12 @@
 
 namespace App\Form;
 
-use App\Entity\FixedSign;
-use App\Enum\FixedSignFileType;
-use App\Enum\FixedSignUpdateTypeEnum;
-use Symfony\Component\Form\AbstractType;
+use App\Entity\Sign;
+use App\Enum\CustomSignFileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class FixedSignUpdateType extends FixedSignCreateType
+class CustomSignUpdateType extends CustomSignCreateType
 {
     public const UPDATE_TYPE = 'update_type';
     private const UPDATE_INFO = 'info';
@@ -42,11 +40,11 @@ class FixedSignUpdateType extends FixedSignCreateType
             ->remove('category');
 
         match ($options[self::UPDATE_TYPE]) {
-            FixedSignFileType::Choose
+            CustomSignFileType::Choose
                 => $builder->remove('previewFile')->remove('productionFile'),
-            FixedSignFileType::Preview
+            CustomSignFileType::Preview
                 => $builder->remove('chooseFile')->remove('productionFile'),
-            FixedSignFileType::Production
+            CustomSignFileType::Production
                 => $builder->remove('chooseFile')->remove('previewFile'),
         };
     }
@@ -54,7 +52,7 @@ class FixedSignUpdateType extends FixedSignCreateType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => FixedSign::class,
+            'data_class' => Sign::class,
             'validation_groups' => ['update'],
             self::UPDATE_TYPE => self::UPDATE_INFO,
         ]);

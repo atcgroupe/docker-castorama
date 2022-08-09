@@ -16,12 +16,28 @@ interface OrderSignApiInterface
      *
      * @return string
      */
-    public function getFileName(): string;
+    public function getXmlFilename(): string;
 
     /**
-     * Returns the type of the sign (VARIABLE or FIXED)
+     * Used to know if sign has variable data.
      *
      * @return string
      */
-    public function getSwitchSignType(): string;
+    public function isSignVariable(): string;
+
+    /**
+     * Returns the sign name that is used in switch flow.
+     *
+     * @return string
+     */
+    public function getSignName(): string;
+
+    /**
+     * Returns the Callas pdf template name that is used to generate production file.
+     *
+     * Note: the name is returned without file extension.
+     *
+     * @return string
+     */
+    public function getSwitchTemplateFilename(): string;
 }

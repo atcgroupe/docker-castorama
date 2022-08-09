@@ -86,8 +86,8 @@
                             {% if is_granted('ROLE_COMPANY_ADMIN') %}
                                 <div>
                                     <a
-                                            href="{{ path('orders_update', {'element': 'status', 'id': order.id}) }}"
-                                            class="btn btn-sm btn-outline-primary">
+                                        href="{{ path('orders_update', {'element': 'status', 'id': order.id}) }}"
+                                        class="btn btn-sm btn-outline-primary">
                                         Modifier
                                     </a>
                                 </div>
@@ -113,8 +113,8 @@
                             {% if is_granted('UPDATE_DELIVERY_DATE', order) %}
                                 <div>
                                     <a
-                                            href="{{ path('orders_update', {'element': 'delivery', 'id': order.id}) }}"
-                                            class="btn btn-sm btn-outline-primary">
+                                        href="{{ path('orders_update', {'element': 'delivery', 'id': order.id}) }}"
+                                        class="btn btn-sm btn-outline-primary">
                                         Modifier
                                     </a>
                                 </div>
@@ -142,7 +142,6 @@
                 </ul>
             </div>
 
-
             {% if resume %}
                 <div class="col-12 col-lg-6">
                     <h2 class="h4 mt-4 ms-3 mt-4">Résumé de la commande</h2>
@@ -169,13 +168,14 @@
                                     <span class="small text-muted">
                                         {{ signResume.category }}<br>
                                     </span>
+
                                     <span class="small text-muted fst-italic">
                                         Code DataMerch: {{ signResume.customerReference }}
                                     </span>
                                 </div>
 
                                 <div class="w-50 ps-2 text-primary">
-                                    {{ signResume.signsCount }} Exemplaires
+                                    {{ signResume.signsCount }} Exemplaire{% if signResume.signsCount > 1 %}s{% endif %}
                                     ( {{ signResume.totalPrice|format_number({fraction_digit: 2}) }}€ )
                                 </div>
                             </li>

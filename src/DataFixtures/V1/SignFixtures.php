@@ -31,8 +31,6 @@ class SignFixtures extends AbstractSignFixtures
                 self::WEIGHT => 0.50,
                 self::CUSTOMER_REF => '178738',
                 self::PRICE => 14.50,
-                self::BUILDER => 'AisleSignBuilder',
-                self::TEMPLATE => 'AisleSignTemplate',
                 self::VARIABLE => true,
                 self::CATEGORY => 1
             ],
@@ -49,8 +47,6 @@ class SignFixtures extends AbstractSignFixtures
                 self::WEIGHT => 0.40,
                 self::CUSTOMER_REF => '178737',
                 self::PRICE => 10.50,
-                self::BUILDER => 'AisleSmallSignBuilder',
-                self::TEMPLATE => 'AisleSmallSignTemplate',
                 self::VARIABLE => true,
                 self::CATEGORY => 1,
             ],
@@ -67,10 +63,8 @@ class SignFixtures extends AbstractSignFixtures
                 self::WEIGHT => 1.50,
                 self::CUSTOMER_REF => '178736',
                 self::PRICE => 39.00,
-                self::BUILDER => 'SectorSignBuilder',
-                self::TEMPLATE => 'SectorSignTemplate',
                 self::VARIABLE => true,
-                self::CATEGORY => AbstractSign::CATEGORY_INDOOR,
+                self::CATEGORY => 1,
             ],
         ];
     }

@@ -13,23 +13,15 @@
 
     <div id="collapse{{ itemIndex }}" class="accordion-collapse collapse" aria-labelledby="heading{{ itemIndex }}" data-bs-parent="#aisleAccordion">
         <div class="accordion-body">
-            {% if type == 'variable' %}
-                {% for sign in signs %}
-                    {{  include('order/_view_signs_accordion_item.html.twig', {
-                        sign: sign,
-                        signUpdateQuantityPath: path('order_sign_update_quantity', {'id': sign.id, 'signType': sign.type}),
-                        signUpdatePath: path('order_sign_update', {'id': sign.id, 'signType': sign.type}),
-                        signDeletePath: path('order_sign_delete', {'id': sign.id, 'signType': sign.type})
-                    }) }}
-                {% endfor %}
-            {% elseif type == 'fixed' %}
+            {% for item in items %}
                 {{  include('order/_view_signs_accordion_item.html.twig', {
                     sign: sign,
-                    signUpdateQuantityPath: path('fixed_order_sign_update_quantity', {'id': sign.id}),
-                    signUpdatePath: path('fixed_order_sign_update', {'id': sign.id}),
-                    signDeletePath: path('fixed_order_sign_delete', {'id': sign.id})
+                    item: item,
+                    signUpdateQuantityPath: path('order_sign_update_quantity', {'id': item.id, 'name': sign.name}),
+                    signUpdatePath: path('order_sign_update', {'id': item.id, 'name': sign.name}),
+                    signDeletePath: path('order_sign_delete', {'id': item.id, 'name': sign.name})
                 }) }}
-            {% endif %}
+            {% endfor %}
         </div>
     </div>
 </div>
