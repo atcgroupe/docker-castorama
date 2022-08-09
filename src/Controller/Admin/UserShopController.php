@@ -9,6 +9,8 @@ use App\Repository\UserRepository;
 use App\Security\UserPasswordManager;
 use App\Service\Alert\Alert;
 use App\Service\Controller\AbstractAppController;
+use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -17,9 +19,16 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/admin/shops', name: 'admin_shop')]
 class UserShopController extends AbstractAppController
 {
+    /**
+     * @var ObjectManager
+     */
+    private ObjectManager $manager;
+
     public function __construct(
-        private UserPasswordManager $userPasswordManager,
+        private readonly UserPasswordManager $userPasswordManager,
+        private readonly ManagerRegistry $doctrine
     ) {
+        $this->manager = $this->doctrine->getManager();
     }
 
     #[Route('/list', name: '_list')]
@@ -36,7 +45,7 @@ class UserShopController extends AbstractAppController
         $user = $userRepository->find($id);
 
         $user->setIsActive(!$user->getIsActive());
-        $this->getDoctrine()->getManager()->flush();
+        $this->manager->flush();
 
         $isActive = ($user->getIsActive()) ? 'réactivé' : 'désactivé';
 
@@ -49,7 +58,7 @@ class UserShopController extends AbstractAppController
     }
 
     #[Route('/create', name: '_create')]
-    public function create(Request $request, UserPasswordHasherInterface $passwordHasher): Response
+    public function create(Request $request): Response
     {
         $user = new User();
         $user->setShop(new Shop());
@@ -62,9 +71,8 @@ class UserShopController extends AbstractAppController
             $user->setRoles([User::ROLE_CUSTOMER_SHOP]);
             $user->setIsActive(true);
 
-            $manager = $this->getDoctrine()->getManager();
-            $manager->persist($user);
-            $manager->flush();
+            $this->manager->persist($user);
+            $this->manager->flush();
 
             $this->dispatchHtmlAlert(
                 Alert::INFO,
@@ -86,8 +94,7 @@ class UserShopController extends AbstractAppController
     #[Route('/{id}/update', name: '_update')]
     public function update(int $id, Request $request): Response
     {
-        $manager = $this->getDoctrine()->getManager();
-        $user = $manager->getRepository(User::class)->findWithShop($id);
+        $user = $this->manager->getRepository(User::class)->findWithShop($id);
 
         $form = $this->createForm(UserType::class, $user, ['validation_groups' => ['Default']]);
         $form->handleRequest($request);
@@ -95,7 +102,7 @@ class UserShopController extends AbstractAppController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->userPasswordManager->setPassword($user);
 
-            $manager->flush();
+            $this->manager->flush();
 
             $this->dispatchHtmlAlert(
                 Alert::INFO,
