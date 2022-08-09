@@ -24,10 +24,10 @@ class CustomSignController extends AbstractAppController
 {
     private ObjectManager $manager;
     public function __construct(
-        private readonly SignRepository        $signRepository,
+        private readonly SignRepository $signRepository,
         private readonly CustomSignFileManager $fileManager,
-        private readonly CustomSignHelper      $signHelper,
-        private readonly ManagerRegistry       $managerRegistry,
+        private readonly CustomSignHelper $signHelper,
+        private readonly ManagerRegistry $managerRegistry,
     ) {
         $this->manager = $this->managerRegistry->getManager();
     }
