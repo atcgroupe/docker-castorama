@@ -27,9 +27,9 @@ class CustomSignController extends AbstractAppController
         private readonly SignRepository $signRepository,
         private readonly CustomSignFileManager $fileManager,
         private readonly CustomSignHelper $signHelper,
-        private readonly ManagerRegistry $managerRegistry,
+        ManagerRegistry $doctrine,
     ) {
-        $this->manager = $this->managerRegistry->getManager();
+        $this->manager = $doctrine->getManager();
     }
 
     #[Route('', name: '_list')]

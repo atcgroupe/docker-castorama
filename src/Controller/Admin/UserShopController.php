@@ -26,9 +26,9 @@ class UserShopController extends AbstractAppController
 
     public function __construct(
         private readonly UserPasswordManager $userPasswordManager,
-        private readonly ManagerRegistry $doctrine
+        ManagerRegistry $doctrine
     ) {
-        $this->manager = $this->doctrine->getManager();
+        $this->manager = $doctrine->getManager();
     }
 
     #[Route('/list', name: '_list')]
