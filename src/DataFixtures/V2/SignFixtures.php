@@ -35,7 +35,7 @@ class SignFixtures extends AbstractSignFixtures
                 self::WEIGHT => 0.50,
                 self::CUSTOMER_REF => '178738',
                 self::PRICE => 14.50,
-                self::VARIABLE => true,
+                self::IS_VARIABLE => true,
                 self::CATEGORY => 1
             ],
             [
@@ -51,7 +51,7 @@ class SignFixtures extends AbstractSignFixtures
                 self::WEIGHT => 0.40,
                 self::CUSTOMER_REF => '178737',
                 self::PRICE => 10.50,
-                self::VARIABLE => true,
+                self::IS_VARIABLE => true,
                 self::CATEGORY => 1,
             ],
             [
@@ -67,7 +67,7 @@ class SignFixtures extends AbstractSignFixtures
                 self::WEIGHT => 1.50,
                 self::CUSTOMER_REF => '178736',
                 self::PRICE => 39.00,
-                self::VARIABLE => true,
+                self::IS_VARIABLE => true,
                 self::CATEGORY => 1,
             ],
             [
@@ -83,7 +83,7 @@ class SignFixtures extends AbstractSignFixtures
                 self::WEIGHT => 4.20,
                 self::CUSTOMER_REF => 'xxxxxx',
                 self::PRICE => 40.00,
-                self::VARIABLE => true,
+                self::IS_VARIABLE => true,
                 self::CATEGORY => 2,
             ],
             [
@@ -99,7 +99,7 @@ class SignFixtures extends AbstractSignFixtures
                 self::WEIGHT => 4.20,
                 self::CUSTOMER_REF => 'xxxxxx',
                 self::PRICE => 40.00,
-                self::VARIABLE => false,
+                self::IS_VARIABLE => false,
                 self::CATEGORY => 2,
             ],
             [
@@ -115,7 +115,7 @@ class SignFixtures extends AbstractSignFixtures
                 self::WEIGHT => 1.33,
                 self::CUSTOMER_REF => 'xxxxxx',
                 self::PRICE => 40.00,
-                self::VARIABLE => true,
+                self::IS_VARIABLE => true,
                 self::CATEGORY => 2,
             ],
             [
@@ -131,7 +131,7 @@ class SignFixtures extends AbstractSignFixtures
                 self::WEIGHT => 2.09,
                 self::CUSTOMER_REF => 'xxxxxx',
                 self::PRICE => 40.00,
-                self::VARIABLE => false,
+                self::IS_VARIABLE => false,
                 self::CATEGORY => 2,
             ],
         ];

@@ -24,9 +24,7 @@ abstract class AbstractSignFixtures extends Fixture implements FixtureGroupInter
     protected const WEIGHT = 'weight';
     protected const CUSTOMER_REF = 'customerRef';
     protected const PRICE = 'price';
-    protected const BUILDER = 'builder';
-    protected const TEMPLATE = 'template';
-    protected const VARIABLE = 'variable';
+    protected const IS_VARIABLE = 'isVariable';
     protected const CATEGORY = 'category';
 
     /**
@@ -45,7 +43,7 @@ abstract class AbstractSignFixtures extends Fixture implements FixtureGroupInter
 
         foreach ($data as $entry) {
             $existingSign = $this->signRepository->find($entry[self::ID]);
-            $sign = ($existingSign instanceof Sign) ? $existingSign : new Sign();
+            $sign = ($existingSign instanceof Sign) ? $existingSign : new Sign($entry[self::IS_VARIABLE]);
 
             $sign->setId($entry[self::ID]);
             $sign->setClass($entry[self::CLASS_NAME]);
@@ -59,10 +57,6 @@ abstract class AbstractSignFixtures extends Fixture implements FixtureGroupInter
             $sign->setWeight($entry[self::WEIGHT]);
             $sign->setCustomerReference($entry[self::CUSTOMER_REF]);
             $sign->setPrice($entry[self::PRICE]);
-            $sign->setSwitchFlowBuilder($entry[self::BUILDER]);
-            $sign->setSwitchFlowTemplateFile($entry[self::TEMPLATE]);
-            $sign->setIsVariable($entry[self::VARIABLE]);
-            $sign->setIsActive(true);
             $sign->setCategory($this->getReference($entry[self::CATEGORY]));
 
             if (!$existingSign instanceof Sign) {
