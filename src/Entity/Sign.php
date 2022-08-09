@@ -36,7 +36,7 @@ class Sign
 
     /**
      * @ORM\Column(type="string", length=100)
-     * @Assert\NotBlank(groups={"create", "update"})
+     * @Assert\NotBlank(groups={"create", "update_info"})
      * @Assert\Regex(
      *     pattern="/^[a-z]+([A-Z][a-z]+)*$/",
      *     groups={"create", "update"},
@@ -47,21 +47,21 @@ class Sign
 
     /**
      * @ORM\Column(type="string", length=60)
-     * @Assert\NotBlank(groups={"create", "update"})
+     * @Assert\NotBlank(groups={"create", "update_info"})
      */
     private $title;
 
     /**
      * @ORM\Column(type="integer")
-     * @Assert\NotBlank(groups={"create", "update"})
-     * @Assert\Positive(groups={"create", "update"}, message="Doit être un entier positif")
+     * @Assert\NotBlank(groups={"create", "update_info"})
+     * @Assert\Positive(groups={"create", "update_info"}, message="Doit être un entier positif")
      */
     private $width;
 
     /**
      * @ORM\Column(type="integer")
-     * @Assert\NotBlank(groups={"create", "update"})
-     * @Assert\Positive(groups={"create", "update"}, message="Doit être un entier positif")
+     * @Assert\NotBlank(groups={"create", "update_info"})
+     * @Assert\Positive(groups={"create", "update_info"}, message="Doit être un entier positif")
      */
     private $height;
 
@@ -71,8 +71,8 @@ class Sign
     private $printFaces;
 
     /**
-     * @ORM\Column(type="string", length=255)@Assert\NotBlank(groups={"create", "update"})
-     * @Assert\NotBlank(groups={"create", "update"})
+     * @ORM\Column(type="string", length=255)@Assert\NotBlank(groups={"create", "update_info"})
+     * @Assert\NotBlank(groups={"create", "update_info"})
      */
     private $material;
 
@@ -83,21 +83,21 @@ class Sign
 
     /**
      * @ORM\Column(type="decimal", precision=4, scale=2)
-     * @Assert\NotBlank(groups={"create", "update"})
-     * @Assert\Positive(groups={"create", "update"})
+     * @Assert\NotBlank(groups={"create", "update_info"})
+     * @Assert\Positive(groups={"create", "update_info"})
      */
     private $weight;
 
     /**
      * @ORM\Column(type="string", length=30)
-     * @Assert\NotBlank(groups={"create", "update"})
+     * @Assert\NotBlank(groups={"create", "update_info"})
      */
     private $customerReference;
 
     /**
      * @ORM\Column(type="decimal", precision=5, scale=2)
      * @Assert\NotBlank(groups={"create", "update"})
-     * @Assert\Positive(groups={"create", "update"})
+     * @Assert\Positive(groups={"create", "update_info"})
      */
     private $price;
 
@@ -167,6 +167,15 @@ class Sign
      * )
      */
     private ?UploadedFile $chooseFile;
+
+    /**
+     * @param bool $isVariable
+     */
+    public function __construct(bool $isVariable)
+    {
+        $this->setDefaults();
+        $this->setIsVariable($isVariable);
+    }
 
     public function getId(): ?int
     {
@@ -477,10 +486,39 @@ class Sign
     }
 
     /**
+     * @return string
+     */
+    public function getChooseFilename(): string
+    {
+        return $this->getFilename(CustomSignFileType::Choose);
+    }
+
+    /**
+     * @return string
+     */
+    public function getPreviewFilename(): string
+    {
+        return $this->getFilename(CustomSignFileType::Preview);
+    }
+
+    /**
+     * @return string
+     */
+    public function getProductionFilename(): string
+    {
+        return $this->getFilename(CustomSignFileType::Production);
+    }
+
+    /**
      * @return bool
      */
     public function isCustomType(): bool
     {
         return $this->getType() === self::TYPE_CUSTOM;
+    }
+
+    private function setDefaults(): void
+    {
+        $this->setIsActive(true);
     }
 }
