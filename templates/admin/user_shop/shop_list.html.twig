@@ -15,10 +15,10 @@
 
             <div id="data-list">
                 <input
-                        type="search"
-                        class="search form-control form-control-lg mb-5"
-                        placeholder="Tappez le nom d'un magasin..."
-                        autofocus />
+                    type="search"
+                    class="search form-control form-control-lg mb-5"
+                    placeholder="Tappez le nom d'un magasin..."
+                    autofocus />
 
                 <ul class="list app-card-datalist" style="padding: 0">
                     {% for shop in shops %}
@@ -30,19 +30,19 @@
 
                                 <div>
                                     <a
-                                            href="{{ path('admin_shop_switch', {'id': shop.id}) }}"
-                                            class="btn btn-sm
-                                                {% if shop.isActive == true %}
-                                                    btn-outline-danger">Désactiver
-                                                {% else %}
-                                                    btn-outline-success">Activer
-                                                {% endif %}
+                                        href="{{ path('admin_shop_switch', {'id': shop.id}) }}"
+                                        class="btn btn-sm
+                                            {% if shop.isActive == true %}
+                                                btn-outline-danger">Désactiver
+                                            {% else %}
+                                                btn-outline-success">Activer
+                                            {% endif %}
 
                                     </a>
 
                                     <a
-                                            href="{{ path('admin_shop_update', {'id': shop.id}) }}"
-                                            class="btn btn-sm btn-outline-primary">
+                                        href="{{ path('admin_shop_update', {'id': shop.id}) }}"
+                                        class="btn btn-sm btn-outline-primary">
                                         Modifier
                                     </a>
                                 </div>

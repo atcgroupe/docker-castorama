@@ -15,8 +15,8 @@
                 </a>
 
                 <a
-                        href="{{ path('admin_custom_signs_change_status', { id: sign.id }) }}"
-                        class="btn ms-1
+                    href="{{ path('admin_custom_signs_change_status', { id: sign.id }) }}"
+                    class="btn ms-1
                     {% if sign.isActive == true %}
                         btn-outline-danger">Désactiver
                     {% else %}
@@ -25,7 +25,9 @@
                 </a>
 
                 {% if isRemovable == true %}
-                    <a href="{{ path('admin_custom_signs_delete', { id: sign.id }) }}" class="btn btn-outline-danger ms-1">
+                    <a
+                        href="{{ path('admin_custom_signs_delete', { id: sign.id }) }}"
+                        class="btn btn-outline-danger ms-1">
                         Supprimer
                     </a>
                 {% endif %}
@@ -110,7 +112,9 @@
 
                                 <div>
                                     <a
-                                        href="{{ path('admin_custom_signs_update_image', { id: sign.id, type: 'choose' }) }}"
+                                        href="{{ path('admin_custom_signs_update_image', {
+                                            id: sign.id, type: 'choose'
+                                        }) }}"
                                         class="btn btn-sm btn-outline-primary">
                                         Modifier
                                     </a>
@@ -127,7 +131,9 @@
 
                                 <div>
                                     <a
-                                        href="{{ path('admin_custom_signs_update_image', { id: sign.id, type: 'preview' }) }}"
+                                        href="{{ path('admin_custom_signs_update_image', {
+                                            id: sign.id, type: 'preview'
+                                        }) }}"
                                         class="btn btn-sm btn-outline-primary">
                                         Modifier
                                     </a>
@@ -144,7 +150,9 @@
 
                                 <div>
                                     <a
-                                        href="{{ path('admin_custom_signs_update_image', { id: sign.id, type: 'production' }) }}"
+                                        href="{{ path('admin_custom_signs_update_image', {
+                                            id: sign.id, type: 'production'
+                                        }) }}"
                                         class="btn btn-sm btn-outline-primary">
                                         Modifier
                                     </a>

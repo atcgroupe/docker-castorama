@@ -1,14 +1,14 @@
 <div
-        class="toast align-items-center justify-content-center p-2
-            {% if theme != constant('App\\Service\\Alert\\Alert::BASIC') %}
-                bg-{{ theme }}
-                text-white
-            {% endif %}"
-        role="alert"
-        aria-live="assertive"
-        aria-atomic="true"
-        data-delay="{{ delay }}"
-        data-autohide="{{ autoHide }}">
+    class="toast align-items-center justify-content-center p-2
+    {% if theme != constant('App\\Service\\Alert\\Alert::BASIC') %}
+        bg-{{ theme }}
+        text-white
+    {% endif %}"
+    role="alert"
+    aria-live="assertive"
+    aria-atomic="true"
+    data-delay="{{ delay }}"
+    data-autohide="{{ autoHide }}">
     <div class="d-flex">
         <div class="toast-body">
             {% if isHtmlMessage == true %}
@@ -19,13 +19,13 @@
         </div>
 
         <button
-                type="button"
-                class="btn-close me-2 m-auto
-                    {% if theme != constant('App\\Service\\Alert\\Alert::BASIC') %}
-                        btn-close-white
-                    {% endif %}"
-                data-bs-dismiss="toast"
-                aria-label="Close">
+            type="button"
+            class="btn-close me-2 m-auto
+                {% if theme != constant('App\\Service\\Alert\\Alert::BASIC') %}
+                    btn-close-white
+                {% endif %}"
+            data-bs-dismiss="toast"
+            aria-label="Close">
         </button>
     </div>
 </div>
