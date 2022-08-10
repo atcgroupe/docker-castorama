@@ -20,8 +20,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class MaterialSectorOrderSign extends AbstractVariableOrderSign
 {
-    private const TYPE = 'materialSector';
-
     public const ALIGN_LEFT = 'left';
     public const ALIGN_RIGHT = 'right';
     public const ALIGN_ALL = 'all'; // Used in form to create 2 signs (one left + one right)
@@ -147,11 +145,6 @@ class MaterialSectorOrderSign extends AbstractVariableOrderSign
     public function setCategory(?MaterialSectorSignItemCategory $category): void
     {
         $this->category = $category;
-    }
-
-    public static function getType(): string
-    {
-        return self::TYPE;
     }
 
     /**
