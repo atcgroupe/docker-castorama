@@ -5,7 +5,6 @@ namespace App\Form;
 use App\Entity\MaterialAlgecoOrderSign;
 use App\Entity\MaterialAlgecoSignItem;
 use Doctrine\ORM\EntityRepository;
-use JetBrains\PhpStorm\ArrayShape;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
