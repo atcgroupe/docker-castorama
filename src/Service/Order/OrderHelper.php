@@ -8,16 +8,25 @@ use App\Repository\OrderStatusRepository;
 class OrderHelper
 {
     public function __construct(
-        private OrderStatusRepository $statusRepository,
+        private readonly OrderStatusRepository $statusRepository,
     ) {
     }
 
-    public function setOrderStatus(Order $order, string $statusId)
+    /**
+     * @param Order $order
+     * @param string $statusId
+     * @return void
+     */
+    public function setOrderStatus(Order $order, string $statusId): void
     {
         $order->setStatus($this->statusRepository->find($statusId));
     }
 
-    public function updateLastUpdateTime(Order $order)
+    /**
+     * @param Order $order
+     * @return void
+     */
+    public function updateLastUpdateTime(Order $order): void
     {
         $order->setLastUpdateTime(new \DateTime('NOW'));
     }
