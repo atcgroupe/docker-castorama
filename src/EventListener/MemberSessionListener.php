@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Member security manager
@@ -17,9 +18,9 @@ use Symfony\Component\Security\Core\Security;
 class MemberSessionListener
 {
     public function __construct(
-        private Security $security,
-        private UrlGeneratorInterface $urlGenerator,
-        private MemberSessionHandler $memberSessionHandler,
+        private readonly Security $security,
+        private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly MemberSessionHandler $memberSessionHandler,
     ){
     }
 
@@ -31,7 +32,7 @@ class MemberSessionListener
         }
 
         // Member has been selected.
-        if ($this->security->getToken()->isAuthenticated() && $this->memberSessionHandler->has()) {
+        if ($this->memberSessionHandler->has()) {
             return;
         }
 
