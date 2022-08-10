@@ -20,7 +20,7 @@ class OrderVoter extends Voter
     public const UPDATE_SIGN = 'UPDATE_SIGN';
 
     public function __construct(
-        private Security $security,
+        private readonly Security $security,
     ) {
     }
 
@@ -121,6 +121,10 @@ class OrderVoter extends Voter
         ;
     }
 
+    /**
+     * @param Order $order
+     * @return bool
+     */
     public function canUpdateInfo(Order $order): bool
     {
         return
@@ -132,6 +136,10 @@ class OrderVoter extends Voter
         ;
     }
 
+    /**
+     * @param Order $order
+     * @return bool
+     */
     private function canUpdateSign(Order $order): bool
     {
         return
