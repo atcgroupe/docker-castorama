@@ -14,10 +14,10 @@ use Symfony\Component\Security\Core\Security;
 class OrderRegistrationListener
 {
     public function __construct(
-        private Security $security,
-        private EntityManagerInterface $manager,
-        private MemberSessionHandler $memberSessionHandler,
-        private OrderHelper $orderHelper,
+        private readonly Security $security,
+        private readonly EntityManagerInterface $manager,
+        private readonly MemberSessionHandler $memberSessionHandler,
+        private readonly OrderHelper $orderHelper,
     ) {
     }
 
