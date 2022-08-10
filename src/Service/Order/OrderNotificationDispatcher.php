@@ -6,6 +6,7 @@ use App\Entity\Event;
 use App\Entity\User;
 use App\Repository\MemberRepository;
 use App\Repository\OrderRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
@@ -18,11 +19,11 @@ use Twig\Error\SyntaxError;
 class OrderNotificationDispatcher
 {
     public function __construct(
-        private readonly OrderRepository       $orderRepository,
+        private readonly OrderRepository $orderRepository,
         private readonly OrderSignResumeHelper $orderSignResumeHelper,
-        private readonly MemberRepository      $memberRepository,
-        private readonly Environment           $twig,
-        private readonly MailerInterface       $mailer,
+        private readonly MemberRepository $memberRepository,
+        private readonly Environment $twig,
+        private readonly MailerInterface $mailer,
     ) {
     }
 
@@ -32,7 +33,7 @@ class OrderNotificationDispatcher
      * @throws TransportExceptionInterface
      * @throws LoaderError
      * @throws RuntimeError
-     * @throws SyntaxError
+     * @throws SyntaxError|NonUniqueResultException
      */
     public function send(int $orderId): void
     {

@@ -9,8 +9,8 @@ use Symfony\Component\Serializer\SerializerInterface;
 class MemberSessionHandler
 {
     public function __construct(
-        private RequestStack $requestStack,
-        private SerializerInterface $serializer,
+        private readonly RequestStack $requestStack,
+        private readonly SerializerInterface $serializer,
     ) {
     }
 

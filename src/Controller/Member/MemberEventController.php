@@ -6,6 +6,7 @@ use App\Entity\Event;
 use App\Entity\Member;
 use App\Service\Controller\AbstractAppController;
 use App\Service\Alert\Alert;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,9 +14,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class MemberEventController extends AbstractAppController
 {
     #[Route('/members/{id}/notifications', name: 'member_events')]
-    public function setMemberEvents(int $id, Request $request): Response
+    public function setMemberEvents(int $id, Request $request, ManagerRegistry $doctrine): Response
     {
-        $manager = $this->getDoctrine()->getManager();
+        $manager = $doctrine->getManager();
         $member = $manager->getRepository(Member::class)->find($id);
         $events = $manager->getRepository(Event::class)->findAllOrdered();
 

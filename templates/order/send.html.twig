@@ -83,21 +83,21 @@
             <div class="col-12 col-lg-6 pt-lg-3">
                 {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 
-                {{ form_row(form.customerReference, {'attr': {'autofocus': true}}) }}
+                    {{ form_row(form.customerReference, {'attr': {'autofocus': true}}) }}
 
-                {{ form_row(form.comment) }}
+                    {{ form_row(form.comment) }}
 
-                <div class="mt-5">
-                    <button type="submit" class="btn btn-lg btn-outline-primary w-100">
-                        Confirmer l'envoi de la commande
-                    </button>
+                    <div class="mt-5">
+                        <button type="submit" class="btn btn-lg btn-outline-primary w-100">
+                            Confirmer l'envoi de la commande
+                        </button>
 
-                    <a
-                            href="{{ path('orders_view', {'id': order.id}) }}"
-                            class="btn btn-outline-secondary w-100 mt-3">
-                        Annuler
-                    </a>
-                </div>
+                        <a
+                                href="{{ path('orders_view', {'id': order.id}) }}"
+                                class="btn btn-outline-secondary w-100 mt-3">
+                            Annuler
+                        </a>
+                    </div>
 
                 {{ form_end(form) }}
             </div>

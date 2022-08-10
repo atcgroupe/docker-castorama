@@ -39,8 +39,8 @@ class MaterialServiceOrderSignRepository extends ServiceEntityRepository impleme
     {
         $this->createQueryBuilder('m')
             ->delete()
-                ->where('m.order = :order')
-            ->setParameter('order', $order)
+            ->where('m.order = :order')
+                ->setParameter('order', $order)
             ->getQuery()
             ->getResult()
         ;

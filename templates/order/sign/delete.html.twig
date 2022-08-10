@@ -7,7 +7,10 @@
                 Êtes vous sure<br>de vouloir supprimer ce panneau {{ sign.sign.title }} ?
             </h1>
 
-            <form method="post" action="{{ path('order_sign_delete', {'id': sign.id, 'name': sign.sign.name}) }}" class="mt-5">
+            <form
+                method="post"
+                action="{{ path('order_sign_delete', {'id': sign.id, 'name': sign.sign.name}) }}"
+                class="mt-5">
                 <button type="submit" class="btn btn-lg btn-outline-danger w-100 my-3">
                     Supprimer le panneau
                 </button>

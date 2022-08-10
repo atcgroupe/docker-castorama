@@ -106,9 +106,11 @@
 
                         <div>
                             {% if not signResume.isCustom %}
-                                {{ signResume.modelsCount }} {% if signResume.modelsCount > 1 %}Modèles différents{% else %}Modèle{% endif %}<br/>
+                                {{ signResume.modelsCount }}
+                                {% if signResume.modelsCount > 1 %}Modèles différents{% else %}Modèle{% endif %}<br/>
                             {% endif %}
-                            {{ signResume.signsCount }} Exemplaire{% if signResume.signsCount > 1 %}s {% if not signResume.isCustom %}au total{% endif %}{% endif %}<br/>
+                            {{ signResume.signsCount }} Exemplaire{% if signResume.signsCount > 1 %}s
+                            {% if not signResume.isCustom %}au total{% endif %}{% endif %}<br/>
                             {{ signResume.totalPrice|format_number({fraction_digit: 2}) }}€
                         </div>
                     </li>

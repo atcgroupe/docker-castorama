@@ -17,9 +17,9 @@ use Symfony\Component\Security\Core\Security;
 class MemberSessionListener
 {
     public function __construct(
-        private Security $security,
-        private UrlGeneratorInterface $urlGenerator,
-        private MemberSessionHandler $memberSessionHandler,
+        private readonly Security $security,
+        private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly MemberSessionHandler $memberSessionHandler,
     ){
     }
 
@@ -31,7 +31,7 @@ class MemberSessionListener
         }
 
         // Member has been selected.
-        if ($this->security->getToken()->isAuthenticated() && $this->memberSessionHandler->has()) {
+        if ($this->memberSessionHandler->has()) {
             return;
         }
 

@@ -7,7 +7,9 @@
                 <p class="h2 fw-light text-center my-4">Qui êtes vous ?</p>
             {% else %}
                 <p class="display-2 text-center">Oups!</p>
-                <p class="text-muted display-6 fw-light text-center mb-5">{{ app.user.displayName }} n'a encore aucun membre...</p>
+                <p class="text-muted display-6 fw-light text-center mb-5">
+                    {{ app.user.displayName }} n'a encore aucun membre...
+                </p>
             {% endif %}
 
             {% for member in members %}
@@ -17,9 +19,11 @@
                 } %}
             {% endfor %}
 
-            {% include 'component/_app_card_link.html.twig' with {'href': path('member_create'), 'text': 'Ajouter un nouveau membre'} %}
+            {% include 'component/_app_card_link.html.twig' with {
+                'href': path('member_create'),
+                'text': 'Ajouter un nouveau membre'
+            } %}
 
         </div>
     </div>
-
 {% endblock %}

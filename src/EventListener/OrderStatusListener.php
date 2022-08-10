@@ -8,7 +8,7 @@ use App\Service\Order\OrderNotificationDispatcher;
 class OrderStatusListener
 {
     public function __construct(
-        private OrderNotificationDispatcher $orderNotificationDispatcher
+        private readonly OrderNotificationDispatcher $orderNotificationDispatcher
     ) {
     }
 

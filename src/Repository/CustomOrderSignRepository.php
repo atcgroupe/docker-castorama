@@ -2,7 +2,6 @@
 
 namespace App\Repository;
 
-use App\Entity\AisleSmallOrderSign;
 use App\Entity\CustomOrderSign;
 use App\Entity\Order;
 use App\Entity\Sign;
