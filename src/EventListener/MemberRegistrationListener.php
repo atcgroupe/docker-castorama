@@ -9,7 +9,7 @@ use Doctrine\Persistence\Event\LifecycleEventArgs;
 class MemberRegistrationListener
 {
     public function __construct(
-        private MemberHelper $memberHelper,
+        private readonly MemberHelper $memberHelper,
     ) {
     }
 
