@@ -46,7 +46,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     {
         return $this->createQueryBuilder('u')
             ->innerJoin('u.shop', 's')
-            ->addSelect('s')
+                ->addSelect('s')
             ->orderBy('u.username')
             ->getQuery()
             ->getResult()
@@ -60,12 +60,12 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     {
         return $this->createQueryBuilder('u')
             ->innerJoin('u.shop', 's')
-            ->addSelect('s')
+                ->addSelect('s')
             ->andWhere('u.isActive = 1')
             ->orderBy('u.username')
             ->getQuery()
             ->getResult()
-            ;
+        ;
     }
 
     /**
@@ -84,6 +84,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
                 ->setParameter('id', $id)
             ->getQuery()
             ->getSingleResult()
-            ;
+        ;
     }
 }

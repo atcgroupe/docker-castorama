@@ -25,7 +25,7 @@ class MaterialDirOrderSignRepository extends ServiceEntityRepository implements 
         return $this->createQueryBuilder('m')
             ->andWhere('m.order = :order')
                 ->setParameter('order', $order)
-                ->orderBy('m.id', 'ASC')
+            ->orderBy('m.id', 'ASC')
             ->getQuery()
             ->getResult()
             ;
@@ -35,7 +35,7 @@ class MaterialDirOrderSignRepository extends ServiceEntityRepository implements 
     {
         $this->createQueryBuilder('m')
             ->delete()
-                ->where('m.order = :order')
+            ->where('m.order = :order')
                 ->setParameter('order', $order)
             ->getQuery()
             ->getResult()

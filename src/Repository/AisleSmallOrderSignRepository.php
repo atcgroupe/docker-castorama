@@ -50,7 +50,7 @@ class AisleSmallOrderSignRepository extends ServiceEntityRepository implements V
         $this->createQueryBuilder('a')
             ->delete()
             ->where('a.order = :order')
-            ->setParameter('order', $order)
+                ->setParameter('order', $order)
             ->getQuery()
             ->getResult();
     }

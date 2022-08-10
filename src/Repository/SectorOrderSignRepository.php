@@ -43,7 +43,7 @@ class SectorOrderSignRepository extends ServiceEntityRepository implements Varia
         $this->createQueryBuilder('s')
             ->delete()
             ->where('s.order = :order')
-            ->setParameter('order', $order)
+                ->setParameter('order', $order)
             ->getQuery()
             ->getResult();
     }
