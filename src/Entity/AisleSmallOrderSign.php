@@ -5,7 +5,6 @@ namespace App\Entity;
 use App\Repository\AisleSmallOrderSignRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=AisleSmallOrderSignRepository::class)
