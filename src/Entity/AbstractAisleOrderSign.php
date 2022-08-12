@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Service\String\Formatter;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
@@ -139,5 +140,13 @@ abstract class AbstractAisleOrderSign extends AbstractVariableOrderSign
     public function getItem3Label(): string
     {
         return (null === $this->getItem3()) ? '' : $this->getItem3()->getLabel();
+    }
+
+    /**
+     * @return string
+     */
+    public function getXmlFilename(): string
+    {
+        return $this->getFormattedXmlFilename('ALLEE ' . $this->getAisleNumber());
     }
 }

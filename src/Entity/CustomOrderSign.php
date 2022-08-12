@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\CustomOrderSignRepository;
+use App\Service\String\Formatter;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
@@ -21,11 +22,6 @@ class CustomOrderSign extends AbstractOrderSign
      */
     public function getXmlFilename(): string
     {
-        return sprintf(
-            'COMMANDE %s - %s %sEX.xml',
-            $this->getOrderId(),
-            $this->getSignName(),
-            $this->getQuantity()
-        );
+        return $this->getFormattedXmlFilename();
     }
 }

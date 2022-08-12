@@ -94,25 +94,12 @@ class MaterialAlgecoOrderSign extends AbstractVariableOrderSign
 
     /**
      * @return string
-     */
-    public function getXmlFilename(): string
-    {
-        return sprintf(
-            'COMMANDE %s PANNEAU ENTREE ALGECO ID%s %sEX.xml',
-            $this->getOrderId(),
-            $this->getId(),
-            $this->getQuantity()
-        );
-    }
-
-    /**
-     * @return string
      * @Groups({"api_json_data"})
      * @SerializedName("item1Label")
      */
     public function getItem1Label(): string
     {
-        return (null === $this->getItem1()) ? '' : $this->getItem1()->getLabel();
+        return (null === $this->getItem1()) ? '' : '• ' . $this->getItem1()->getLabel();
     }
 
     /**
@@ -122,7 +109,7 @@ class MaterialAlgecoOrderSign extends AbstractVariableOrderSign
      */
     public function getItem2Label(): string
     {
-        return (null === $this->getItem2()) ? '' : $this->getItem2()->getLabel();
+        return (null === $this->getItem2()) ? '' : '• ' . $this->getItem2()->getLabel();
     }
 
     /**
@@ -132,7 +119,7 @@ class MaterialAlgecoOrderSign extends AbstractVariableOrderSign
      */
     public function getItem3Label(): string
     {
-        return (null === $this->getItem3()) ? '' : $this->getItem3()->getLabel();
+        return (null === $this->getItem3()) ? '' : '• ' . $this->getItem3()->getLabel();
     }
 
     /**
@@ -142,6 +129,6 @@ class MaterialAlgecoOrderSign extends AbstractVariableOrderSign
      */
     public function getItem4Label(): string
     {
-        return (null === $this->getItem4()) ? '' : $this->getItem4()->getLabel();
+        return (null === $this->getItem4()) ? '' : '• ' . $this->getItem4()->getLabel();
     }
 }

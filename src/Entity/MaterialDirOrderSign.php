@@ -63,7 +63,7 @@ class MaterialDirOrderSign extends AbstractOrderSign
      *
      * @Groups({"api_xml_object"})
      */
-    public function getSwitchTemplateFilename(): string
+    public function getTemplateFilename(): string
     {
         return sprintf(
             '%s_%s_%s',
@@ -73,16 +73,12 @@ class MaterialDirOrderSign extends AbstractOrderSign
         );
     }
 
+    /**
+     * @return string
+     */
     public function getXmlFilename(): string
     {
-        return sprintf(
-            'COMMANDE %s PANNEAU DIRECTION EXTERIEUR ID%s %s %s %sEX.xml',
-            $this->getOrderId(),
-            $this->getId(),
-            $this->getTitleLabel(),
-            $this->getDirectionLabel(),
-            $this->getQuantity()
-        );
+        return $this->getFormattedXmlFilename($this->getTitleLabel() . ' ' . $this->getDirectionLabel());
     }
 
     /**

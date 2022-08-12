@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\MaterialSectorOrderSignRepository;
+use App\Service\String\Formatter;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -152,13 +153,7 @@ class MaterialSectorOrderSign extends AbstractVariableOrderSign
      */
     public function getXmlFilename(): string
     {
-        return sprintf(
-            'COMMANDE %s PANNEAU ALLEE EXTERIEUR %s %s %sEX.xml',
-            $this->getOrderId(),
-            $this->getAisleNumber(),
-            $this->getAlignmentLabel(),
-            $this->getQuantity()
-        );
+        return $this->getFormattedXmlFilename($this->getAisleNumber() . ' ' . $this->getAlignmentLabel());
     }
 
     /**

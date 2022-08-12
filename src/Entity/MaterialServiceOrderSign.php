@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\MaterialServiceOrderSignRepository;
+use App\Service\String\Formatter;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -62,26 +63,13 @@ class MaterialServiceOrderSign extends AbstractOrderSign
     /**
      * @return string
      */
-    public function getSwitchTemplateFilename(): string
+    public function getTemplateFilename(): string
     {
         return sprintf(
             '%s_%s_%s',
             $this->getSignName(),
             $this->getItem1()->getId(),
             $this->getItem2()->getId()
-        );
-    }
-
-    /**
-     * @return string
-     */
-    public function getXmlFilename(): string
-    {
-        return sprintf(
-            'COMMANDE %s - COUR DES MATERIAUX - PANNEAU SERVICE ID%s %sEX.xml',
-            $this->getOrderId(),
-            $this->getId(),
-            $this->getQuantity()
         );
     }
 }

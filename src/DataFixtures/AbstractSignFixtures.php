@@ -57,7 +57,7 @@ abstract class AbstractSignFixtures extends Fixture implements FixtureGroupInter
             $sign->setWeight($entry[self::WEIGHT]);
             $sign->setCustomerReference($entry[self::CUSTOMER_REF]);
             $sign->setPrice($entry[self::PRICE]);
-            $sign->setCategory($this->getReference($entry[self::CATEGORY]));
+            $sign->setCategory($this->getReference('c' . $entry[self::CATEGORY]));
 
             if (!$existingSign instanceof Sign) {
                 $manager->persist($sign);

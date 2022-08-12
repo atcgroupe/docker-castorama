@@ -13,8 +13,8 @@ class SignCategoryFixtures extends Fixture implements FixtureGroupInterface
     public function load(ObjectManager $manager)
     {
         $data = [
-            1 => 'Signalétique interieure',
-            2 => 'Cour des matériaux',
+            'c1' => 'Signalétique interieure',
+            'c2' => 'Cour des matériaux',
         ];
 
         foreach ($data as $key => $label) {

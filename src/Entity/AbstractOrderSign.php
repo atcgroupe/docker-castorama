@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Service\String\Formatter;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
@@ -112,7 +113,7 @@ abstract class AbstractOrderSign implements OrderSignInterface, OrderSignApiInte
      *
      * @Groups({"api_xml_object"})
      */
-    public function getSwitchTemplateFilename(): string
+    public function getTemplateFilename(): string
     {
         return $this->getSign()->getName();
     }
@@ -121,6 +122,7 @@ abstract class AbstractOrderSign implements OrderSignInterface, OrderSignApiInte
      * @return string
      *
      * @Groups({"api_xml_object"})
+     * @SerializedName("isSignVariable")
      */
     public function isSignVariable(): string
     {
@@ -135,5 +137,36 @@ abstract class AbstractOrderSign implements OrderSignInterface, OrderSignApiInte
     public function getSignName(): string
     {
         return $this->getSign()->getName();
+    }
+
+    /**
+     * @return string
+     *
+     * @Groups({"api_xml_object"})
+     */
+    public function getSignCategoryName(): string
+    {
+        return Formatter::getNoAccentString($this->getSign()->getCategory()->getLabel());
+    }
+
+    /**
+     * @return string
+     */
+    public function getXmlFilename(): string
+    {
+        return $this->getFormattedXmlFilename('#' . $this->getId());
+    }
+
+    /**
+     * @param string|null $variableId
+     * @return string
+     */
+    protected function getFormattedXmlFilename(?string $variableId = null): string
+    {
+        $formattedTitle = strtoupper(Formatter::getNoAccentString($this->getSign()->getTitle()));
+
+        return $variableId ?
+            sprintf('%s [%s] %sEX.xml', $formattedTitle, $variableId, $this->getQuantity()) :
+            sprintf('%s %sEX.xml', $formattedTitle, $this->getQuantity());
     }
 }

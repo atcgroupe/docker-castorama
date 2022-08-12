@@ -39,5 +39,14 @@ interface OrderSignApiInterface
      *
      * @return string
      */
-    public function getSwitchTemplateFilename(): string;
+    public function getTemplateFilename(): string;
+
+    /**
+     * Returns sign category
+     *
+     * Note: used for directory naming so without accents
+     *
+     * @return string
+     */
+    public function getSignCategoryName(): string;
 }

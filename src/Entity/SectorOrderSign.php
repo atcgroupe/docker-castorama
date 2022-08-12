@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\SectorOrderSignRepository;
+use App\Service\String\Formatter;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
@@ -138,26 +139,13 @@ class SectorOrderSign extends AbstractVariableOrderSign
      *
      * @return string
      */
-    public function getSwitchTemplateFilename(): string
+    public function getTemplateFilename(): string
     {
         return sprintf(
             '%s_%s_%s',
             $this->getSign()->getName(),
             $this->getItem1Color(),
             $this->getItem2Color()
-        );
-    }
-
-    /**
-     * @return string
-     */
-    public function getXmlFilename(): string
-    {
-        return sprintf(
-            'COMMANDE %s PANNEAU SECTEUR %s %sEX.xml',
-            $this->getOrderId(),
-            $this->getId(),
-            $this->getQuantity()
         );
     }
 }
