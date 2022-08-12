@@ -11,7 +11,7 @@
         </button>
     </h2>
 
-    <div id="collapse{{ itemIndex }}" class="accordion-collapse collapse" aria-labelledby="heading{{ itemIndex }}" data-bs-parent="#aisleAccordion">
+    <div id="collapse{{ itemIndex }}" class="accordion-collapse collapse" aria-labelledby="heading{{ itemIndex }}">
         <div class="accordion-body">
             {% for item in items %}
                 {{  include('order/_view_signs_accordion_item.html.twig', {
