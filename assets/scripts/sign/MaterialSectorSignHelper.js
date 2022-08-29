@@ -78,8 +78,23 @@ export class MaterialSectorSignHelper {
 
     setPreviewSector() {
         Array.from(this.previewsSector).forEach(sector => {
-            sector.innerText = (this.itemsCategorySelect.value === undefined) ?
-                '' : this.itemsCategorySelect.options[this.itemsCategorySelect.selectedIndex].text;
+            if (this.itemsCategorySelect.value === undefined) {
+                sector.innerText = '';
+
+                return;
+            }
+
+            const categoryValue = this.itemsCategorySelect.options[this.itemsCategorySelect.selectedIndex].text
+            sector.innerText = categoryValue;
+
+            if (categoryValue.length > 15) {
+                sector.classList.add('stretch');
+                sector.classList.remove('normal');
+                return;
+            }
+
+            sector.classList.add('normal');
+            sector.classList.remove('stretch');
         });
     }
 

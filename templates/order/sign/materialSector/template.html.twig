@@ -6,7 +6,7 @@
     </div>
 
     <div class="sector-container">
-        <div class="sector-value">
+        <div class="sector-value {% if sector|length > 15 %}stretch{% else %}normal{% endif %}">
             {{ sector }}
         </div>
     </div>

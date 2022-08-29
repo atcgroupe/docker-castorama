@@ -78,9 +78,18 @@
     height: calc(var(--sign-scale) * 10mm);
 
     .sector-value {
-      font-size: calc(var(--sign-scale) * 35pt);
-      line-height: calc(var(--sign-scale) * 35pt);
       color: #000000;
+
+      &.normal {
+        font-size: calc(var(--sign-scale) * 35pt);
+        line-height: calc(var(--sign-scale) * 35pt);
+      }
+
+      &.stretch {
+        font-size: calc(var(--sign-scale) * 31pt);
+        letter-spacing: calc(var(--sign-scale) * -0.4mm);
+        line-height: calc(var(--sign-scale) * 35pt);
+      }
     }
   }
 
@@ -95,7 +104,8 @@
 
     .product-items {
       width: 100%;
-      font-size: calc(var(--sign-scale) * 22pt);
+      font-size: calc(var(--sign-scale) * 20.7pt);
+      letter-spacing: calc(var(--sign-scale) * -0.1mm);
       line-height: calc(var(--sign-scale) * 28pt);
       color: #000000;
     }
