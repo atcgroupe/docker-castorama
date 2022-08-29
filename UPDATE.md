@@ -28,3 +28,6 @@ symfony console doctrine:fixtures:load --append --group=v2
 ### Set prod env
 1. Set the var `env=prod` into `.env.local`
 2. Change subdomain directory.
+
+### Add products on the platform
+Add the fixed signs directly in the production platform.
