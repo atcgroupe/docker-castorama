@@ -18,6 +18,9 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
  */
 class MaterialAlgecoOrderSign extends AbstractVariableOrderSign
 {
+    public const DIR_LEFT = 'l';
+    public const DIR_RIGHT = 'r';
+
     /**
      * @ORM\ManyToOne(targetEntity=MaterialAlgecoSignItem::class)
      * @ORM\JoinColumn(nullable=false)
@@ -38,6 +41,11 @@ class MaterialAlgecoOrderSign extends AbstractVariableOrderSign
      * @ORM\ManyToOne(targetEntity=MaterialAlgecoSignItem::class)
      */
     private $item4;
+
+    /**
+     * @ORM\Column(type="string", length=1)
+     */
+    private $dir;
 
     public function getId(): ?int
     {
@@ -92,6 +100,18 @@ class MaterialAlgecoOrderSign extends AbstractVariableOrderSign
         return $this;
     }
 
+    public function getDir(): ?string
+    {
+        return $this->dir;
+    }
+
+    public function setDir(string $dir): self
+    {
+        $this->dir = $dir;
+
+        return $this;
+    }
+
     /**
      * @return string
      * @Groups({"api_json_data"})
@@ -130,5 +150,19 @@ class MaterialAlgecoOrderSign extends AbstractVariableOrderSign
     public function getItem4Label(): string
     {
         return (null === $this->getItem4()) ? '' : '• ' . $this->getItem4()->getLabel();
+    }
+
+    /**
+     * @return string
+     *
+     * @Groups({"api_xml_object"})
+     */
+    public function getTemplateFilename(): string
+    {
+        return sprintf(
+            '%s_%s',
+            $this->getSign()->getName(),
+            $this->getDir()
+        );
     }
 }

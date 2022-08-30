@@ -1,10 +1,10 @@
 :root {
-  --sign-scale: 2.4;
+  --sign-scale: 1.8;
 }
 
 .material-algeco {
   &.medium {
-    --sign-scale: 2.4;
+    --sign-scale: 1.8;
   }
 
   &.small {
@@ -12,16 +12,23 @@
   }
 
   width: calc(var(--sign-scale) * 50mm);
-  height: calc(var(--sign-scale) * 70mm);
+  height: calc(var(--sign-scale) * 120mm);
   position: relative;
   background-repeat: no-repeat;
-  background-size: calc(var(--sign-scale) * 50mm) calc(var(--sign-scale) * 70mm);
-  background-image: url("../../images/sign/sign/materialAlgeco/material-algeco-bg.svg");
+  background-size: calc(var(--sign-scale) * 50mm) calc(var(--sign-scale) * 120mm);
+
+  &.dir-l {
+    background-image: url("../../images/sign/sign/materialAlgeco/material-algeco-l.svg");
+  }
+
+  &.dir-r {
+    background-image: url("../../images/sign/sign/materialAlgeco/material-algeco-r.svg");
+  }
 
   .text-container {
     position: absolute;
-    top: calc(var(--sign-scale) * 42mm);
-    left: calc(var(--sign-scale) * 4mm);
+    top: calc(var(--sign-scale) * 76mm);
+    left: calc(var(--sign-scale) * 3mm);
     font-family: Casto;
     font-weight: 900;
     color: #000000;

@@ -1,14 +1,17 @@
 export class MaterialAlgecoSignHelper {
     constructor(formName) {
         this.formName = formName;
+        this.dirSelect = document.getElementById(`${formName}_dir`);
         this.itemsSelects = document.getElementsByClassName('sign-item-select');
         this.item2Select = document.getElementById(`${formName}_item2`);
         this.item3Select = document.getElementById(`${formName}_item3`);
         this.item4Select = document.getElementById(`${formName}_item4`);
         this.text = document.getElementsByClassName('items_text')[0];
+        this.template = document.getElementById('material-algeco');
 
         this.refreshVueState();
         this.addItemsSelectEventListeners();
+        this.addDirSelectEventListener();
     }
 
     refreshVueState() {
@@ -29,6 +32,10 @@ export class MaterialAlgecoSignHelper {
         })
 
         this.text.innerHTML = text;
+
+        this.template.classList.remove('dir-r');
+        this.template.classList.remove('dir-l');
+        this.template.classList.add(`dir-${this.dirSelect.value}`)
     }
 
     _refreshSelectsStatus() {
@@ -66,5 +73,11 @@ export class MaterialAlgecoSignHelper {
                 this.refreshVueState();
             });
         })
+    }
+
+    addDirSelectEventListener() {
+        this.dirSelect.addEventListener('change', () => {
+            this.refreshVueState();
+        });
     }
 }

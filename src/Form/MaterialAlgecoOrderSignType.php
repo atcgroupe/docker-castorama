@@ -7,7 +7,9 @@ use App\Entity\MaterialAlgecoSignItem;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -17,6 +19,17 @@ class MaterialAlgecoOrderSignType extends AbstractType
     {
         $builder
             ->add('quantity', NumberType::class, ['label' => 'Quantité'])
+            ->add(
+                'dir',
+                ChoiceType::class,
+                [
+                    'label' => 'Direction',
+                    'choices' => [
+                        'GAUCHE' => MaterialAlgecoOrderSign::DIR_LEFT,
+                        'DROITE' => MaterialAlgecoOrderSign::DIR_RIGHT,
+                    ]
+                ]
+            )
             ->add('item1', EntityType::class, $this->getItemOption(1))
             ->add('item2', EntityType::class, $this->getItemOption(2))
             ->add('item3', EntityType::class, $this->getItemOption(3))
