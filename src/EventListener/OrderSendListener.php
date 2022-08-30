@@ -9,7 +9,7 @@ use App\Service\Order\OrderHelper;
 class OrderSendListener
 {
     public function __construct(
-        private OrderHelper $orderHelper,
+        private readonly OrderHelper $orderHelper,
     ) {
     }
 

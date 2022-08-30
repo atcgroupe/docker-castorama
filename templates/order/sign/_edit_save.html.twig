@@ -2,7 +2,10 @@
     {{ form_row(form.save)}}
 
     {% if not update %}
-        <a href="{{ path('order_sign_choose', {'orderId': orderId}) }}" class="btn btn-outline-secondary w-100 mb-2">
+        <a href="{{ path(
+            'order_sign_choose',
+            { 'orderId': orderId, categoryId: sign.category.id }
+        ) }}" class="btn btn-outline-secondary w-100 mb-2">
             Retour aux modèles
         </a>
     {% endif %}

@@ -30,6 +30,7 @@ class OrderRepository extends ServiceEntityRepository
      * @param int $id
      *
      * @return Order|null
+     * @throws NonUniqueResultException
      */
     public function findOneWithRelations(int $id): Order | null
     {

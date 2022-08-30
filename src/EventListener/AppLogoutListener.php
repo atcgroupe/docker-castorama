@@ -12,8 +12,8 @@ use Symfony\Component\Security\Http\Event\LogoutEvent;
 class AppLogoutListener
 {
     public function __construct(
-        private UrlGeneratorInterface $urlGenerator,
-        private MemberSessionHandler $memberSessionHandler,
+        private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly MemberSessionHandler $memberSessionHandler,
     ) {
     }
 

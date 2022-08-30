@@ -1,75 +1,21 @@
-<div class="accordion mb-5" id="aisleAccordion">
-    {% for category, signs in orderSigns %}
-        <div class="accordion-item">
-            <h2 class="accordion-header d-print-none" id="heading{{ loop.index }}">
-                <button
-                        class="accordion-button"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#collapse{{ loop.index }}"
-                        aria-expanded="true"
-                        aria-controls="collapseOne">
-                    {{ category }}
-                </button>
-            </h2>
+{% if signs is empty %}
+    <div class="alert alert-info lead text-center my-5" role="alert">
+        Cette commande ne contient aucun panneau pour l'instant.
+    </div>
+{% else %}
+    {% for categoryCollection in signs %}
+        <h3 class="h4 ms-3">{{ categoryCollection.category.label }}</h3>
 
-            <div id="collapse{{ loop.index }}" class="accordion-collapse collapse show" aria-labelledby="heading{{ loop.index }}">
-                <div class="accordion-body">
-                    {% for sign in signs %}
-                        <div class="row mb-3 align-items-center">
-                            <div class="col d-flex justify-content-center">
-                                {% include 'order/sign/' ~ sign.type ~ '/_view.html.twig' with {'sign': sign} %}
-                            </div>
-
-                            <div class="col">
-                                <div class="row">
-                                    <div class="col">
-                                        <div class="row align-items-center d-print-none">
-                                            <div class="col col-4 text-end">
-                                                <label for="sign-quantity-{{ sign.id }}">Quantité</label>
-                                            </div>
-
-                                            <div class="col col-8">
-                                                <input
-                                                        id="sign-quantity-{{ sign.id }}"
-                                                        type="number"
-                                                        min="1"
-                                                        class="form-control sign-quantity"
-                                                        name="quantity"
-                                                        data-route="{{
-                                                            path('order_sign_update_quantity',
-                                                            {'id': sign.id, 'signType': sign.type})
-                                                        }}"
-                                                        value="{{ sign.quantity }}"
-                                                        {% if not is_granted('UPDATE_SIGN', order) %}disabled{% endif %}/>
-                                            </div>
-                                        </div>
-                                        <div class="d-none d-print-block">
-                                            {{ sign.quantity }} Ex.
-                                        </div>
-                                    </div>
-
-                                    <div class="col text-end d-print-none">
-                                        {% if is_granted('UPDATE_SIGN', order) %}
-                                            <a
-                                                    href="{{ path('order_sign_update', {'id': sign.id, 'signType': sign.type}) }}"
-                                                    class="btn btn-outline-primary">
-                                                Modifier
-                                            </a>
-
-                                            <a
-                                                    href="{{ path('order_sign_delete', {'id': sign.id, 'signType': sign.type}) }}"
-                                                    class="btn btn-outline-danger">
-                                                Supprimer
-                                            </a>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
+        <div class="accordion mb-5" id="aisleAccordion">
+            {% for collection in categoryCollection.collections %}
+                {{ include('order/_view_signs_accordion.html.twig', {
+                    sign: collection.sign,
+                    variable: collection.sign.isVariable,
+                    itemIndex: collection.sign.id,
+                    categoryLabel: collection.sign.title,
+                    items: collection.items,
+                }) }}
+            {% endfor %}
         </div>
     {% endfor %}
-</div>
+{% endif %}

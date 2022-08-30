@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\SectorOrderSignRepository;
+use App\Service\String\Formatter;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
@@ -13,10 +14,8 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  * @ORM\Entity(repositoryClass=SectorOrderSignRepository::class)
  * @ORM\HasLifecycleCallbacks()
  */
-class SectorOrderSign extends AbstractOrderSign
+class SectorOrderSign extends AbstractVariableOrderSign
 {
-    private const TYPE = 'sector';
-
     private $option;
 
     /**
@@ -80,14 +79,6 @@ class SectorOrderSign extends AbstractOrderSign
     }
 
     /**
-     * @return string
-     */
-    public static function getType(): string
-    {
-        return self::TYPE;
-    }
-
-    /**
      * @Assert\Callback
      */
     public function validate(ExecutionContextInterface $context, $payload)
@@ -148,27 +139,13 @@ class SectorOrderSign extends AbstractOrderSign
      *
      * @return string
      */
-    public function getSwitchTemplate(): string
+    public function getTemplateFilename(): string
     {
         return sprintf(
             '%s_%s_%s',
-            $this->getSign()->getSwitchFlowTemplateFile(),
+            $this->getSign()->getName(),
             $this->getItem1Color(),
             $this->getItem2Color()
-        );
-    }
-
-    /**
-     * @return string
-     * @Groups({"api_json_data"})
-     */
-    public function getFileName(): string
-    {
-        return sprintf(
-            'COMMANDE %s PANNEAU SECTEUR %s %sEX.xml',
-            $this->getOrderId(),
-            $this->getId(),
-            $this->getQuantity()
         );
     }
 }

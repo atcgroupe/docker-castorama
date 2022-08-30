@@ -7,7 +7,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=AisleOrderSignRepository::class)
@@ -20,8 +19,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class AisleOrderSign extends AbstractAisleOrderSign
 {
-    private const TYPE = 'aisle';
-
     /**
      * @ORM\Column(type="boolean")
      */
@@ -32,18 +29,12 @@ class AisleOrderSign extends AbstractAisleOrderSign
      */
     private $hideItem3Image;
 
-    public function __construct()
+    public function __construct(Order $order, Sign $sign)
     {
+        parent::__construct($order, $sign);
+
         $this->setHideItem2Image(false);
         $this->setHideItem3Image(false);
-    }
-
-    /**
-     * @return string
-     */
-    public static function getType(): string
-    {
-        return self::TYPE;
     }
 
     public function getHideItem2Image(): ?bool
@@ -122,19 +113,5 @@ class AisleOrderSign extends AbstractAisleOrderSign
     public function getItem3ImageName(): string
     {
         return (null === $this->getItem3() || $this->getHideItem3Image()) ? 'empty' : $this->getItem3()->getImage();
-    }
-
-    /**
-     * @return string
-     * @Groups({"api_json_data"})
-     */
-    public function getFileName(): string
-    {
-        return sprintf(
-            'COMMANDE %s PANNEAU ALLEE PICTO %s %sEX.xml',
-            $this->getOrderId(),
-            $this->getAisleNumber(),
-            $this->getQuantity()
-        );
     }
 }

@@ -1,0 +1,50 @@
+{% extends 'core/core.html.twig' %}
+
+{% block content %}
+    <div class="container">
+        <div class="row mb-5 pt-5">
+            <div class="col">
+                <h3 class="text-primary mb-3">Panneau d'allée</h3>
+
+                {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+                <h4 class="mt-5 mb-3">Personnalisation</h4>
+
+                <div class="mb-4">
+                    {{ form_row(form.title) }}
+                </div>
+
+                <div class="mb-4">
+                    {{ form_row(form.direction) }}
+                </div>
+
+                <div class="mb-4">
+                    {{ form_row(form.quantity)}}
+                </div>
+
+                {% include 'order/sign/_edit_save.html.twig' %}
+
+                {{ form_end(form) }}
+            </div>
+
+            <div class="col">
+                <div>
+                    {% include 'order/sign/materialDir/template.html.twig' with
+                        {
+                            'id': 'material-dir',
+                            'scale': 'medium',
+                            'title': 'c',
+                            'direction': 'left'
+                        }
+                    %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {{ encore_entry_script_tags('materialDirSignEdit') }}
+{% endblock %}

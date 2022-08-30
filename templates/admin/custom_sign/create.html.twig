@@ -1,0 +1,58 @@
+{% extends 'core/core.html.twig' %}
+
+{% block content %}
+    <div class="row justify-content-md-center">
+        <h1 class="h2 fw-light text-center my-5">Nouveau panneau fixe</h1>
+
+        {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+            <div class="row g-5">
+                <div class="col col-lg-6">
+                    <h3 class="h3 fw-light text-center mb-4">Informations</h3>
+
+                    {{ form_row(form.name) }}
+
+                    {{ form_row(form.title) }}
+
+                    {{ form_row(form.width) }}
+
+                    {{ form_row(form.height) }}
+
+                    {{ form_row(form.printFaces) }}
+
+                    {{ form_row(form.material) }}
+
+                    {{ form_row(form.finish) }}
+
+                    {{ form_row(form.weight) }}
+
+                    {{ form_row(form.customerReference) }}
+
+                    {{ form_row(form.price) }}
+
+                    {{ form_row(form.category) }}
+
+                </div>
+
+                <div class="col col-lg-6">
+                    <h3 class="h3 fw-light text-center mb-4">Fichiers</h3>
+
+                    {{ form_row(form.chooseFile) }}
+
+                    {{ form_row(form.previewFile) }}
+
+                    {{ form_row(form.productionFile) }}
+
+                    <div class="mt-5">
+                        <button type="submit" class="btn btn-lg btn-outline-primary w-100">Enregistrer</button>
+                    </div>
+
+                    <a href="{{ path('admin_custom_signs_list') }}" class="btn btn-outline-secondary w-100 my-3">
+                        Annuler
+                    </a>
+                </div>
+            </div>
+
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

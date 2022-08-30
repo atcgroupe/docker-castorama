@@ -18,8 +18,8 @@ class OrderListController extends AbstractAppController
     private const SHOP_USER_FILTER_ALL = 'all';
 
     public function __construct(
-        private OrderRepository $orderRepository,
-        private UserRepository $userRepository,
+        private readonly OrderRepository $orderRepository,
+        private readonly UserRepository $userRepository,
     ) {
     }
 

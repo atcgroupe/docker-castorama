@@ -3,31 +3,15 @@
 {% block content %}
     <a href="{{ path('orders_view', {'id': orderId}) }}" class="btn btn-outline-secondary">Retour à la commande</a>
 
+    <a href="{{ path('order_sign_choose_category', {orderId: orderId}) }}" class="btn btn-outline-secondary">
+        Retour aux catégories
+    </a>
+
     <h1 class="h2 text-center text-primary fw-light mt-4 mb-5">Choisissez votre modèle...</h1>
 
-    <div class="row">
+    <div class="row g-4">
         {% for sign in signs %}
-            <div class="col-12 col-md-4 col-lg-3">
-                <div class="card">
-                    <img src="{{ asset(sign.imagePath) }}" class="card-img-top" alt="{{ sign.title }}">
-
-                    <div class="card-body">
-                        <h5 class="card-title mt-0">{{ sign.title }}</h5>
-
-                        <p class="card-text">
-                            {{ sign.description|raw }}<br>
-                            <hr />
-                            Ref Castorama: {{ sign.customerReference }}<br>
-                            Prix: {{ sign.price|format_number({fraction_digit: 2}) }}€
-                            <hr />
-                        </p>
-
-                        <a href="{{ path('order_sign_create', {'orderId': orderId, 'signType': sign.type}) }}" class="btn btn-primary">
-                            Sélectionner
-                        </a>
-                    </div>
-                </div>
-            </div>
+            {{ include('order/sign/_choose_item.html.twig') }}
         {% endfor %}
     </div>
 {% endblock %}

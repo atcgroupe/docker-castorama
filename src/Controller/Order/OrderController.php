@@ -3,7 +3,6 @@
 namespace App\Controller\Order;
 
 use App\Entity\Order;
-use App\Entity\OrderStatus;
 use App\Entity\User;
 use App\Form\OrderSendType;
 use App\Form\OrderUpdateDeliveryType;
@@ -16,7 +15,11 @@ use App\Service\Alert\Alert;
 use App\Service\Controller\AbstractAppController;
 use App\Service\Event\OrderEvent;
 use App\Service\Order\OrderHelper;
+use App\Service\Order\OrderSignCollectionHelper;
 use App\Service\Order\OrderSignHelper;
+use App\Service\Order\OrderSignResumeHelper;
+use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,12 +34,20 @@ class OrderController extends AbstractAppController
     private const UPDATE_ELEMENT_DELIVERY = 'delivery';
     private const UPDATE_ELEMENT_INFO = 'info';
 
+    /**
+     * @var ObjectManager
+     */
+    private ObjectManager $manager;
+
     public function __construct(
-        private RequestStack $requestStack,
-        private OrderRepository $orderRepository,
-        private OrderSignHelper $signHelper,
-        private EventDispatcherInterface $eventDispatcher,
+        private readonly RequestStack $requestStack,
+        private readonly OrderRepository $orderRepository,
+        private readonly OrderSignResumeHelper $resumeHelper,
+        private readonly OrderSignHelper $signHelper,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        ManagerRegistry $doctrine,
     ) {
+        $this->manager = $doctrine->getManager();
     }
 
     #[Route('/create', name: '_create')]
@@ -56,9 +67,8 @@ class OrderController extends AbstractAppController
                 $form->isSubmitted() && $form->isValid()
             )
         ) {
-            $manager = $this->getDoctrine()->getManager();
-            $manager->persist($order);
-            $manager->flush();
+            $this->manager->persist($order);
+            $this->manager->flush();
 
             $this->dispatchHtmlAlert(
                 Alert::INFO,
@@ -68,22 +78,34 @@ class OrderController extends AbstractAppController
             return $this->redirectToRoute('orders_view', ['id' => $order->getId()]);
         }
 
-        return $this->render('order/create.html.twig', ['form' => $form->createView()]);
+        return $this->render(
+            'order/create.html.twig',
+            [
+                'form' => $form->createView()
+            ]
+        );
     }
 
     #[Route('/{id}/view', name: '_view')]
-    public function view(int $id, Request $request): Response
+    public function view(int $id, OrderSignCollectionHelper $collectionHelper, Request $request): Response
     {
         $order = $this->orderRepository->findOneWithRelations($id);
-        $resume = $this->signHelper->getOrderSignsResume($order);
-        $signs = $this->signHelper->findOrderSigns($order);
+        $resume = $this->resumeHelper->getResume($order);
+        $signs = $collectionHelper->getCollections($order);
 
         $referer = $request->headers->get('referer');
         if (str_contains($referer, '/orders/list')) {
             $this->requestStack->getSession()->set('referer', $referer);
         }
 
-        return $this->render('order/view.html.twig', ['order' => $order, 'orderSigns' => $signs, 'resume' => $resume]);
+        return $this->render(
+            'order/view.html.twig',
+            [
+                'order' => $order,
+                'signs' => $signs,
+                'resume' => $resume
+            ]
+        );
     }
 
     #[Route(
@@ -111,7 +133,7 @@ class OrderController extends AbstractAppController
             default:
                 $this->dispatchAlert(Alert::WARNING, 'Un problème est survenu lors de la modification');
 
-                $this->redirectToRoute('orders_view', ['id' => $id]);
+                return $this->redirectToRoute('orders_view', ['id' => $id]);
         }
 
         $form->handleRequest($request);
@@ -121,7 +143,7 @@ class OrderController extends AbstractAppController
                 $orderHelper->updateLastUpdateTime($order);
             }
 
-            $this->getDoctrine()->getManager()->flush();
+            $this->manager->flush();
 
             if ($element === self::UPDATE_ELEMENT_STATUS) {
                 $this->eventDispatcher->dispatch(new OrderEvent($order), OrderEvent::STATUS_CHANGED);
@@ -132,7 +154,13 @@ class OrderController extends AbstractAppController
             return $this->redirectToRoute('orders_view', ['id' => $id]);
         }
 
-        return $this->render('order/update.html.twig', ['form' => $form->createView(), 'order' => $order]);
+        return $this->render(
+            'order/update.html.twig',
+            [
+                'form' => $form->createView(),
+                'order' => $order
+            ]
+        );
     }
 
     #[Route('/{id}/delete', name: '_delete')]
@@ -143,10 +171,9 @@ class OrderController extends AbstractAppController
         $this->denyAccessUnlessGranted(OrderVoter::DELETE, $order);
 
         if ($request->isMethod('POST')) {
-            $this->signHelper->deleteOrderSigns($order);
-            $manager = $this->getDoctrine()->getManager();
-            $manager->remove($order);
-            $manager->flush();
+            $this->signHelper->removeAll($order);
+            $this->manager->remove($order);
+            $this->manager->flush();
 
             $this->dispatchHtmlAlert(
                 Alert::INFO,
@@ -156,21 +183,26 @@ class OrderController extends AbstractAppController
             return new RedirectResponse($this->requestStack->getSession()->get('referer'));
         }
 
-        return $this->render('order/delete.html.twig', ['order' => $order]);
+        return $this->render(
+            'order/delete.html.twig',
+            [
+                'order' => $order
+            ]
+        );
     }
 
     #[Route('/{id}/send', name: '_send')]
     public function send(int $id, Request $request): Response
     {
         $order = $this->orderRepository->findOneWithRelations($id);
-        $resume = $this->signHelper->getOrderSignsResume($order);
+        $resume = $this->resumeHelper->getResume($order);
         $form = $this->createForm(OrderSendType::class, $order);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->eventDispatcher->dispatch(new OrderEvent($order), OrderEvent::SEND);
 
-            $this->getDoctrine()->getManager()->flush();
+            $this->manager->flush();
 
             $this->dispatchAlert(Alert::SUCCESS, 'La commande a été envoyée avec succès.');
             $this->eventDispatcher->dispatch(new OrderEvent($order), OrderEvent::STATUS_CHANGED);

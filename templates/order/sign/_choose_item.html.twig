@@ -1,0 +1,24 @@
+<div class="col-12 col-md-4 col-lg-3 h-100">
+    <div class="card h-100">
+        <img src="{{ asset(sign.chooseImagePath) }}" class="card-img-top" alt="{{ sign.title }}">
+
+        <div class="card-body">
+            <h5 class="card-title mt-0">{{ sign.title }}</h5>
+
+            <p class="card-text">
+                Format: {{ sign.width }}x{{ sign.height }}<br>
+                Impression: {{ sign.displayPrintFace }}<br>
+                {% if sign.finish %}Finition: {{ sign.finish }}<br>{% endif %}
+                Matière: {{ sign.material }}
+                <hr />
+                Ref Castorama: {{ sign.customerReference }}<br>
+                Prix: {{ sign.price|format_number({fraction_digit: 2}) }}€
+                <hr />
+            </p>
+
+            <a href="{{ path('order_sign_create', {'orderId': orderId, 'name': sign.name}) }}" class="btn btn-primary">
+                Sélectionner
+            </a>
+        </div>
+    </div>
+</div>

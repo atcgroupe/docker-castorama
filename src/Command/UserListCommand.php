@@ -12,9 +12,16 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
+/**
+ * This command encodes users password.
+ *
+ * It has been implemented because,
+ * encoding passwords during fixtures load is handling a timeout error on the production server.
+ * It takes too many resources.
+ */
 #[AsCommand(
     name: 'app:encode-users-passwords',
-    description: 'Renames sign item image',
+    description: 'Encode shops user password',
 )]
 class UserListCommand extends Command
 {

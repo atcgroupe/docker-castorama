@@ -1,0 +1,64 @@
+{% extends 'core/core.html.twig' %}
+
+{% block content %}
+    <div class="container">
+        <div class="row mb-5 pt-5">
+            <div class="col">
+                <h3 class="text-primary mb-3">Panneau entrée algeco</h3>
+
+                {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+                    <h4 class="mt-5 mb-3">Personnalisation</h4>
+
+                    <div class="mb-4">
+                        {{ form_row(form.dir) }}
+                    </div>
+
+                    <div class="mb-4">
+                        {{ form_row(form.item1) }}
+                    </div>
+
+                    <div class="mb-4">
+                        {{ form_row(form.item2) }}
+                    </div>
+
+                    <div class="mb-4">
+                        {{ form_row(form.item3) }}
+                    </div>
+
+                    <div class="mb-4">
+                        {{ form_row(form.item4) }}
+                    </div>
+
+                    <div class="mb-4">
+                        {{ form_row(form.quantity)}}
+                    </div>
+
+                    {% include 'order/sign/_edit_save.html.twig' %}
+
+                {{ form_end(form) }}
+            </div>
+            <div class="col">
+                <div>
+                    {% include 'order/sign/materialAlgeco/template.html.twig' with
+                        {
+                            'id': 'material-algeco',
+                            'scale': 'medium',
+                            'dir': 'l',
+                            'text_line_1': 'Produit 1',
+                            'text_line_2': 'Produit 2',
+                            'text_line_3': 'Produit 3',
+                            'text_line_4': 'Produit 4'
+                        }
+                    %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {{ encore_entry_script_tags('materialAlgecoSignEdit') }}
+{% endblock %}

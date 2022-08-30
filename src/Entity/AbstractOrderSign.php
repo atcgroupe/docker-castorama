@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Service\String\Formatter;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
@@ -42,6 +43,12 @@ abstract class AbstractOrderSign implements OrderSignInterface, OrderSignApiInte
      * @ORM\JoinColumn(nullable=false)
      */
     protected $sign;
+
+    public function __construct(Order $order, Sign $sign)
+    {
+        $this->order = $order;
+        $this->sign = $sign;
+    }
 
     /**
      * Used for API json data
@@ -92,44 +99,6 @@ abstract class AbstractOrderSign implements OrderSignInterface, OrderSignApiInte
     }
 
     /**
-     * @return string
-     *
-     * @Groups({"api_xml_object"})
-     */
-    public function getSwitchBuilder(): string
-    {
-        return $this->getSign()->getSwitchFlowBuilder();
-    }
-
-    /**
-     * @return string
-     *
-     * @Groups({"api_xml_object"})
-     */
-    public function getSwitchTemplate(): string
-    {
-        return $this->getSign()->getSwitchFlowTemplateFile();
-    }
-
-    /**
-     * @return string
-     *
-     * @Groups({"api_xml_object"})
-     */
-    public function getData(): string
-    {
-        return $this->data;
-    }
-
-    /**
-     * @param string $data
-     */
-    public function setData(string $data): void
-    {
-        $this->data = $data;
-    }
-
-    /**
      * @return int
      *
      * @Groups({"api_xml_object"})
@@ -137,5 +106,67 @@ abstract class AbstractOrderSign implements OrderSignInterface, OrderSignApiInte
     public function getOrderId(): int
     {
         return $this->getOrder()->getId();
+    }
+
+    /**
+     * @return string
+     *
+     * @Groups({"api_xml_object"})
+     */
+    public function getTemplateFilename(): string
+    {
+        return $this->getSign()->getName();
+    }
+
+    /**
+     * @return string
+     *
+     * @Groups({"api_xml_object"})
+     * @SerializedName("isSignVariable")
+     */
+    public function isSignVariable(): string
+    {
+        return $this->getSign()->getIsVariable() ? 'true' : 'false';
+    }
+
+    /**
+     * @return string
+     *
+     * @Groups({"api_xml_object"})
+     */
+    public function getSignName(): string
+    {
+        return $this->getSign()->getName();
+    }
+
+    /**
+     * @return string
+     *
+     * @Groups({"api_xml_object"})
+     */
+    public function getSignCategoryName(): string
+    {
+        return Formatter::getNoAccentString($this->getSign()->getCategory()->getLabel());
+    }
+
+    /**
+     * @return string
+     */
+    public function getXmlFilename(): string
+    {
+        return $this->getFormattedXmlFilename('#' . $this->getId());
+    }
+
+    /**
+     * @param string|null $variableId
+     * @return string
+     */
+    protected function getFormattedXmlFilename(?string $variableId = null): string
+    {
+        $formattedTitle = strtoupper(Formatter::getNoAccentString($this->getSign()->getTitle()));
+
+        return $variableId ?
+            sprintf('%s [%s] %sEX.xml', $formattedTitle, $variableId, $this->getQuantity()) :
+            sprintf('%s %sEX.xml', $formattedTitle, $this->getQuantity());
     }
 }

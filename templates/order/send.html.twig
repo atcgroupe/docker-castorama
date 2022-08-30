@@ -32,7 +32,7 @@
                         <div class="w-50">Prix total de la commande</div>
 
                         <div class="w-50 ps-2 text-primary">
-                            {{ resume['global']['price']|format_number({fraction_digit: 2}) }}€
+                            {{ resume.totalPrice|format_number({fraction_digit: 2}) }}€
                         </div>
                     </li>
 
@@ -40,22 +40,22 @@
                         <div class="w-50">Nombre total de panneaux</div>
 
                         <div class="w-50 ps-2 text-primary">
-                            {{ resume['global']['count'] }} Exemplaires
+                            {{ resume.totalSignsCount }} Exemplaires
                         </div>
                     </li>
 
-                    {% for title, data in resume['sign'] %}
+                    {% for signResume in resume.signsResume %}
                         <li class="list-group-item d-flex align-items-center">
                             <div class="w-50">
-                                {{ title }}<br>
+                                {{ signResume.title }}<br>
                                 <span class="small text-muted fst-italic">
-                                    Code DataMerch: {{ data['customerReference'] }}
+                                    Code DataMerch: {{ signResume.customerReference }}
                                 </span>
                             </div>
 
                             <div class="w-50 ps-2 text-primary">
-                                {{ data['count'] }} Exemplaires
-                                ( {{ data['countPrice']|format_number({fraction_digit: 2}) }}€ )
+                                {{ signResume.signsCount }} Exemplaires
+                                ( {{ signResume.totalPrice|format_number({fraction_digit: 2}) }}€ )
                             </div>
                         </li>
                     {% endfor %}
@@ -83,21 +83,21 @@
             <div class="col-12 col-lg-6 pt-lg-3">
                 {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 
-                {{ form_row(form.customerReference, {'attr': {'autofocus': true}}) }}
+                    {{ form_row(form.customerReference, {'attr': {'autofocus': true}}) }}
 
-                {{ form_row(form.comment) }}
+                    {{ form_row(form.comment) }}
 
-                <div class="mt-5">
-                    <button type="submit" class="btn btn-lg btn-outline-primary w-100">
-                        Confirmer l'envoi de la commande
-                    </button>
+                    <div class="mt-5">
+                        <button type="submit" class="btn btn-lg btn-outline-primary w-100">
+                            Confirmer l'envoi de la commande
+                        </button>
 
-                    <a
-                            href="{{ path('orders_view', {'id': order.id}) }}"
-                            class="btn btn-outline-secondary w-100 mt-3">
-                        Annuler
-                    </a>
-                </div>
+                        <a
+                                href="{{ path('orders_view', {'id': order.id}) }}"
+                                class="btn btn-outline-secondary w-100 mt-3">
+                            Annuler
+                        </a>
+                    </div>
 
                 {{ form_end(form) }}
             </div>

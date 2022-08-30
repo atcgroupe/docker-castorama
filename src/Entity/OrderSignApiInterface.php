@@ -5,29 +5,6 @@ namespace App\Entity;
 interface OrderSignApiInterface
 {
     /**
-     * Returns the Callas builder name that is used to apply content on pdf file.
-     *
-     * @return string
-     */
-    public function getSwitchBuilder(): string;
-
-    /**
-     * Returns the Callas pdf template name that is used to generate production file.
-     *
-     * Note: the name is returned without file extension.
-     *
-     * @return string
-     */
-    public function getSwitchTemplate(): string;
-
-    /**
-     * Used for Enfocus Switch API
-     *
-     * @return string
-     */
-    public function getData(): string;
-
-    /**
      * Used for Enfocus Switch API
      *
      * @return int
@@ -39,5 +16,37 @@ interface OrderSignApiInterface
      *
      * @return string
      */
-    public function getFileName(): string;
+    public function getXmlFilename(): string;
+
+    /**
+     * Used to know if sign has variable data.
+     *
+     * @return string
+     */
+    public function isSignVariable(): string;
+
+    /**
+     * Returns the sign name that is used in switch flow.
+     *
+     * @return string
+     */
+    public function getSignName(): string;
+
+    /**
+     * Returns the Callas pdf template name that is used to generate production file.
+     *
+     * Note: the name is returned without file extension.
+     *
+     * @return string
+     */
+    public function getTemplateFilename(): string;
+
+    /**
+     * Returns sign category
+     *
+     * Note: used for directory naming so without accents
+     *
+     * @return string
+     */
+    public function getSignCategoryName(): string;
 }

@@ -1,0 +1,23 @@
+{% extends 'core/core.html.twig' %}
+
+{% block content %}
+    <h1 class="h2 fw-light text-center my-5">{{ title }}<br>{{ sign.title }}</h1>
+
+    <div class="row justify-content-md-center">
+        <div class="col col-lg-6">
+            {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+                {{ form_widget(form) }}
+
+                <div class="mt-5">
+                    <button type="submit" class="btn btn-lg btn-outline-primary w-100">Enregistrer</button>
+                </div>
+
+                <a
+                    href="{{ path('admin_custom_signs_view', { id: sign.id }) }}"
+                    class="btn btn-outline-secondary w-100 my-3">
+                    Annuler
+                </a>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

@@ -4,10 +4,13 @@
     <div class="row justify-content-md-center">
         <div class="col-lg-6">
             <h1 class="fw-light text-danger my-5 h2 text-center">
-                Êtes vous sure<br>de vouloir supprimer ce {{ sign.sign.title|lower }} ?
+                Êtes vous sure<br>de vouloir supprimer ce panneau {{ sign.sign.title }} ?
             </h1>
 
-            <form method="post" action="{{ path('order_sign_delete', {'id': sign.id, 'signType': sign.type}) }}" class="mt-5">
+            <form
+                method="post"
+                action="{{ path('order_sign_delete', {'id': sign.id, 'name': sign.sign.name}) }}"
+                class="mt-5">
                 <button type="submit" class="btn btn-lg btn-outline-danger w-100 my-3">
                     Supprimer le panneau
                 </button>

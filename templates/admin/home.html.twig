@@ -1,0 +1,29 @@
+{% extends 'core/core.html.twig' %}
+
+{% block content %}
+    <h1 class="h2 text-center text-primary fw-light my-5">Admin</h1>
+
+    <div class="d-flex justify-content-center align-content-center">
+        <div class="card me-4" style="width: 18rem;">
+            <img src="{{ asset('build/images/sign/category/user_shop.jpg') }}" alt="Illustration cour des matériaux">
+
+            <div class="card-body text-center">
+                <h3 class="card-title text-secondary">Magasins</h3>
+
+                <a href="{{ path('admin_shop_list') }}" class="btn btn-lg btn-primary my-3">Sélectionner</a>
+            </div>
+        </div>
+
+        <div class="card" style="width: 18rem;">
+            <img
+                src="{{ asset('build/images/sign/category/fixed_signs.jpg') }}"
+                alt="Illustration signalétique interieure">
+
+            <div class="card-body text-center">
+                <h3 class="card-title text-secondary">Panneaux fixes</h3>
+
+                <a href="{{ path('admin_custom_signs_list') }}" class="btn btn-lg btn-primary my-3">Sélectionner</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
