@@ -2,8 +2,8 @@ FROM php:8.1-fpm
 
 WORKDIR /app
 
+COPY ./php.ini-prod ${PHP_INI_DIR}/php.ini
 COPY . .
-COPY php.ini-prod ${PHP_INI_DIR}/php.ini
 
 RUN curl https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
     curl -1sLf 'https://dl.cloudsmith.io/public/symfony/stable/setup.deb.sh' | bash && \
@@ -12,5 +12,3 @@ RUN curl https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin
     docker-php-ext-install opcache intl pdo_mysql zip && \
     composer dump-env prod && \
     composer install --no-dev --optimize-autoloader
-
-

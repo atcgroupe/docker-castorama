@@ -1,11 +1,7 @@
-php.ini-dev
-php.ini-prod
 docker-*.*
 Dockerfile.*
 
 /resource/shop_listing.csv
 
-/db
 /var
 /vendor
-/nginx
