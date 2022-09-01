@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  fpm:
+    build:
+      context: .
+      dockerfile: Dockerfile.fpm
+    restart: unless-stopped
+    volumes:
+      - type: volume
+        source: build
+        target: /app/public/build
+    depends_on:
+      - mysql
+      - encore
+  mysql:
+    image: mysql:8.0.30
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD
+    volumes:
+      - type: volume
+        source: db-prod
+        target: /var/lib/mysql
+  encore:
+    build:
+      context: .
+      dockerfile: Dockerfile.encore
+    command: ["yarn", "build"]
+    volumes:
+      - type: volume
+        source: build
+        target: /app/public/build
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
+    restart: unless-stopped
+    volumes:
+      - type: volume
+        source: build
+        target: /app/public/build
+      - type: bind
+        source: /etc/letsencrypt/live/castorama.atc-web2print.fr
+        target: /etc/letsencrypt/live/castorama.atc-web2print.fr
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - fpm
+
+volumes:
+  db-prod:
+    external: true
+  build:

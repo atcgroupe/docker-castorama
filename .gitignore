@@ -29,3 +29,11 @@ yarn-error.log
 ###> os ###
 *.DS_Store
 ###< os ###
+
+###> db ###
+/db
+###< db ###
+
+###> PhpStorm ###
+.idea
+###> PhpStorm ###
