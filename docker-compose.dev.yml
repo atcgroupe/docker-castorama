@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0.30
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    volumes:
+      - type: volume
+        source: db-dev
+        target: /var/lib/mysql
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile.php
+    volumes:
+      - type: bind
+        source: ./
+        target: /app
+      - type: volume
+        target: /app/vendor
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mysql
+      - encore
+  encore:
+    build:
+      context: .
+      dockerfile: Dockerfile.encore
+    volumes:
+      - type: bind
+        source: ./
+        target: /app
+      - type: volume
+        target: /app/node_modules
+
+volumes:
+  db-dev:
+    external: true
