@@ -1,5 +1,7 @@
 FROM php:8.1-fpm
 
+USER www-data
+
 COPY ./php.ini-prod ${PHP_INI_DIR}/php.ini
 
 RUN curl https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
@@ -8,14 +10,12 @@ RUN curl https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin
     echo "fr_FR.UTF-8 UTF-8" > /etc/locale.gen && locale-gen && \
     docker-php-ext-install opcache intl pdo_mysql zip
 
-WORKDIR /app
+WORKDIR /home/www-data
 
 COPY ./composer.json .
 
 RUN composer install --no-dev --optimize-autoloader && \
     APP_ENV=prod APP_DEBUG=0 php bin/console cache:clear && \
-    usermod -aG sudo www-data && \
-    chown -R www-data:root /app && \
     symfony console cache:clear
 
 COPY . .

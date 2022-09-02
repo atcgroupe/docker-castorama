@@ -9,7 +9,7 @@ services:
     volumes:
       - type: volume
         source: build
-        target: /app/public/build
+        target: /home/www-data/public/build
     depends_on:
       - mysql
       - encore
