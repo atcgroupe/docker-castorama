@@ -14,6 +14,6 @@ COPY ./composer.json .
 
 RUN composer install --no-dev --optimize-autoloader && \
     APP_ENV=prod APP_DEBUG=0 php bin/console cache:clear && \
-    usermod -aG sudo www-data
+    usermod chown -R www-data:www-data /app
 
 COPY . .
