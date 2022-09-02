@@ -41,8 +41,8 @@ services:
         source: build
         target: /app/public/build
       - type: bind
-        source: /etc/letsencrypt/live/castorama.atc-web2print.fr
-        target: /etc/letsencrypt/live/castorama.atc-web2print.fr
+        source: /etc/letsencrypt
+        target: /etc/letsencrypt
     ports:
       - "80:80"
       - "443:443"
