@@ -13,9 +13,9 @@ WORKDIR /app
 COPY ./composer.json .
 
 RUN composer install --no-dev --optimize-autoloader
-
 COPY . .
 
-RUN usermod -aG sudo www-data && \
+RUN mkdir /app/public/resource && \
+    usermod -aG sudo www-data && \
     chown -R www-data:root /app && \
     symfony console cache:clear
