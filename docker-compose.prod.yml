@@ -10,6 +10,9 @@ services:
       - type: volume
         source: build
         target: /app/public/build
+      - type: volume
+        source: resource
+        target: /app/public/resource
     depends_on:
       - mysql
       - encore
@@ -40,6 +43,9 @@ services:
       - type: volume
         source: build
         target: /app/public/build
+      - type: volume
+        source: resource
+        target: /app/public/resource
       - type: bind
         source: /etc/letsencrypt
         target: /etc/letsencrypt
@@ -51,5 +57,7 @@ services:
 
 volumes:
   db-prod:
+    external: true
+  resource:
     external: true
   build:
