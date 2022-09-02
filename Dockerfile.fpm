@@ -10,5 +10,4 @@ RUN curl https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin
     apt update && apt install -y zip libzip-dev git libicu-dev symfony-cli locales && \
     echo "fr_FR.UTF-8 UTF-8" > /etc/locale.gen && locale-gen && \
     docker-php-ext-install opcache intl pdo_mysql zip && \
-    composer dump-env prod && \
     composer install --no-dev --optimize-autoloader
